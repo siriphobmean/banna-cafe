@@ -51,16 +51,16 @@ function Menus() {
       dataIndex: "MenuType",
       key: "menutype",
       // render: (item) => Object.values(item.TypeName),
-      render:(recdord)=>(
-        <div>Test</div>
+      render:(record)=>(
+        <div>วิปครีม</div>
       )
     },
     {
       title: "จำนวนวัตถุดิบ",
       dataIndex: "MenuCost",
       key: "menucost",
-      render:(recdord)=>(
-        <div>Test</div>
+      render:(record)=>(
+        <div>1</div>
       )
     },
     {
