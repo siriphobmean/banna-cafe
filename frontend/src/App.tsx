@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserOutlined, DashboardOutlined, DesktopOutlined, TableOutlined, HomeOutlined, MenuOutlined} from "@ant-design/icons";
+import { UserOutlined, DashboardOutlined, ShoppingCartOutlined, ProfileOutlined, HomeOutlined, MenuOutlined, CoffeeOutlined, TeamOutlined, BookOutlined} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import {
   BrowserRouter as Router,
@@ -41,9 +41,13 @@ function getItem(
 
 const items: MenuItem[] = [
   getItem("หน้าหลัก", "1", <DashboardOutlined />),
-  getItem("จัดการเมนู", "2", <MenuOutlined />), // no dashboard edit to "2"
-  getItem("จัดการพนักงาน", "3", <UserOutlined />),
-  // getItem("จัดการตารางงาน", "4", <UserOutlined />),
+  getItem("สร้างคำสั่งซื้อ", "2", <ShoppingCartOutlined />),
+  getItem("จัดการเมนู", "3", <MenuOutlined />),
+  getItem("จัดการโปรโมชั่น", "4", <ProfileOutlined />),
+  getItem("จัดการลูกค้า", "5", <UserOutlined />),
+  getItem("จัดการพนักงาน", "6", <TeamOutlined />),
+  getItem("จัดการวัตถุดิบ", "7", <CoffeeOutlined />),
+  getItem("บันทึกรายรับรายจ่าย", "8", <BookOutlined />),
 ];
 
 const App: React.FC = () => {
@@ -94,24 +98,48 @@ const App: React.FC = () => {
                 <span>หน้าหลัก</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="createbuy" onClick={() => setCurrentPage("createbuy")}>
+              <Link to="/menu">
+                <ShoppingCartOutlined />
+                <span>สร้างคำสั่งซื้อ</span>
+              </Link>
+            </Menu.Item>
             <Menu.Item key="menu" onClick={() => setCurrentPage("menu")}>
               <Link to="/menu">
                 <MenuOutlined />
                 <span>จัดการเมนู</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="menu1" onClick={() => setCurrentPage("menu1")}>
+            <Menu.Item key="promotion" onClick={() => setCurrentPage("promotion")}>
+              <Link to="/menu">
+                <ProfileOutlined />
+                <span>จัดการโปรโมชั่น</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="member" onClick={() => setCurrentPage("member")}>
               <Link to="/employee">
                 <UserOutlined />
+                <span>จัดการลูกค้า</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="employee" onClick={() => setCurrentPage("employee")}>
+              <Link to="/employee">
+                <TeamOutlined />
                 <span>จัดการพนักงาน</span>
               </Link>
             </Menu.Item>
-            {/* <Menu.Item key="menu2" onClick={() => setCurrentPage("menu2")}>
+            <Menu.Item key="ingredient" onClick={() => setCurrentPage("ingredient")}>
               <Link to="/employee">
-                <TableOutlined />
-                <span>จัดการตารางงาน</span>
+                <CoffeeOutlined />
+                <span>จัดการวัตถุดิบ</span>
               </Link>
-            </Menu.Item> */}
+            </Menu.Item>
+            <Menu.Item key="givechange" onClick={() => setCurrentPage("givechange")}>
+              <Link to="/employee">
+                <BookOutlined />
+                <span>บันทึกรายรับรายจ่าย</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider >
         <Layout>
