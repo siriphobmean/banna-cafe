@@ -207,6 +207,7 @@ function MenuEdit() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
+                rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>
