@@ -6,17 +6,20 @@ import (
 
 type Order struct {
 	gorm.Model
-	TotalAmount int // default decimal?
+	TotalAmount int // default in db is Decimal(4,2)
 	// TimeOfCreate
 	// Income
 
 	OrderMenu []OrderMenu `gorm:"foreignKey:OrderID"`
-	// Status ?
+	// Status []Status `gorm:"foreignKey:OrderID"`
 
 	// FK
 	EmployeeID *uint
 	Employee Employee `gorm:"references:id"`
-	// MemberID
+
+	// MemberID *uint
+	// Member Member `gorm:"references:id"`
+
 	// Code ?
 
 } // Clear!

@@ -13,7 +13,7 @@ type Employee struct {
 	Password string
 	Gender string
 	Age int
-	Salary float64 // db = float
+	Salary float64
 
 	Order []Order `gorm:"foreignKey:EmployeeID"`
 	Promotion []Promotion `gorm:"foreignKey:EmployeeID"`
