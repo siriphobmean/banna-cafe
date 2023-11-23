@@ -1,4 +1,4 @@
-package entity // no mean
+package entity // nop
 
 import (
 	"gorm.io/gorm"
@@ -8,10 +8,10 @@ type Ingredient struct {
 	gorm.Model
 
 	IngredientName string
-	IngredientCost int
+	IngredientCost float64
 	IngredientAmount int
 	IngredientSource string
-	IngredientImage string `gorm:"type:longtext"`
+	// IngredientImage string `gorm:"type:longtext"`
 
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:IngredientID"`
-} // Clear!
+} // Clear! but Entity not finish

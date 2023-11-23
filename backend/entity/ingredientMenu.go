@@ -1,4 +1,4 @@
-package entity // no mean 50/50
+package entity // mean-nop
 
 import (
 	"gorm.io/gorm"
