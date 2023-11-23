@@ -52,4 +52,26 @@ func SetupDatabase() {
 	for _, role := range role {
 		db.Create(&role) // Assuming 'db' is your GORM database instance
 	}
+
+	// Ingredient Data (ex)
+	
+	ingredient := []Ingredient{
+		{
+			IngredientName: "ผงกาแฟ",
+			IngredientCost: 50.00,
+			IngredientAmount: 100,
+			IngredientSource: "ตลาดเซฟวัน",
+		},
+		{
+			IngredientName: "ผงชาเขียว",
+			IngredientCost: 60.00,
+			IngredientAmount: 120,
+			IngredientSource: "ตลาดเซฟวันโก",
+		},
+	}
+
+	for _, ingredient := range ingredient {
+		db.Create(&ingredient) // Assuming 'db' is your GORM database instance
+	}
+
 }

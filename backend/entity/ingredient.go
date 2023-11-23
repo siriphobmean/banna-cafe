@@ -7,7 +7,7 @@ import (
 type Ingredient struct {
 	gorm.Model
 
-	IngredientName string
+	IngredientName string `gorm:"uniqueIndex"`
 	IngredientCost float64
 	IngredientAmount int
 	IngredientSource string

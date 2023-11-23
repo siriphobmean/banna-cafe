@@ -27,6 +27,14 @@ func main() {
 	r.DELETE("/employees/:id", controller.DeleteEmployee)
 	// Role Routes
 	r.GET("/roles", controller.ListRoles)
+
+	// Ingredient Routes
+	r.GET("/ingredients", controller.ListIngredients)
+	r.GET("/ingredients/:id", controller.GetIngredient)
+	r.POST("/ingredients", controller.CreateIngredient)
+	r.PATCH("/ingredients", controller.UpdateIngredient)
+	r.DELETE("/ingredients/:id", controller.DeleteIngredient)
+	
 	// Run the server
 	r.Run()
 }
