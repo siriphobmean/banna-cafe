@@ -35,11 +35,11 @@ function Dashboards() {
       dataIndex: "Email",
       key: "email",
     },
-    {
-        title: "รหัสผ่าน",
-        dataIndex: "Password",
-        key: "password",
-      },
+    // {
+    //     title: "รหัสผ่าน",
+    //     dataIndex: "Password",
+    //     key: "password",
+    // },
     // {
     //   title: "เพศ",
     //   dataIndex: "Gender",
@@ -136,7 +136,7 @@ function Dashboards() {
       <Row>
         <Col span={12}>
           <h2>ระบบจัดการหลังบ้าน Banna Cafe</h2>
-          <div className="exampleData"><b>ตัวอย่างการแสดงข้อมูล</b></div>
+          <div className="exampleData"><b>รายชื่อพนักงาน</b></div>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           {/* <Space>

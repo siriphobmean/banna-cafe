@@ -144,13 +144,13 @@ function MenuCreate() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{
                 
-                required: true,  message: "กรุณาระบุวัตถุดิบ !", 
+                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
                 
                 }]}>
                 <Select allowClear>
-                  {menuTypes.map((item) => (
+                  {/* {menuTypes.map((item) => (
                     <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                  ))}
+                  ))} */}
                 </Select>
               </Form.Item>
             </Col>
@@ -160,8 +160,8 @@ function MenuCreate() {
                 name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
                 rules={[
                   {
-                    required: true,
-                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                    // required: true,
+                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
                   },
                 ]}
               >

@@ -175,7 +175,7 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngreID" label="วัตถุดิบ" rules={[{ 
+              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ 
                 
                 // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
                 
@@ -190,11 +190,11 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ"
-                name="IngreAmount"
+                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
                 rules={[
                   {
                     // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                    // message: "กรุณากรอกจำนวนวัตถุดิบ !", 
                   },
                 ]}
               >

@@ -52,15 +52,15 @@ function Menus() {
       key: "menutype",
       // render: (item) => Object.values(item.TypeName),
       render:(record)=>(
-        <div>วิปครีม</div>
+        <div>Null</div>
       )
     },
     {
       title: "จำนวนวัตถุดิบ",
-      dataIndex: "MenuCost",
-      key: "menucost",
+      dataIndex: "Amount",
+      key: "amount",
       render:(record)=>(
-        <div>1</div>
+        <div>Null</div>
       )
     },
     {
