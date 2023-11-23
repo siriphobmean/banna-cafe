@@ -123,6 +123,7 @@ const App: React.FC = () => {
                 padding: 24,
                 minHeight: "100%",
                 background: colorBgContainer,
+                // background: 'white',
               }}
             >
               <Routes>
