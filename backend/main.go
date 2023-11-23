@@ -2,22 +2,31 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/tanapon395/sa-66-example/controller"
-	"github.com/tanapon395/sa-66-example/entity"
+	"github.com/siriphobmean/sa-66-mean/controller"
+	"github.com/siriphobmean/sa-66-mean/entity"
 )
 
 func main() {
 	entity.SetupDatabase()
 	r := gin.Default()
 	r.Use(CORSMiddleware())
-	// User Routes
-	r.GET("/users", controller.ListUsers)
-	r.GET("/user/:id", controller.GetUser)
-	r.POST("/users", controller.CreateUser)
-	r.PATCH("/users", controller.UpdateUser)
-	r.DELETE("/users/:id", controller.DeleteUser)
-	// Gender Routes
-	r.GET("/genders", controller.ListGenders)
+	// Menu Routes
+	r.GET("/menus", controller.ListMenus)
+	r.GET("/menu/:id", controller.GetMenu)
+	r.POST("/menus", controller.CreateMenu) // sholee & biw -> edit "menu"
+	r.PATCH("/menus", controller.UpdateMenu)
+	r.DELETE("/menus/:id", controller.DeleteMenu)
+	// MenuType Routes
+	r.GET("/menuTypes", controller.ListMenuTypes)
+	
+	// Employee Routes
+	r.GET("/employees", controller.ListEmployees)
+	r.GET("/employee/:id", controller.GetEmployee)
+	r.POST("/employees", controller.CreateEmployee)
+	r.PATCH("/employees", controller.UpdateEmployee)
+	r.DELETE("/employees/:id", controller.DeleteEmployee)
+	// Role Routes
+	r.GET("/roles", controller.ListRoles)
 	// Run the server
 	r.Run()
 }
@@ -33,7 +42,6 @@ func CORSMiddleware() gin.HandlerFunc {
 			c.AbortWithStatus(204)
 			return
 		}
-
 		c.Next()
 	}
 }

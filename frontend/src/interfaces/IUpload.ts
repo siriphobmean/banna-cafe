@@ -11,14 +11,14 @@ export interface ImageUpload {
     response: string
     status: string
     thumbUrl: string
-  }
-  
-  export interface OriginFileObj {
+} // Clear!
+
+export interface OriginFileObj {
     uid: string
-  }
-  
-  export interface Error {
+} // Clear!
+
+export interface Error {
     status: number
     method: string
     url: string
-  }
+} // Clear!

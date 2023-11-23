@@ -1,129 +1,168 @@
-import { Col, Row, Card, Statistic, Space, Table, Tag } from "antd";
-import {
-  AuditOutlined,
-  UserOutlined,
-  PieChartOutlined,
-  StockOutlined,
-} from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
+import { GetEmployees, DeleteEmployeeByID } from "../../services/https/employee";
+import { EmployeesInterface } from "../../interfaces/IEmployee";
+import { Link, useNavigate } from "react-router-dom";
 
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+function Dashboards() {
+  
+  const columns: ColumnsType<EmployeesInterface> = [
+    {
+      title: "ลำดับ",
+      dataIndex: "ID",
+      key: "id",
+    },
+    {
+      title: "ชื่อ",
+      dataIndex: "FirstName",
+      key: "firstname",
+    },
+    {
+      title: "นามสกุล",
+      dataIndex: "LastName",
+      key: "lastname",
+    },
+    {
+      title: "ตำแหน่ง",
+      dataIndex: "Role",
+      key: "role",
+      render: (item) => Object.values(item.RoleName),
+    },
+    {
+      title: "อีเมล",
+      dataIndex: "Email",
+      key: "email",
+    },
+    {
+        title: "รหัสผ่าน",
+        dataIndex: "Password",
+        key: "password",
+      },
+    // {
+    //   title: "เพศ",
+    //   dataIndex: "Gender",
+    //   key: "gender",
+    // },
+    // {
+    //     title: "อายุ",
+    //     dataIndex: "Age",
+    //     key: "age",
+    //   },
+    //   {
+    //     title: "เงินเดือน",
+    //     dataIndex: "Salary",
+    //     key: "salary",
+    //   },
+    // {
+    //   title: "แก้ไข/ลบข้อมูล",
+    //   dataIndex: "Manage",
+    //   key: "manage",
+    //   render: (text, record, index) => (
+    //     <>
+    //       {/* <Button  onClick={() =>  navigate(`/employee/edit/${record.ID}`)} shape="circle" icon={<EditOutlined />} size={"large"} />
+    //       <Button
+    //         onClick={() => showModal(record)}
+    //         style={{ marginLeft: 10 }}
+    //         shape="circle"
+    //         icon={<DeleteOutlined />}
+    //         size={"large"}
+    //         danger
+    //       /> */}
+    //     </>
+    //   ),
+    // },
+  ];
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "ลำดับ",
-    dataIndex: "ID",
-    key: "id",
-  },
-  {
-    title: "ชื่อ",
-    dataIndex: "FirstName",
-    key: "firstname",
-  },
-  {
-    title: "นามสกุุล",
-    dataIndex: "LastName",
-    key: "lastname",
-  },
-  {
-    title: "อีเมล",
-    dataIndex: "Email",
-    key: "email",
-  },
-  {
-    title: "เบอร์โทร",
-    dataIndex: "Phone",
-    key: "phone",
-  },
-];
+  const navigate = useNavigate();
 
-const data: DataType[] = [];
+  const [employees, setEmployees] = useState<EmployeesInterface[]>([]);
 
-export default function index() {
+  const [messageApi, contextHolder] = message.useMessage();
+
+  // Model
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState<String>();
+  const [deleteId, setDeleteId] = useState<Number>();
+
+  const getEmployees = async () => {
+    let res = await GetEmployees();
+    if (res) {
+      setEmployees(res);
+    }
+  };
+
+  const showModal = (val: EmployeesInterface) => {
+    setModalText(
+      `คุณต้องการลบข้อมูลพนักงาน "${val.FirstName} ${val.LastName}" หรือไม่ ?`
+    );
+    setDeleteId(val.ID);
+    setOpen(true);
+  };
+
+  const handleOk = async () => {
+    setConfirmLoading(true);
+    let res = await DeleteEmployeeByID(deleteId);
+    if (res) {
+      setOpen(false);
+      messageApi.open({
+        type: "success",
+        content: "ลบข้อมูลสำเร็จ",
+      });
+      getEmployees();
+    } else {
+      setOpen(false);
+      messageApi.open({
+        type: "error",
+        content: "เกิดข้อผิดพลาด !",
+      });
+    }
+    setConfirmLoading(false);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    getEmployees();
+  }, []);
+
   return (
     <>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h2>แดชบอร์ด</h2>
+      {contextHolder}
+      <Row>
+        <Col span={12}>
+          <h2>ระบบจัดการหลังบ้าน Banna Cafe</h2>
+          <div className="exampleData"><b>ตัวอย่างการแสดงข้อมูล</b></div>
         </Col>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card style={{ backgroundColor: "#F5F5F5" }}>
-            <Row gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวน"
-                    value={1800}
-                    prefix={<StockOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวน"
-                    value={200}
-                    valueStyle={{ color: "black" }}
-                    prefix={<AuditOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวน"
-                    value={3000}
-                    valueStyle={{ color: "black" }}
-                    prefix={<PieChartOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวน"
-                    value={10}
-                    valueStyle={{ color: "black" }}
-                    prefix={<UserOutlined />}
-                  />
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <h3>ผู้ใช้งานล่าสุด</h3>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Table columns={columns} dataSource={data} />
+        <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
+          {/* <Space>
+            <Link to="/employee/create">
+              <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
+                เพิ่มพนักงาน
+              </Button>
+            </Link>
+          </Space> */}
         </Col>
       </Row>
+      <Divider />
+      <div style={{ marginTop: 20 }}>
+        <Table rowKey="ID" columns={columns} dataSource={employees} />
+      </div>
+      <Modal
+        title="ลบข้อมูล ?"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{modalText}</p>
+      </Modal>
     </>
   );
 }
+
+export default Dashboards;

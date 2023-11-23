@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserOutlined, DashboardOutlined } from "@ant-design/icons";
+import { UserOutlined, DashboardOutlined, DesktopOutlined, TableOutlined, HomeOutlined, MenuOutlined} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import {
   BrowserRouter as Router,
@@ -11,10 +11,15 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import logo from "./assets/logo.png";
 
-import Dashboard from "./pages/dashboard";
-import Customer from "./pages/customer";
-import CustomerCreate from "./pages/customer/create";
-import CustomerEdit from "./pages/customer/edit";
+import Dashboards from "./pages/dashboard";
+import Menus from "./pages/menu";
+import MenuCreate from "./pages/menu/create";
+import MenuEdit from "./pages/menu/edit";
+
+import Employees from "./pages/employee";
+import EmployeeCreate from "./pages/employee/create";
+import EmployeeEdit from "./pages/employee/edit";
+import "./mean.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,8 +40,10 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("แดชบอร์ด", "1", <DashboardOutlined />),
-  getItem("ข้อมูลสมาชิก", "2", <UserOutlined />),
+  getItem("หน้าหลัก", "1", <DashboardOutlined />),
+  getItem("จัดการเมนู", "2", <MenuOutlined />), // no dashboard edit to "2"
+  getItem("จัดการพนักงาน", "3", <UserOutlined />),
+  // getItem("จัดการตารางงาน", "4", <UserOutlined />),
 ];
 
 const App: React.FC = () => {
@@ -54,6 +61,10 @@ const App: React.FC = () => {
     <Router>
       <Layout style={{ minHeight: "100vh" }}>
         <Sider
+        theme="dark"
+          style={{
+            backgroundColor: '#678983',
+          }}
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
@@ -69,28 +80,40 @@ const App: React.FC = () => {
             <img
               src={logo}
               alt="Logo"
-              style={{ width: "40%", borderRadius: "50%" }}
+              style={{ width: "50%", borderRadius: "50%" }}
             />
           </div>
           <Menu
-            theme="dark"
+            theme="light"
             defaultSelectedKeys={[page ? page : "dashboard"]}
             mode="inline"
           >
             <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
               <Link to="/">
-                <DashboardOutlined />
-                <span>แดชบอร์ด</span>
+                <HomeOutlined />
+                <span>หน้าหลัก</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="customer" onClick={() => setCurrentPage("customer")}>
-              <Link to="/customer">
+            <Menu.Item key="menu" onClick={() => setCurrentPage("menu")}>
+              <Link to="/menu">
+                <MenuOutlined />
+                <span>จัดการเมนู</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="menu1" onClick={() => setCurrentPage("menu1")}>
+              <Link to="/employee">
                 <UserOutlined />
-                <span>ข้อมูลสมาชิก</span>
+                <span>จัดการพนักงาน</span>
               </Link>
             </Menu.Item>
+            {/* <Menu.Item key="menu2" onClick={() => setCurrentPage("menu2")}>
+              <Link to="/employee">
+                <TableOutlined />
+                <span>จัดการตารางงาน</span>
+              </Link>
+            </Menu.Item> */}
           </Menu>
-        </Sider>
+        </Sider >
         <Layout>
           <Header style={{ padding: 0, background: colorBgContainer }} />
           <Content style={{ margin: "0 16px" }}>
@@ -103,15 +126,18 @@ const App: React.FC = () => {
               }}
             >
               <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/customer" element={<Customer />} />
-                <Route path="/customer/create" element={<CustomerCreate />} />
-                <Route path="/customer/edit/:id" element={<CustomerEdit />} />
+                <Route path="/" element={<Dashboards />} />
+                <Route path="/menu" element={<Menus />} />
+                <Route path="/employee" element={<Employees />} />
+                <Route path="/menu/create" element={<MenuCreate />} />
+                <Route path="/employee/create" element={<EmployeeCreate />} />
+                <Route path="/menu/edit/:id" element={<MenuEdit />} />
+                <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
               </Routes>
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            System Analysis and Design 1/66
+            Banna Cafe
           </Footer>
         </Layout>
       </Layout>

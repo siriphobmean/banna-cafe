@@ -12,26 +12,44 @@ func DB() *gorm.DB {
 }
 
 func SetupDatabase() {
-	database, err := gorm.Open(sqlite.Open("sa-66.db"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open("sa-project.db"), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		panic("Failed to connect database")
 	}
-	// Migrate the schema
-	database.AutoMigrate(
-		&User{},
-		&Gender{},
-	)
 
+	database.AutoMigrate(
+		&Ingredient{}, // no mean
+		&IngredientMenu{}, // no mean 50/50
+		&OrderMenu{}, // no mean 50/50
+		&Order{}, // no mean
+		&Menu{},
+		&MenuType{},
+		&Employee{},
+		&Role{},
+		&Promotion{}, // no mean
+	)
 	db = database
 
-	// Gender Data
-	male := Gender{
-		Name: "ชาย",
+	// MenuType Data
+	menuType := []MenuType{
+		{TypeName: "BEVERAGE (เครื่องดื่ม)"},
+		{TypeName: "PIZZA (พิซซ่า)"},
+		{TypeName: "MEAL (อาหารมื้อ)"},
+		{TypeName: "SNACK (อาหารว่าง)"},
+		{TypeName: "CAKE & BAKERY (เค้กและเบเกอรี่)"},
 	}
-	db.Model(&Gender{}).Create(&male)
 
-	female := Gender{
-		Name: "หญิง",
+	for _, menuType := range menuType {
+		db.Create(&menuType) // Assuming 'db' is your GORM database instance
 	}
-	db.Model(&Gender{}).Create(&female)
+
+	// RoleName Data
+	role := []Role{
+		{RoleName: "Owner"},
+		{RoleName: "Employee"},
+	}
+
+	for _, role := range role {
+		db.Create(&role) // Assuming 'db' is your GORM database instance
+	}
 }
