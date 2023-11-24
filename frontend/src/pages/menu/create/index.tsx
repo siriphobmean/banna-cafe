@@ -14,14 +14,17 @@ import {
 } from "antd";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../interfaces/IMenu";
-
-import { IngredientsInterface } from "../../../interfaces/IIngredient";
-
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
+
+import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new
+import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new
+
 import { ImageUpload } from "../../../interfaces/IUpload";
 import { CreateMenu, GetMenuTypes } from "../../../services/https/menu";
+
+import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new
+
 import { useNavigate } from "react-router-dom";
-import { GetIngredients } from "../../../services/https/ingredient";
 
 const { Option } = Select;
 
@@ -32,17 +35,30 @@ function MenuCreate() {
   };
   const [messageApi, contextHolder] = message.useMessage();
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
+
+  const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
+
   const [menuImage, setMenuImage] = useState<ImageUpload>()
 
   console.log (menuTypes);
 
-  const onFinish = async (values: MenusInterface) => {
+  const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
     values.MenuImage = menuImage?.thumbUrl;
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D
     values.MenuCost = parseFloat(values.MenuCost!.toString());
+    values.Amount = parseInt(values.Amount!.toString(), 10); // new
     // console.log(values);
-    let res = await CreateMenu(values);
-    if (res.status) {
+    // let res = await CreateMenu(values); // use it -> keep data to db /menu
+    // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
+
+    // CreateMenu
+    let resMenu = await CreateMenu(values); // new
+
+    // CreateIngredientMenu
+    let resIngredientMenu = await CreateIngredientMenu(values); // new
+    
+    if (resMenu.status && resIngredientMenu.status) { // new 
+    // if (res.status) {
       messageApi.open({
         type: "success",
         content: "บันทึกข้อมูลสำเร็จ",
@@ -56,6 +72,7 @@ function MenuCreate() {
         content: "บันทึกข้อมูลไม่สำเร็จ",
       });
     }
+    console.log(values);
   };
 
   const getMenuType = async () => {
@@ -65,8 +82,18 @@ function MenuCreate() {
     }
   };
 
+  const getIngredient = async () => {
+    let res = await GetIngredients();
+    if (res) {
+      setIngredients(res);
+    }
+  }; // new
+
   useEffect(() => {
     getMenuType();
+
+    getIngredient(); // new
+
   }, []);
 
   const normFile = (e: any) => {
@@ -142,82 +169,19 @@ function MenuCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ [1]" rules={[{
-                
-                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
-                
-                }]}>
+              <Form.Item name="IngredientID" label="วัตถุดิบ [1]" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบ !", }]}>
                 <Select allowClear>
-                  {/* {menuTypes.map((item) => (
-                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                  ))} */}
+                  {ingredients.map((item) => (
+                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // Nop
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ [1]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                rules={[
-                  {
-                    // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ [2]" rules={[{
-                
-                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
-                
-                }]}>
-                <Select allowClear>
-                  {/* {menuTypes.map((item) => (
-                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                  ))} */}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="จำนวนวัตถุดิบ [2]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                rules={[
-                  {
-                    // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ [3]" rules={[{
-                
-                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
-                
-                }]}>
-                <Select allowClear>
-                  {/* {menuTypes.map((item) => (
-                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                  ))} */}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="จำนวนวัตถุดิบ [3]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                rules={[
-                  {
-                    // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
+                name="Amount" // Nop
+                rules={[{ required: true, message: "กรุณากรอกจำนวนวัตถุดิบ !", }]}
               >
                 <Input />
               </Form.Item>

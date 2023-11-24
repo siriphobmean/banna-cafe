@@ -1,6 +1,27 @@
-import { IngredientsInterface } from "../../../interfaces/IIngredient";
+import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu";
 
 const apiUrl = "http://localhost:8080";
+
+async function GetIngredientMenus() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/ingredientMenus`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
 
 async function GetIngredients() {
   const requestOptions = {
@@ -10,7 +31,7 @@ async function GetIngredients() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/ingredients`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredients`, requestOptions) // ok?
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -23,33 +44,12 @@ async function GetIngredients() {
   return res;
 }
 
-// async function GetMenuTypes() {
-//   const requestOptions = {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   };
-
-//   let res = await fetch(`${apiUrl}/menuTypes`, requestOptions) // ok?
-//     .then((response) => response.json())
-//     .then((res) => {
-//       if (res.data) {
-//         return res.data;
-//       } else {
-//         return false;
-//       }
-//     });
-
-//   return res;
-// }
-
-async function DeleteIngredientByID(id: Number | undefined) {
+async function DeleteIngredientMenuByID(id: Number | undefined) {
   const requestOptions = {
     method: "DELETE"
   };
 
-  let res = await fetch(`${apiUrl}/ingredients/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientMenus/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -62,12 +62,12 @@ async function DeleteIngredientByID(id: Number | undefined) {
   return res;
 }
 
-async function GetIngredientById(id: Number | undefined) {
+async function GetIngredientMenuById(id: Number | undefined) {
   const requestOptions = {
     method: "GET"
   };
 
-  let res = await fetch(`${apiUrl}/ingredient/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientMenu/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -81,14 +81,14 @@ async function GetIngredientById(id: Number | undefined) {
 }
 
 
-async function CreateIngredient(data: IngredientsInterface) {
+async function CreateIngredientMenu(data: IngredientMenusInterface) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/ingredients`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientMenus`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -101,14 +101,14 @@ async function CreateIngredient(data: IngredientsInterface) {
   return res;
 }
 
-async function UpdateIngredient(data: IngredientsInterface) {
+async function UpdateIngredientMenu(data: IngredientMenusInterface) {
   const requestOptions = {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/ingredients`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientMenus`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -122,10 +122,10 @@ async function UpdateIngredient(data: IngredientsInterface) {
 }
 
 export {
+  GetIngredientMenus,
+  CreateIngredientMenu,
   GetIngredients,
-  CreateIngredient,
-//   GetMenuTypes,
-  DeleteIngredientByID,
-  GetIngredientById,
-  UpdateIngredient
+  DeleteIngredientMenuByID,
+  GetIngredientMenuById,
+  UpdateIngredientMenu
 };

@@ -34,6 +34,13 @@ func main() {
 	r.POST("/ingredients", controller.CreateIngredient)
 	r.PATCH("/ingredients", controller.UpdateIngredient)
 	r.DELETE("/ingredients/:id", controller.DeleteIngredient)
+
+	// IngredientMenu Routes
+	r.GET("/ingredientMenus", controller.ListIngredientMenus)
+	r.GET("/ingredientMenus/:id", controller.GetIngredientMenu)
+	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
+	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
+	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
 	
 	// Run the server
 	r.Run()
