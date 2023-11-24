@@ -20,6 +20,7 @@ import Employees from "./pages/employee";
 import EmployeeCreate from "./pages/employee/create";
 import EmployeeEdit from "./pages/employee/edit";
 import "./mean.css";
+import IngredientMenu from "./pages/menu/ingredientMenu";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -158,6 +159,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Dashboards />} />
                 <Route path="/menu" element={<Menus />} />
                 <Route path="/employee" element={<Employees />} />
+                <Route path="/menu/ingredientMenu/:id" element={<IngredientMenu />} />
                 <Route path="/menu/create" element={<MenuCreate />} />
                 <Route path="/employee/create" element={<EmployeeCreate />} />
                 <Route path="/menu/edit/:id" element={<MenuEdit />} />

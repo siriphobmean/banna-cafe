@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMenus, DeleteMenuByID } from "../../services/https/menu";
 import { MenusInterface } from "../../interfaces/IMenu";
@@ -48,20 +48,13 @@ function Menus() {
     },
     {
       title: "วัตถุดิบ",
-      dataIndex: "MenuType",
-      key: "menutype",
-      // render: (item) => Object.values(item.TypeName),
-      render:(record)=>(
-        <div>Null</div>
-      )
-    },
-    {
-      title: "จำนวนวัตถุดิบ",
-      dataIndex: "Amount",
-      key: "amount",
-      render:(record)=>(
-        <div>Null</div>
-      )
+      dataIndex: "IngredientData",
+      key: "ingredientdata",
+      render: (text, record, index) => (
+        <>
+          <Button  onClick={() =>  navigate(`/menu/ingredientMenu/${record.ID}`)} shape="circle" icon={<EyeOutlined />} size={"large"} />
+        </>
+      ),
     },
     {
       title: "แก้ไข/ลบข้อมูล",

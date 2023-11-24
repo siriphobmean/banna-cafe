@@ -175,7 +175,7 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ 
+              <Form.Item name="IngredientID" label="วัตถุดิบ [1]" rules={[{
                 
                 // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
                 
@@ -189,12 +189,66 @@ function MenuEdit() {
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
-                label="จำนวนวัตถุดิบ"
+                label="จำนวนวัตถุดิบ [1]"
                 name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
                 rules={[
                   {
                     // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !", 
+                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item name="IngredientID" label="วัตถุดิบ [2]" rules={[{
+                
+                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
+                
+                }]}>
+                <Select allowClear>
+                  {/* {menuTypes.map((item) => (
+                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                  ))} */}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="จำนวนวัตถุดิบ [2]"
+                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                rules={[
+                  {
+                    // required: true,
+                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item name="IngredientID" label="วัตถุดิบ [3]" rules={[{
+                
+                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
+                
+                }]}>
+                <Select allowClear>
+                  {/* {menuTypes.map((item) => (
+                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                  ))} */}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="จำนวนวัตถุดิบ [3]"
+                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                rules={[
+                  {
+                    // required: true,
+                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
                   },
                 ]}
               >
