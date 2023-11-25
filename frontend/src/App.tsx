@@ -21,6 +21,8 @@ import EmployeeCreate from "./pages/employee/create";
 import EmployeeEdit from "./pages/employee/edit";
 import "./mean.css";
 import IngredientMenu from "./pages/menu/ingredientMenu";
+import Members from "./pages/member";
+// import MemberEdit from "./pages/member/edit";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -45,7 +47,7 @@ const items: MenuItem[] = [
   getItem("สร้างคำสั่งซื้อ", "2", <ShoppingCartOutlined />),
   getItem("จัดการเมนูสินค้า", "3", <MenuOutlined />),
   getItem("จัดการโปรโมชั่น", "4", <ProfileOutlined />),
-  getItem("จัดการลูกค้า", "5", <UserOutlined />),
+  getItem("จัดการสมาชิก", "5", <UserOutlined />),
   getItem("จัดการพนักงาน", "6", <TeamOutlined />),
   getItem("จัดการวัตถุดิบ", "7", <CoffeeOutlined />),
   getItem("บันทึกรายรับรายจ่าย", "8", <BookOutlined />),
@@ -118,9 +120,9 @@ const App: React.FC = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="member" onClick={() => setCurrentPage("member")}>
-              <Link to="/employee">
+              <Link to="/member">
                 <UserOutlined />
-                <span>จัดการลูกค้า</span>
+                <span>จัดการสมาชิก</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="employee" onClick={() => setCurrentPage("employee")}>
@@ -159,11 +161,13 @@ const App: React.FC = () => {
                 <Route path="/" element={<Dashboards />} />
                 <Route path="/menu" element={<Menus />} />
                 <Route path="/employee" element={<Employees />} />
+                <Route path="/member" element={<Members />} />
                 <Route path="/menu/ingredientMenu/:id" element={<IngredientMenu />} />
                 <Route path="/menu/create" element={<MenuCreate />} />
                 <Route path="/employee/create" element={<EmployeeCreate />} />
                 <Route path="/menu/edit/:id" element={<MenuEdit />} />
                 <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+                {/* <Route path="/member/edit/:id" element={<MemberEdit />} /> */}
               </Routes>
             </div>
           </Content>
