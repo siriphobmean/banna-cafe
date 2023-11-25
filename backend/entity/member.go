@@ -7,8 +7,8 @@ import (
 type Member struct {
 	gorm.Model
 
-	Username string
-	Email string
+	Username string `gorm:"uniqueIndex"`
+	Email string `gorm:"uniqueIndex"`
 	Password string
 	Phone string
 	Age int

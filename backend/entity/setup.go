@@ -56,7 +56,6 @@ func SetupDatabase() {
 	}
 
 	// Ingredient Data (ex)
-	
 	ingredient := []Ingredient{
 		{
 			IngredientName: "ผงกาแฟ",
@@ -74,6 +73,28 @@ func SetupDatabase() {
 
 	for _, ingredient := range ingredient {
 		db.Create(&ingredient) // Assuming 'db' is your GORM database instance
+	}
+
+	// Member Data (ex)
+	member := []Member{
+		{
+			Username: "MeannY",
+			Email: "siriphob@gmail.com",
+			Password: "mean1234",
+			Phone: "0981894780",
+			Point: 100,
+		},
+		{
+			Username: "MeanKung",
+			Email: "siriphob1234@gmail.com",
+			Password: "1234eeee",
+			Phone: "0626735910",
+			Point: 150,
+		},
+	}
+
+	for _, member := range member {
+		db.Create(&member) // Assuming 'db' is your GORM database instance
 	}
 
 }
