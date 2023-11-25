@@ -41,6 +41,13 @@ func main() {
 	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
 	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
+
+	// Member Routes
+	r.GET("/members", controller.ListMembers)
+	r.GET("/member/:id", controller.GetMember)
+	r.POST("/members", controller.CreateMember)
+	r.PATCH("/members", controller.UpdateMember)
+	r.DELETE("/members/:id", controller.DeleteMember)
 	
 	// Run the server
 	r.Run()
