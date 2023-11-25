@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
-import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, DeleteOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMembers, DeleteMemberByID } from "../../services/https/member";
 import { MembersInterface } from "../../interfaces/IMember";
@@ -132,15 +132,6 @@ function Members() {
         <Col span={12}>
           <h2>จัดการข้อมูลสมาชิก</h2>
         </Col>
-        {/* <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
-          <Space>
-            <Link to="/employee/create">
-              <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
-                เพิ่มพนักงาน
-              </Button>
-            </Link>
-          </Space>
-        </Col> */}
       </Row>
       <Divider />
       <div style={{ marginTop: 20 }}>
