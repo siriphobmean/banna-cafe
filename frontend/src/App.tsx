@@ -22,7 +22,7 @@ import EmployeeEdit from "./pages/employee/edit";
 import "./mean.css";
 import IngredientMenu from "./pages/menu/ingredientMenu";
 import Members from "./pages/member";
-// import MemberEdit from "./pages/member/edit";
+import MemberEdit from "./pages/member/edit";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -167,7 +167,7 @@ const App: React.FC = () => {
                 <Route path="/employee/create" element={<EmployeeCreate />} />
                 <Route path="/menu/edit/:id" element={<MenuEdit />} />
                 <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
-                {/* <Route path="/member/edit/:id" element={<MemberEdit />} /> */}
+                <Route path="/member/edit/:id" element={<MemberEdit />} />
               </Routes>
             </div>
           </Content>
