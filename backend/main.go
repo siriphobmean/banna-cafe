@@ -48,6 +48,13 @@ func main() {
 	r.POST("/members", controller.CreateMember)
 	r.PATCH("/members", controller.UpdateMember)
 	r.DELETE("/members/:id", controller.DeleteMember)
+
+	// Rating Routes
+	r.GET("/ratings", controller.ListRatings)
+	r.GET("/rating/:id", controller.GetRating)
+	r.POST("/ratings", controller.CreateRating)
+	r.PATCH("/ratings", controller.UpdateRating)
+	r.DELETE("/ratings/:id", controller.DeleteRating)
 	
 	// Run the server
 	r.Run()
