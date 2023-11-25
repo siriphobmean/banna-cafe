@@ -11,7 +11,7 @@ import (
 func CreateIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
-	var menu entity.Menu // FK เหมือนกับ MenuType -> Menu = MenuType ไม่มั่นใจว่าได้ใช้ไหมตัวนี้
+	var menu entity.Menu // FK เหมือนกับ MenuType -> Menu = MenuType
 
 	// bind เข้าตัวแปร ingredient
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
@@ -34,7 +34,7 @@ func CreateIngredientMenu(c *gin.Context) {
 		// IngredientSource: ingredient.IngredientSource,
 		Amount: ingredientMenu.Amount,
 		Ingredient: ingredient, // โยงความสัมพันธ์กับ Entity Ingredient
-		Menu: menu, // โยงความสัมพันธ์กับ Entity Menu ไม่มั่นใจว่าได้ใช้ไหมตัวนี้
+		Menu: menu, // โยงความสัมพันธ์กับ Entity Menu
 	}
 
 	// บันทึก
@@ -60,7 +60,7 @@ func GetIngredientMenu(c *gin.Context) {
 // GET /ingredientMenus
 func ListIngredientMenus(c *gin.Context) {
 	var ingredientMenus []entity.IngredientMenu
-	if err := entity.DB().Preload("Ingredient").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
+	if err := entity.DB().Preload("Ingredient").Preload("menu").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
