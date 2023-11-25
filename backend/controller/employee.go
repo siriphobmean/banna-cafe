@@ -7,7 +7,7 @@ import (
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
 
-// POST /users
+// POST /employees
 func CreateEmployee(c *gin.Context) {
 	var employee entity.Employee
 	var role entity.Role

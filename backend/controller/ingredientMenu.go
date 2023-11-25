@@ -13,7 +13,7 @@ func CreateIngredientMenu(c *gin.Context) {
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
 	var menu entity.Menu // FK เหมือนกับ MenuType -> Menu = MenuType
 
-	// bind เข้าตัวแปร ingredient
+	// bind เข้าตัวแปร ingredientMenu
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
