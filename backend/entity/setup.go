@@ -19,14 +19,16 @@ func SetupDatabase() {
 
 	database.AutoMigrate(
 		&Ingredient{}, // no mean
-		&IngredientMenu{}, // no mean-nop
-		&OrderMenu{}, // no mean 50/50
+		&IngredientMenu{}, // mean 50/50 nop
+		&OrderMenu{}, // mean 50/50 ?
 		&Order{}, // no mean
 		&Menu{},
 		&MenuType{},
 		&Employee{},
 		&Role{},
 		&Promotion{}, // no mean
+		&Rating{}, // mean 50/50 tik
+		&Member{}, // mean 50/50 ?
 	)
 	db = database
 

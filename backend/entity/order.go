@@ -17,8 +17,8 @@ type Order struct {
 	EmployeeID *uint
 	Employee Employee `gorm:"references:id"`
 
-	// MemberID *uint
-	// Member Member `gorm:"references:id"`
+	MemberID *uint
+	Member Member `gorm:"references:id"`
 
 	// Code ?
 
