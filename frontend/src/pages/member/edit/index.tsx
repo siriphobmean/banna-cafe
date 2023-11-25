@@ -17,6 +17,7 @@ import { MembersInterface } from "../../../interfaces/IMember";
 // import { RolesInterface } from "../../../interfaces/IRole";
 import { CreateMember, GetMemberById, UpdateMember } from "../../../services/https/member";
 import { useNavigate, useParams } from "react-router-dom";
+import { ImageUpload } from "../../../interfaces/IUpload";
 
 const { Option } = Select;
 
@@ -29,6 +30,7 @@ function MemberEdit() {
 
   const [member, setMember] = useState<MembersInterface>();
 //   const [roles, setRoles] = useState<RolesInterface[]>([]);
+  const [memberImage, setMemberImage] = useState<ImageUpload>();
 
   // รับข้อมูลจาก params
   let { id } = useParams();
@@ -38,6 +40,7 @@ function MemberEdit() {
   const onFinish = async (values: MembersInterface) => {
     values.ID = member?.ID;
     values.Point = parseInt(values.Point! .toString(), 10);
+    values.MemberImage = memberImage?.thumbUrl;
     // values.Salary = parseFloat(values.Salary!.toString());
     let res = await UpdateMember(values);
     if (res.status) {
@@ -73,7 +76,6 @@ function MemberEdit() {
         Username: res.Username,
         Email: res.Email,
         Password: res.Password,
-        MemberImage: res.MemberImage,
         Phone: res.Phone,
         Point: res.Point,
     });
@@ -84,6 +86,14 @@ function MemberEdit() {
     // getRole();
     getMemberById();
   }, []);
+
+  const normFile = (e: any) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    setMemberImage(e?.fileList[0])
+    return e?.fileList;
+  };
 
   return (
     <div>
@@ -143,6 +153,22 @@ function MemberEdit() {
                 name="Point"
               >
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+              <Form.Item
+                label="รูปโปรไฟล์"
+                name="MemberImage"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
+              >
+                <Upload maxCount={1} multiple={false} listType="picture-card">
+                  <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>อัพโหลด</div>
+                  </div>
+                </Upload>
               </Form.Item>
             </Col>
           </Row>

@@ -18,9 +18,9 @@ function Members() {
         title: "รูปโปรไฟล์", // รูปไฟล์
         dataIndex: "MemberImage", // Profile
         key: "memberimage", // profile
-        // render: (text, record, index) => (
-        //   <img src={record.MenuImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
-        // )
+        render: (text, record, index) => (
+          <img src={record.MemberImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
+        )
       },
     {
       title: "ชื่อผู้ใช้งาน",
@@ -46,6 +46,9 @@ function Members() {
         title: "คะแนนสะสม",
         dataIndex: "Point",
         key: "point",
+        render:(record)=>(
+          <div>{(record)} พ้อยท์</div>
+        )
       },
     {
       title: "แก้ไข/ลบข้อมูล",
