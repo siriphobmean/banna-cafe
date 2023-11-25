@@ -43,7 +43,7 @@ function getItem(
 const items: MenuItem[] = [
   getItem("หน้าหลัก", "1", <DashboardOutlined />),
   getItem("สร้างคำสั่งซื้อ", "2", <ShoppingCartOutlined />),
-  getItem("จัดการเมนู", "3", <MenuOutlined />),
+  getItem("จัดการเมนูสินค้า", "3", <MenuOutlined />),
   getItem("จัดการโปรโมชั่น", "4", <ProfileOutlined />),
   getItem("จัดการลูกค้า", "5", <UserOutlined />),
   getItem("จัดการพนักงาน", "6", <TeamOutlined />),
@@ -108,7 +108,7 @@ const App: React.FC = () => {
             <Menu.Item key="menu" onClick={() => setCurrentPage("menu")}>
               <Link to="/menu">
                 <MenuOutlined />
-                <span>จัดการเมนู</span>
+                <span>จัดการเมนูสินค้า</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="promotion" onClick={() => setCurrentPage("promotion")}>
