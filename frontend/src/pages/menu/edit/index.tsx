@@ -177,7 +177,7 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{
                 
-                // required: true,  message: "กรุณาระบุวัตถุดิบ !", 
+                required: true,  message: "กรุณาระบุวัตถุดิบ !", 
                 
                 }]}>
                 <Select allowClear>
@@ -193,8 +193,8 @@ function MenuEdit() {
                 name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
                 rules={[
                   {
-                    // required: true,
-                    // message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                    required: true,
+                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
                   },
                 ]}
               >
