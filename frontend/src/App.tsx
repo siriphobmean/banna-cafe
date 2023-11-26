@@ -11,7 +11,7 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import logo from "./assets/logo.png";
 
-import Dashboards from "./pages/dashboard";
+import Mains from "./pages/main";
 import Menus from "./pages/menu";
 import MenuCreate from "./pages/menu/create";
 import MenuEdit from "./pages/menu/edit";
@@ -95,13 +95,13 @@ const App: React.FC = () => {
             defaultSelectedKeys={[page ? page : "dashboard"]}
             mode="inline"
           >
-            <Menu.Item key="dashboard" onClick={() => setCurrentPage("dashboard")}>
+            <Menu.Item key="main" onClick={() => setCurrentPage("main")}>
               <Link to="/">
                 <HomeOutlined />
                 <span>หน้าหลัก</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="createbuy" onClick={() => setCurrentPage("createbuy")}>
+            <Menu.Item key="createBuy" onClick={() => setCurrentPage("createBuy")}>
               <Link to="/menu">
                 <ShoppingCartOutlined />
                 <span>สร้างคำสั่งซื้อ</span>
@@ -137,7 +137,7 @@ const App: React.FC = () => {
                 <span>จัดการวัตถุดิบ</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="givechange" onClick={() => setCurrentPage("givechange")}>
+            <Menu.Item key="giveChange" onClick={() => setCurrentPage("giveChange")}>
               <Link to="/employee">
                 <BookOutlined />
                 <span>บันทึกรายรับรายจ่าย</span>
@@ -158,7 +158,7 @@ const App: React.FC = () => {
               }}
             >
               <Routes>
-                <Route path="/" element={<Dashboards />} />
+                <Route path="/" element={<Mains />} />
                 <Route path="/menu" element={<Menus />} />
                 <Route path="/employee" element={<Employees />} />
                 <Route path="/member" element={<Members />} />
@@ -172,7 +172,7 @@ const App: React.FC = () => {
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            Banna Cafe
+            Banna Café
           </Footer>
         </Layout>
       </Layout>

@@ -6,7 +6,7 @@ import { GetEmployees, DeleteEmployeeByID } from "../../services/https/employee"
 import { EmployeesInterface } from "../../interfaces/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
 
-function Dashboards() {
+function Mains() {
   
   const columns: ColumnsType<EmployeesInterface> = [
     {
@@ -135,7 +135,7 @@ function Dashboards() {
       {contextHolder}
       <Row>
         <Col span={12}>
-          <h2>ระบบจัดการหลังบ้าน Banna Cafe</h2>
+          <h2>ระบบจัดการหลังบ้าน Banna Café</h2>
           <div className="exampleData"><b>รายชื่อพนักงาน</b></div>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
@@ -165,4 +165,4 @@ function Dashboards() {
   );
 }
 
-export default Dashboards;
+export default Mains;
