@@ -50,7 +50,7 @@ function MenuCreate() {
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
-
+    console.log(values.MenuID); // in now undefined
     // CreateMenu
     let resMenu = await CreateMenu(values); // new
 

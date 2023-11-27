@@ -69,6 +69,12 @@ func SetupDatabase() {
 			IngredientAmount: 120,
 			IngredientSource: "ตลาดเซฟวันโก",
 		},
+		{
+			IngredientName: "ผงชาไทย",
+			IngredientCost: 70.00,
+			IngredientAmount: 140,
+			IngredientSource: "ตลาดเซฟวันโก",
+		},
 	}
 
 	for _, ingredient := range ingredient {
