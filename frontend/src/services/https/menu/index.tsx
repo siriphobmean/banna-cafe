@@ -80,7 +80,6 @@ async function GetMenuById(id: Number | undefined) {
   return res;
 }
 
-
 async function CreateMenu(data: MenusInterface) {
   const requestOptions = {
     method: "POST",

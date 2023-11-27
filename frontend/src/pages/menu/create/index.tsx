@@ -59,7 +59,8 @@ function MenuCreate() {
     // CreateIngredientMenu
     let resIngredientMenu = await CreateIngredientMenu(values); // new
     
-    if (resMenu.status && resIngredientMenu.status) { // new 
+    if (resMenu.status && resIngredientMenu.status) { // new
+
     // if (res.status) {
       messageApi.open({
         type: "success",
