@@ -158,7 +158,7 @@ function MemberEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
               <Form.Item
                 label="รูปโปรไฟล์"
-                name="MemberImage"
+                name="MemberImage" // -> ใส่มาก่อน เพราะ setup data มาไม่มี Image
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
                 // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
@@ -191,7 +191,7 @@ function MemberEdit() {
               </Form.Item>
             </Col>
           </Row>
-          <Form.Item name="MemberImage"></Form.Item>
+          {/* <Form.Item name="MemberImage"></Form.Item> */}
         </Form>
       </Card>
     </div>
