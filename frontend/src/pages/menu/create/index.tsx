@@ -50,7 +50,9 @@ function MenuCreate() {
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
-    console.log(values.MenuID); // in now undefined, more db setup
+    // values.MenuID = 123; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null)
+    console.log(values.MenuID); // in now undefined, more db setup // values in IngredientMenusInterface
+
     // CreateMenu
     let resMenu = await CreateMenu(values); // new
 
@@ -80,14 +82,14 @@ function MenuCreate() {
     if (res) {
       setMenuTypes(res);
     }
-  };
+  }; // select menuType to use (combobox)
 
   const getIngredient = async () => {
     let res = await GetIngredients();
     if (res) {
       setIngredients(res);
     }
-  }; // new
+  }; // new -> select ingredient to use (combobox)
 
   useEffect(() => {
     getMenuType();
