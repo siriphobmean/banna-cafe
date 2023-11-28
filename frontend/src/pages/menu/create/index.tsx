@@ -37,6 +37,7 @@ function MenuCreate() {
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
 
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
+  const [menus, setMenus] = useState<MenusInterface[]>([]); // new
 
   const [menuImage, setMenuImage] = useState<ImageUpload>()
 
@@ -50,7 +51,7 @@ function MenuCreate() {
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
-    // values.MenuID = 123; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null)
+    values.MenuID = 1; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null) -> update สามารถส่งค่าได้แล้ว 9:10 AM 28/11/2023
     console.log(values.MenuID); // in now undefined, more db setup // values in IngredientMenusInterface
 
     // CreateMenu

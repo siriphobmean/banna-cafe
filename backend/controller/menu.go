@@ -27,6 +27,8 @@ func CreateMenu(c *gin.Context) {
 	// สร้าง Menu
 	u := entity.Menu{
 		MenuType:  menuType, // โยงความสัมพันธ์กับ Entity MenuType
+		MenuTypeID: menu.MenuTypeID, // more 8:58 AM 28/11/2023
+
 		MenuName:  menu.MenuName, // ตั้งค่าฟิลด์ MenuName
 		MenuNameEng:  menu.MenuNameEng, // ตั้งค่าฟิลด์ MenuName
 		MenuCost:  menu.MenuCost, // ตั้งค่าฟิลด์ MenuCost

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-
+	// "fmt" // more p'pond
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
@@ -11,7 +11,8 @@ import (
 func CreateIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
-	var menu entity.Menu // FK เหมือนกับ MenuType -> Menu = MenuType
+	var menu entity.Menu             // FK เหมือนกับ MenuType -> Menu = MenuType
+	// fmt.Println(menu); // more p'pond
 
 	// bind เข้าตัวแปร ingredientMenu
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
@@ -27,14 +28,13 @@ func CreateIngredientMenu(c *gin.Context) {
 
 	// สร้าง IngredientMenu
 	u := entity.IngredientMenu{
-		// MenuType:  menuType, // โยงความสัมพันธ์กับ Entity MenuType
-		// IngredientName:  ingredient.IngredientName,
-		// IngredientCost:  ingredient.IngredientCost,
-		// IngredientAmount:  ingredient.IngredientAmount,
-		// IngredientSource: ingredient.IngredientSource,
-		Amount: ingredientMenu.Amount,
+
+		Amount:     ingredientMenu.Amount,
+		IngredientID: ingredientMenu.IngredientID, // more 28/11/2023 8:51 AM
+		MenuID: ingredientMenu.MenuID, // more 28/11/2023 8:51 AM
+
 		Ingredient: ingredient, // โยงความสัมพันธ์กับ Entity Ingredient
-		Menu: menu, // โยงความสัมพันธ์กับ Entity Menu
+		Menu:       menu,       // โยงความสัมพันธ์กับ Entity Menu
 	}
 
 	// บันทึก
