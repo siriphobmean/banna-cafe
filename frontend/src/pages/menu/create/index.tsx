@@ -18,7 +18,7 @@ import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new
 import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new
 import { ImageUpload } from "../../../interfaces/IUpload";
-import { CreateMenu, GetMenuTypes} from "../../../services/https/menu";
+import { CreateMenu, GetMenuTypes } from "../../../services/https/menu";
 import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new
 import { useNavigate } from "react-router-dom";
 
@@ -44,6 +44,7 @@ function MenuCreate() {
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
     values.MenuID = 1; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null) -> update สามารถส่งค่าได้แล้ว 9:10 AM 28/11/2023
+    
     console.log(values.MenuID); // in now undefined, more db setup // values in IngredientMenusInterface
 
     // CreateMenu
@@ -88,7 +89,6 @@ function MenuCreate() {
   useEffect(() => {
     getMenuType();
     getIngredient(); // new
-
   }, []);
 
   const normFile = (e: any) => {
