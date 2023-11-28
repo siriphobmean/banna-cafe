@@ -11,7 +11,7 @@ function Menus() {
   const columns: ColumnsType<MenusInterface> = [
     {
       title: "ลำดับ",
-      dataIndex: "ID",
+      dataIndex: "MenuID", // default ID
       key: "id",
     },
     {

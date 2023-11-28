@@ -40,10 +40,11 @@ function MenuCreate() {
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D
     values.MenuCost = parseFloat(values.MenuCost!.toString());
     values.Amount = parseInt(values.Amount!.toString(), 10); // new
+    values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
-    values.MenuID = 1; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null) -> update สามารถส่งค่าได้แล้ว 9:10 AM 28/11/2023
+    // values.MenuID = 10; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null) -> update สามารถส่งค่าได้แล้ว 9:10 AM 28/11/2023
     
     console.log(values.MenuID); // in now undefined, more db setup // values in IngredientMenusInterface
 
@@ -112,6 +113,20 @@ function MenuCreate() {
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="ลำดับเมนู"
+                name="MenuID"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกลำดับเมนู !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ชื่อเมนู (TH)"
@@ -187,7 +202,7 @@ function MenuCreate() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
+                //rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]} // เอาออกก่อนเพราะตอนนี้ test
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>

@@ -17,6 +17,7 @@ import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import { CreateMenu, GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
+import { UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
 
 import { ImageUpload } from "../../../interfaces/IUpload";
 
@@ -48,7 +49,10 @@ function MenuEdit() {
     values.MenuImage = menuImage?.thumbUrl;
 
     let res = await UpdateMenu(values);
-    if (res.status) {
+    let resIngredientMenu = await UpdateIngredientMenu(values); // new
+
+    if (res.status && resIngredientMenu.status) {
+    // if (res.status) {
       messageApi.open({
         type: "success",
         content: "แก้ไขข้อมูลสำเร็จ",
@@ -86,6 +90,7 @@ function MenuEdit() {
         // ต้องใส่วัตถุดิบ และจำนวนวัตถุดิบ 2 อย่าง IngreID, IngreAmount
         // IngreID: res.IngreID
         // IngreeAmount: res.IngreAmount
+        MenuID: res.MenuID, // new
     });
     }
   };
@@ -117,6 +122,20 @@ function MenuEdit() {
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="ลำดับเมนู"
+                name="MenuID"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกลำดับเมนู !",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ชื่อเมนู (TH)"
@@ -177,7 +196,7 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{
                 
-                required: true,  message: "กรุณาระบุวัตถุดิบ !", 
+                // required: true,  message: "กรุณาระบุวัตถุดิบ !", // กำลังแก้ไขอยู่
                 
                 }]}>
                 <Select allowClear>
@@ -191,12 +210,12 @@ function MenuEdit() {
               <Form.Item
                 label="จำนวนวัตถุดิบ"
                 name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                //   },
+                // ]} // กำลังแก้ไขอยู่
               >
                 <Input />
               </Form.Item>
@@ -207,7 +226,7 @@ function MenuEdit() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
+                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]} // กำลังแก้ไขอยู่
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>

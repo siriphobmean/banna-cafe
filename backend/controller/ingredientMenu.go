@@ -28,11 +28,9 @@ func CreateIngredientMenu(c *gin.Context) {
 
 	// สร้าง IngredientMenu
 	u := entity.IngredientMenu{
-
 		Amount:     ingredientMenu.Amount,
 		IngredientID: ingredientMenu.IngredientID, // more 28/11/2023 8:51 AM
 		MenuID: ingredientMenu.MenuID, // more 28/11/2023 8:51 AM
-
 		Ingredient: ingredient, // โยงความสัมพันธ์กับ Entity Ingredient
 		Menu:       menu,       // โยงความสัมพันธ์กับ Entity Menu
 	}

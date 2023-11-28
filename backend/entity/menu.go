@@ -7,6 +7,7 @@ import (
 type Menu struct {
 	gorm.Model
 
+	MenuID int `gorm:"uniqueIndex"` // more 12:43 AM 29/11/2023 -> // new ทำให้ตอนกรอกลำดับซ้ำมา ข้อมูลไม่ถูกเก็บเข้า entity: menus(menu_id ท้ายสุด)
 	MenuName string `gorm:"uniqueIndex"`
 	MenuNameEng string `gorm:"uniqueIndex"`
 	MenuCost float64
