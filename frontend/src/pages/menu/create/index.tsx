@@ -15,15 +15,11 @@ import {
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
-
 import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new
 import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new
-
 import { ImageUpload } from "../../../interfaces/IUpload";
-import { CreateMenu, GetMenuTypes } from "../../../services/https/menu";
-
+import { CreateMenu, GetMenuTypes} from "../../../services/https/menu";
 import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new
-
 import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
@@ -35,12 +31,8 @@ function MenuCreate() {
   };
   const [messageApi, contextHolder] = message.useMessage();
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
-
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
-  const [menus, setMenus] = useState<MenusInterface[]>([]); // new
-
   const [menuImage, setMenuImage] = useState<ImageUpload>()
-
   console.log (menuTypes);
 
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
@@ -95,7 +87,6 @@ function MenuCreate() {
 
   useEffect(() => {
     getMenuType();
-
     getIngredient(); // new
 
   }, []);
