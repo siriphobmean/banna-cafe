@@ -17,11 +17,12 @@ import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import { CreateMenu, GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
-import { UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
+import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
 
 import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
 import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
 import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new more
+import { GetIngredientById } from "../../../services/https/ingredient"; // new more
 
 import { ImageUpload } from "../../../interfaces/IUpload";
 
@@ -44,17 +45,17 @@ function MenuEdit() {
   // อ้างอิง form กรอกข้อมูล
   const [form] = Form.useForm();
 
-  const onFinish = async (values: MenusInterface) => {
+  const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
     values.ID = menu?.ID;
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10) // edit by saran :D
     values.MenuCost = parseFloat(values.MenuCost!.toString());
-
     values.MenuImage = menuImage?.thumbUrl;
+    values.Amount = parseInt(values.Amount!.toString(), 10); // new
 
-    let res = await UpdateMenu(values);
+    let resMenu = await UpdateMenu(values); // rename res -> resMenu
     let resIngredientMenu = await UpdateIngredientMenu(values); // new
 
-    if (res.status && resIngredientMenu.status) {
+    if (resMenu.status && resIngredientMenu.status) { // rename res -> resMenu
     // if (res.status) {
       messageApi.open({
         type: "success",
@@ -88,13 +89,12 @@ function MenuEdit() {
         MenuName: res.MenuName ,
         MenuNameEng: res.MenuNameEng ,
         MenuCost: res.MenuCost ,
-        MenuTypeID: res.MenuTypeID , // พอบันทึกกลายเป็น Null ?
-        // MenuImage: res.MenuImage ,
-        // ต้องใส่วัตถุดิบ และจำนวนวัตถุดิบ 2 อย่าง IngreID, IngreAmount
-        // IngreID: res.IngreID
-        // IngreeAmount: res.IngreAmount
+        MenuTypeID: res.MenuTypeID , // พอบันทึกกลายเป็น Null ? -> แก้ได้แล้ว
+        // MenuImage: res.MenuImage , // ไม่สามารถใช้ส่วนนี้ได้ เลยปรับเป็นต้อง upload แทน
+        // IngredientID: res.IngredientID
+        // Amount: res.Amount
         MenuID: res.MenuID, // new
-    });
+      });
     }
   };
 
@@ -220,7 +220,7 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                name="Amount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
                 // rules={[
                 //   {
                 //     required: true,

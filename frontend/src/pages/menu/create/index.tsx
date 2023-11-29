@@ -39,7 +39,7 @@ function MenuCreate() {
     values.MenuImage = menuImage?.thumbUrl;
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D
     values.MenuCost = parseFloat(values.MenuCost!.toString());
-    values.Amount = parseInt(values.Amount!.toString(), 10); // new
+    values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
     values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
