@@ -15,15 +15,13 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
-import { CreateMenu, GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
+import { GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
 import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
-
 import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
 import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
-import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new more
+import { GetIngredients } from "../../../services/https/ingredientMenu"; // new more
 import { GetIngredientById } from "../../../services/https/ingredient"; // new more
-
 import { ImageUpload } from "../../../interfaces/IUpload";
 
 const { Option } = Select;
@@ -36,9 +34,10 @@ function MenuEdit() {
 
   const [messageApi, contextHolder] = message.useMessage();
   const [menu, setMenu] = useState<MenusInterface>();
+  const [ingredientMenu, setIngredientMenu] = useState<IngredientMenusInterface>(); // new more
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
-  const [menuImage, setMenuImage] = useState<ImageUpload>()
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
+  const [menuImage, setMenuImage] = useState<ImageUpload>()
 
   // รับข้อมูลจาก params
   let { id } = useParams();
@@ -78,7 +77,14 @@ function MenuEdit() {
     if (res) {
       setMenuTypes(res);
     }
-  };
+  }; // select menuType to use (combobox)
+
+  const getIngredient = async () => {
+    let res = await GetIngredients();
+    if (res) {
+      setIngredients(res);
+    }
+  }; // new -> select ingredient to use (combobox)
 
   const getMenuById = async () => {
     let res = await GetMenuById(Number(id));
@@ -91,24 +97,29 @@ function MenuEdit() {
         MenuCost: res.MenuCost ,
         MenuTypeID: res.MenuTypeID , // พอบันทึกกลายเป็น Null ? -> แก้ได้แล้ว
         // MenuImage: res.MenuImage , // ไม่สามารถใช้ส่วนนี้ได้ เลยปรับเป็นต้อง upload แทน
-        // IngredientID: res.IngredientID
-        // Amount: res.Amount
+        // IngredientID: res.IngredientID ,
+        // Amount: res.Amount ,
         MenuID: res.MenuID, // new
       });
     }
   };
 
-  const getIngredient = async () => {
-    let res = await GetIngredients();
+  const getIngredientMenuById = async () => {
+    let res = await GetIngredientMenuById(Number(id));
     if (res) {
-      setIngredients(res);
+      setIngredientMenu(res);
+      form.setFieldsValue({
+        Amount: res.Amount,
+        IngredientID: res.IngredientID,
+      });
     }
-  }; // new -> select ingredient to use (combobox)
+  }; // new
 
   useEffect(() => {
     getMenuType();
     getMenuById();
     getIngredient();
+    getIngredientMenuById();
   }, []);
 
   const normFile = (e: any) => {
@@ -205,14 +216,13 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{
-                
-                // required: true,  message: "กรุณาระบุวัตถุดิบ !", // กำลังแก้ไขอยู่
-                
+              <Form.Item name="IngredientID" label="วัตถุดิบ" 
+                rules={[{
+                  required: true,  message: "กรุณาระบุวัตถุดิบ !",
                 }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
-                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ -> แก้แล้ว test
+                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option>
                   ))}
                 </Select>
               </Form.Item>
@@ -220,13 +230,13 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ"
-                name="Amount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                // rules={[
-                //   {
-                //     required: true,
-                //     message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                //   },
-                // ]} // กำลังแก้ไขอยู่
+                name="Amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                  },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -237,7 +247,7 @@ function MenuEdit() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]} // กำลังแก้ไขอยู่
+                rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>

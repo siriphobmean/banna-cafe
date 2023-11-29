@@ -75,56 +75,26 @@ func DeleteIngredientMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// // PATCH /ingredientMenus
-// func UpdateIngredientMenu(c *gin.Context) {
-// 	var ingredientMenu entity.IngredientMenu
-// 	var result entity.Ingredient
-
-// 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	// ค้นหา ingredientMenu ด้วย id
-// 	if tx := entity.DB().Where("id = ?", ingredientMenu.ID).First(&result); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredientMenu not found"})
-// 		return
-// 	}
-
-// 	if err := entity.DB().Save(&ingredientMenu).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, gin.H{"data": ingredientMenu})
-
-// }
-
 // PATCH /ingredientMenus
 func UpdateIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu
+	var result entity.IngredientMenu
 
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	// ค้นหา ingredientMenu ด้วย id
-	var existingIngredientMenu entity.IngredientMenu
-	if err := entity.DB().Where("id = ?", ingredientMenu.ID).First(&existingIngredientMenu).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", ingredientMenu.ID).First(&result); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredientMenu not found"})
 		return
 	}
 
-	// อัปเดตข้อมูลที่ต้องการเปลี่ยนแปลง
-	existingIngredientMenu.Amount = ingredientMenu.Amount
-	existingIngredientMenu.MenuID = ingredientMenu.MenuID // more
-	existingIngredientMenu.IngredientID = ingredientMenu.IngredientID // more
-	// สามารถอัปเดตค่าอื่น ๆ ตามต้องการได้
-
-	if err := entity.DB().Save(&existingIngredientMenu).Error; err != nil {
+	if err := entity.DB().Save(&ingredientMenu).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	c.JSON(http.StatusOK, gin.H{"data": ingredientMenu})
 
-	c.JSON(http.StatusOK, gin.H{"data": existingIngredientMenu})
-} // credit by ChatGPT
+}
 

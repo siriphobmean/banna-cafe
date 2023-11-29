@@ -70,7 +70,7 @@ async function GetIngredientMenuById(id: Number | undefined) {
   let res = await fetch(`${apiUrl}/ingredientMenu/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
-      if (res.data) {
+        if (res.data) {
         return res.data;
       } else {
         return false;
