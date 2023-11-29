@@ -116,6 +116,8 @@ func UpdateIngredientMenu(c *gin.Context) {
 
 	// อัปเดตข้อมูลที่ต้องการเปลี่ยนแปลง
 	existingIngredientMenu.Amount = ingredientMenu.Amount
+	existingIngredientMenu.MenuID = ingredientMenu.MenuID // more
+	existingIngredientMenu.IngredientID = ingredientMenu.IngredientID // more
 	// สามารถอัปเดตค่าอื่น ๆ ตามต้องการได้
 
 	if err := entity.DB().Save(&existingIngredientMenu).Error; err != nil {

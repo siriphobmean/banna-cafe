@@ -19,6 +19,10 @@ import { CreateMenu, GetMenuTypes, GetMenuById, UpdateMenu } from "../../../serv
 import { useNavigate, useParams } from "react-router-dom";
 import { UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
 
+import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
+import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
+import { CreateIngredientMenu, GetIngredients } from "../../../services/https/ingredientMenu"; // new more
+
 import { ImageUpload } from "../../../interfaces/IUpload";
 
 const { Option } = Select;
@@ -30,11 +34,10 @@ function MenuEdit() {
   };
 
   const [messageApi, contextHolder] = message.useMessage();
-
   const [menu, setMenu] = useState<MenusInterface>();
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
-
   const [menuImage, setMenuImage] = useState<ImageUpload>()
+  const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
 
   // รับข้อมูลจาก params
   let { id } = useParams();
@@ -95,9 +98,17 @@ function MenuEdit() {
     }
   };
 
+  const getIngredient = async () => {
+    let res = await GetIngredients();
+    if (res) {
+      setIngredients(res);
+    }
+  }; // new -> select ingredient to use (combobox)
+
   useEffect(() => {
     getMenuType();
     getMenuById();
+    getIngredient();
   }, []);
 
   const normFile = (e: any) => {
@@ -200,9 +211,9 @@ function MenuEdit() {
                 
                 }]}>
                 <Select allowClear>
-                  {/* {menuTypes.map((item) => (
-                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-                  ))} */}
+                  {ingredients.map((item) => (
+                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // ยังไม่แก้ไข ต้องดึงมาจากของนพ -> แก้แล้ว test
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
