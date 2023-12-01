@@ -10,8 +10,7 @@ import (
 // POST /ratings
 func CreateRating(c *gin.Context) {
 	var rating entity.Rating
-	var menu entity.Menu // แทน menuType ใน Menu
-	var member entity.Member
+	var member entity.Member // แทน menuType ใน Menu
 
 	// bind เข้าตัวแปร rating
 	if err := c.ShouldBindJSON(&rating); err != nil {
@@ -19,16 +18,15 @@ func CreateRating(c *gin.Context) {
 		return
 	}
 
-	// ค้นหา menu ด้วย id
-	if tx := entity.DB().Where("id = ?", rating.MenuID).First(&menu); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menuType not found"})
+	// ค้นหา member ด้วย id
+	if tx := entity.DB().Where("id = ?", rating.MemberID).First(&member); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
 		return
 	}
 
 	// สร้าง rating
 	u := entity.Rating{
 		Score: rating.Score,
-		Menu: menu,
 		Member: member,
 	}
 
@@ -45,7 +43,7 @@ func CreateRating(c *gin.Context) {
 func GetRating(c *gin.Context) {
 	var rating entity.Rating
 	id := c.Param("id")
-	if err := entity.DB().Preload("Menu").Raw("SELECT * FROM ratings WHERE id = ?", id).Find(&rating).Error; err != nil {
+	if err := entity.DB().Preload("Member").Raw("SELECT * FROM ratings WHERE id = ?", id).Find(&rating).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -55,7 +53,7 @@ func GetRating(c *gin.Context) {
 // GET /ratings
 func ListRatings(c *gin.Context) {
 	var ratings []entity.Rating
-	if err := entity.DB().Preload("Menu").Raw("SELECT * FROM ratings").Find(&ratings).Error; err != nil {
+	if err := entity.DB().Preload("Member").Raw("SELECT * FROM ratings").Find(&ratings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
