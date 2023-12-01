@@ -52,6 +52,10 @@ function MenuEdit() {
     values.Amount = parseInt(values.Amount!.toString(), 10); // new
     values.MenuStatus = parseInt(values.MenuStatus!.toString(), 10); // more
 
+    if(!values.MenuImage) {
+      values.MenuImage = prevMenuImage;
+    } // more
+
     let resMenu = await UpdateMenu(values); // rename res -> resMenu
     let resIngredientMenu = await UpdateIngredientMenu(values); // new
 
@@ -91,6 +95,7 @@ function MenuEdit() {
     let res = await GetMenuById(Number(id));
     if (res) {
       setMenu(res);
+      setPrevMenuImage(res.MenuImage); // more
       // set form ข้อมูลเริ่มของผู้ใช้ที่เราแก้ไข
       form.setFieldsValue({ 
         MenuName: res.MenuName ,
@@ -122,7 +127,10 @@ function MenuEdit() {
     getMenuById();
     getIngredient();
     getIngredientMenuById();
+    getMenuById(); // more
   }, []);
+
+  const [prevMenuImage, setPrevMenuImage] = useState<string | undefined>(); // more
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -263,7 +271,7 @@ function MenuEdit() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
+                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>
