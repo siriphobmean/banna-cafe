@@ -67,7 +67,7 @@ async function GetIngredientMenuById(id: Number | undefined) {
     method: "GET"
   };
 
-  let res = await fetch(`${apiUrl}/ingredientMenu/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientMenus/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
         if (res.data) {
