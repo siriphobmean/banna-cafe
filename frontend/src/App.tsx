@@ -20,7 +20,7 @@ import Employees from "./pages/employee";
 import EmployeeCreate from "./pages/employee/create";
 import EmployeeEdit from "./pages/employee/edit";
 import "./mean.css";
-import IngredientMenu from "./pages/menu/ingredientMenu";
+import IngredientMenus from "./pages/menu/ingredientMenu";
 import Members from "./pages/member";
 import MemberEdit from "./pages/member/edit";
 
@@ -162,7 +162,7 @@ const App: React.FC = () => {
                 <Route path="/menu" element={<Menus />} />
                 <Route path="/employee" element={<Employees />} />
                 <Route path="/member" element={<Members />} />
-                <Route path="/menu/ingredientMenu/:id" element={<IngredientMenu />} />
+                <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
                 <Route path="/menu/create" element={<MenuCreate />} />
                 <Route path="/employee/create" element={<EmployeeCreate />} />
                 <Route path="/menu/edit/:id" element={<MenuEdit />} />

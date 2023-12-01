@@ -14,41 +14,38 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../interfaces/IMenu";
-import { MenuTypesInterface } from "../../../interfaces/IMenuType";
-import { CreateMenu, GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
+import { GetMenuById, UpdateMenu } from "../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { ImageUpload } from "../../../interfaces/IUpload";
+import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
+import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
+import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
+import { GetIngredients } from "../../../services/https/ingredientMenu"; // new more
 
 const { Option } = Select;
 
-function IngredientMenu() {
+function IngredientMenus() {
   const navigate = useNavigate();
   const handleCancel = () => {
     navigate("/menu");
   };
 
   const [messageApi, contextHolder] = message.useMessage();
-
   const [menu, setMenu] = useState<MenusInterface>();
-  const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
-
-  const [menuImage, setMenuImage] = useState<ImageUpload>()
+  const [ingredientMenu, setIngredientMenu] = useState<IngredientMenusInterface>(); // new more'
+  const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
 
   // รับข้อมูลจาก params
   let { id } = useParams();
   // อ้างอิง form กรอกข้อมูล
   const [form] = Form.useForm();
 
-  const onFinish = async (values: MenusInterface) => {
+  const onFinish = async (values: MenusInterface & IngredientMenusInterface) => {
     values.ID = menu?.ID;
-    // values.MenuCost = parseInt(values.MenuCost! .toString(), 10) // edit by saran :D
-    values.MenuCost = parseFloat(values.MenuCost!.toString());
-
-    values.MenuImage = menuImage?.thumbUrl;
+    values.Amount = parseInt(values.Amount!.toString(), 10); // new
 
     let res = await UpdateMenu(values);
-    if (res.status) {
+    let resIngredientMenu = await UpdateIngredientMenu(values); // new
+    if (res.status && resIngredientMenu.status) { // add more
       messageApi.open({
         type: "success",
         content: "แก้ไขข้อมูลสำเร็จ",
@@ -65,13 +62,6 @@ function IngredientMenu() {
     console.log(values);
   };
 
-  const getMenuType = async () => {
-    let res = await GetMenuTypes();
-    if (res) {
-      setMenuTypes(res);
-    }
-  };
-
   const getMenuById = async () => {
     let res = await GetMenuById(Number(id));
     if (res) {
@@ -80,28 +70,33 @@ function IngredientMenu() {
       form.setFieldsValue({ 
         MenuName: res.MenuName ,
         MenuNameEng: res.MenuNameEng ,
-        MenuCost: res.MenuCost ,
-        MenuTypeID: res.MenuTypeID , // พอบันทึกกลายเป็น Null ?
-        // MenuImage: res.MenuImage ,
-        // ต้องใส่วัตถุดิบ และจำนวนวัตถุดิบ 2 อย่าง IngreID, IngreAmount
-        // IngreID: res.IngreID
-        // IngreeAmount: res.IngreAmount
     });
     }
   };
 
-  useEffect(() => {
-    getMenuType();
-    getMenuById();
-  }, []);
-
-  const normFile = (e: any) => {
-    if (Array.isArray(e)) {
-      return e;
+  const getIngredientMenuById = async () => {
+    let res = await GetIngredientMenuById(Number(id));
+    if (res) {
+      setIngredientMenu(res);
+      form.setFieldsValue({
+        Amount: res.Amount,
+        IngredientID: res.IngredientID,
+      });
     }
-    setMenuImage(e?.fileList[0])
-    return e?.fileList;
-  };
+  }; // new
+
+  const getIngredient = async () => {
+    let res = await GetIngredients();
+    if (res) {
+      setIngredients(res);
+    }
+  }; // new -> select ingredient to use (combobox)
+
+  useEffect(() => {
+    getMenuById();
+    getIngredient(); // new
+    getIngredientMenuById(); // new
+  }, []);
 
   return (
     <div>
@@ -134,53 +129,31 @@ function IngredientMenu() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item 
-                name="IngredientID" 
-                label="วัตถุดิบ [1]"
-              >
-                <Input readOnly/>
+              <Form.Item name="IngredientID" label="วัตถุดิบ [1]" 
+                rules={[{
+                  required: true,  message: "กรุณาระบุวัตถุดิบ !",
+                }]}>
+                <Select allowClear>
+                  {ingredients.map((item) => (
+                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ [1]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
+                name="Amount"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
+                  },
+                ]}
               >
                 <Input readOnly/>
               </Form.Item>
             </Col>
-            {/* <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item 
-                name="IngredientID" 
-                label="วัตถุดิบ [2]"
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="จำนวนวัตถุดิบ [2]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item 
-                name="IngredientID" 
-                label="วัตถุดิบ [3]"
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="จำนวนวัตถุดิบ [3]"
-                name="IngredientAmount" // ยังไม่แก้ไข ต้องดึงมาจากของนพ
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col> */}
           </Row>
           <Row justify="end">
             <Col style={{ marginTop: "40px" }}>
@@ -196,4 +169,4 @@ function IngredientMenu() {
   );
 }
 
-export default IngredientMenu;
+export default IngredientMenus;
