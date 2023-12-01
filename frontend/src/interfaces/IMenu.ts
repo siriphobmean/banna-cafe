@@ -7,6 +7,7 @@ export interface MenusInterface {
   MenuNameEng?: string; // ok
   MenuCost?: number; // ok?
   MenuImage?: string; // ok
+  MenuStatus?: number; // more
   
   MenuTypeID?: number; // ok
   MenuType?: MenuTypesInterface; // ok
