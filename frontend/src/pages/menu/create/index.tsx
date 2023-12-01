@@ -182,12 +182,18 @@ function MenuCreate() {
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
-                label="สถานะเมนู (0 คือ ไม่พร้อมขาย/ 1 คือ พร้อมขาย)"
+                label="สถานะเมนู (0 คือ ไม่พร้อมขาย / 1 คือ พร้อมขาย)"
                 name="MenuStatus"
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกสถานะเมนู !",
+                    // message: "กรุณากรอกสถานะเมนู !",
+                    validator(_, value) {
+                      if (value === "0" || value === "1") {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("กรุณาป้อนค่า 0 หรือ 1 !"));
+                    },
                   },
                 ]}
               >
