@@ -42,6 +42,7 @@ function MenuCreate() {
     values.MenuCost = parseFloat(values.MenuCost!.toString());
     values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
     values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
+    values.MenuStatus = parseInt(values.MenuStatus!.toString(), 10); // more
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
     // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
@@ -177,6 +178,20 @@ function MenuCreate() {
                     <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option>
                   ))}
                 </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="สถานะเมนู (0 คือ ไม่พร้อมขาย/ 1 คือ พร้อมขาย)"
+                name="MenuStatus"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกสถานะเมนู !",
+                  },
+                ]}
+              >
+                <Input />
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>

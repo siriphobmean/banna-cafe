@@ -47,6 +47,14 @@ function Menus() {
       render: (item) => Object.values(item.TypeName),
     },
     {
+      title: "สถานะเมนู",
+      dataIndex: "MenuStatus",
+      key: "menustatus",
+      render: (status) => (
+        <span>{status === 0 ? "ไม่พร้อมขาย" : "พร้อมขาย"}</span>
+      ),
+    },
+    {
       title: "วัตถุดิบ",
       dataIndex: "IngredientData",
       key: "ingredientdata",

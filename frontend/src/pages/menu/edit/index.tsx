@@ -50,6 +50,7 @@ function MenuEdit() {
     values.MenuCost = parseFloat(values.MenuCost!.toString());
     values.MenuImage = menuImage?.thumbUrl;
     values.Amount = parseInt(values.Amount!.toString(), 10); // new
+    values.MenuStatus = parseInt(values.MenuStatus!.toString(), 10); // more
 
     let resMenu = await UpdateMenu(values); // rename res -> resMenu
     let resIngredientMenu = await UpdateIngredientMenu(values); // new
@@ -100,6 +101,7 @@ function MenuEdit() {
         // IngredientID: res.IngredientID ,
         // Amount: res.Amount ,
         MenuID: res.MenuID, // new
+        MenuStatus: res.MenuStatus // more
       });
     }
   };
@@ -213,6 +215,20 @@ function MenuEdit() {
                     </Option>
                   ))}
                 </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item
+                label="สถานะเมนู (0 คือ ไม่พร้อมขาย/ 1 คือ พร้อมขาย)"
+                name="MenuStatus"
+                rules={[
+                  {
+                    required: true,
+                    message: "กรุณากรอกสถานะเมนู !",
+                  },
+                ]}
+              >
+                <Input />
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
