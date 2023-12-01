@@ -3,8 +3,10 @@ import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMenus, DeleteMenuByID } from "../../services/https/menu";
+import { DeleteIngredientMenuByID } from "../../services/https/ingredientMenu";
 import { MenusInterface } from "../../interfaces/IMenu";
 import { Link, useNavigate } from "react-router-dom";
+import { IngredientMenusInterface } from "../../interfaces/IIngredientMenu";
 
 function Menus() {
   
@@ -103,7 +105,7 @@ function Menus() {
     }
   };
 
-  const showModal = (val: MenusInterface) => {
+  const showModal = (val: MenusInterface & IngredientMenusInterface) => {
     setModalText(
       `คุณต้องการลบเมนู "${val.MenuName}" หรือไม่ ?`
     );
@@ -113,8 +115,9 @@ function Menus() {
 
   const handleOk = async () => {
     setConfirmLoading(true);
+    let resIngredient = await DeleteIngredientMenuByID(deleteId);
     let res = await DeleteMenuByID(deleteId);
-    if (res) {
+    if (res & resIngredient) {
       setOpen(false);
       messageApi.open({
         type: "success",
