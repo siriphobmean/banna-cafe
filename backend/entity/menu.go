@@ -12,6 +12,7 @@ type Menu struct {
 	MenuNameEng string `gorm:"uniqueIndex"`
 	MenuCost float64
 	MenuImage string `gorm:"type:longtext"`
+	MenuStatus int
 
 	OrderMenu []OrderMenu `gorm:"foreignKey:MenuID"`
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:MenuID"`

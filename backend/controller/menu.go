@@ -34,6 +34,7 @@ func CreateMenu(c *gin.Context) {
 		MenuNameEng:  menu.MenuNameEng, // ตั้งค่าฟิลด์ MenuName
 		MenuCost:  menu.MenuCost, // ตั้งค่าฟิลด์ MenuCost
 		MenuImage: menu.MenuImage, // ตั้งค่าฟิลด์ MenuImage
+		MenuStatus: menu.MenuStatus, // ตั้งค่าฟิลด์ MenuStatus // more
 	}
 
 	// บันทึก
