@@ -101,13 +101,6 @@ function Mains() {
           <div className="exampleData"><b>รายชื่อพนักงาน</b></div>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
-          {/* <Space>
-            <Link to="/employee/create">
-              <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
-                เพิ่มพนักงาน
-              </Button>
-            </Link>
-          </Space> */}
         </Col>
       </Row>
       <Divider />
