@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMembers, DeleteMemberByID } from "../../services/https/member";
-import { MembersInterface } from "../../interfaces/IMember";
+import { GetMembers, DeleteMemberByID } from "../../../services/https/member";
+import { MembersInterface } from "../../../interfaces/IMember";
 import { Link, useNavigate } from "react-router-dom";
 
 function Members() {

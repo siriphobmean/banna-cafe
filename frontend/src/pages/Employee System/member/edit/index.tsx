@@ -13,11 +13,11 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { MembersInterface } from "../../../interfaces/IMember";
+import { MembersInterface } from "../../../../interfaces/IMember";
 // import { RolesInterface } from "../../../interfaces/IRole";
-import { CreateMember, GetMemberById, UpdateMember } from "../../../services/https/member";
+import { CreateMember, GetMemberById, UpdateMember } from "../../../../services/https/member";
 import { useNavigate, useParams } from "react-router-dom";
-import { ImageUpload } from "../../../interfaces/IUpload";
+import { ImageUpload } from "../../../../interfaces/IUpload";
 
 const { Option } = Select;
 

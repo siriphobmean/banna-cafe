@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMenus, DeleteMenuByID } from "../../services/https/menu";
-import { DeleteIngredientMenuByID } from "../../services/https/ingredientMenu";
-import { MenusInterface } from "../../interfaces/IMenu";
+import { GetMenus, DeleteMenuByID } from "../../../services/https/menu";
+import { DeleteIngredientMenuByID } from "../../../services/https/ingredientMenu";
+import { MenusInterface } from "../../../interfaces/IMenu";
 import { Link, useNavigate } from "react-router-dom";
-import { IngredientMenusInterface } from "../../interfaces/IIngredientMenu";
+import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu";
 
 function Menus() {
   

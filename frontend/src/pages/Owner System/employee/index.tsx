@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetEmployees, DeleteEmployeeByID } from "../../services/https/employee";
-import { EmployeesInterface } from "../../interfaces/IEmployee";
+import { GetEmployees, DeleteEmployeeByID } from "../../../services/https/employee";
+import { EmployeesInterface } from "../../../interfaces/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
 
 function Employees() {

@@ -13,9 +13,9 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { EmployeesInterface } from "../../../interfaces/IEmployee";
-import { RolesInterface } from "../../../interfaces/IRole";
-import { CreateEmployee, GetRoles, GetEmployeeById, UpdateEmployee } from "../../../services/https/employee";
+import { EmployeesInterface } from "../../../../interfaces/IEmployee";
+import { RolesInterface } from "../../../../interfaces/IRole";
+import { CreateEmployee, GetRoles, GetEmployeeById, UpdateEmployee } from "../../../../services/https/employee";
 import { useNavigate, useParams } from "react-router-dom";
 
 const { Option } = Select;

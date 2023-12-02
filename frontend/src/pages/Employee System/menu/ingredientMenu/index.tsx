@@ -13,13 +13,13 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { MenusInterface } from "../../../interfaces/IMenu";
-import { GetMenuById, UpdateMenu } from "../../../services/https/menu";
+import { MenusInterface } from "../../../../interfaces/IMenu";
+import { GetMenuById, UpdateMenu } from "../../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
-import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
-import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
-import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
-import { GetIngredients } from "../../../services/https/ingredientMenu"; // new more
+import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../../services/https/ingredientMenu"; // new
+import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu"; // new more
+import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new more
+import { GetIngredients } from "../../../../services/https/ingredientMenu"; // new more
 
 const { Option } = Select;
 

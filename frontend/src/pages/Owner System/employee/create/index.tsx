@@ -13,10 +13,10 @@ import {
   Select,
 } from "antd";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
-import { EmployeesInterface } from "../../../interfaces/IEmployee";
-import { RolesInterface } from "../../../interfaces/IRole";
+import { EmployeesInterface } from "../../../../interfaces/IEmployee";
+import { RolesInterface } from "../../../../interfaces/IRole";
 // import { ImageUpload } from "../../../interfaces/IUpload";
-import { CreateEmployee, GetRoles } from "../../../services/https/employee";
+import { CreateEmployee, GetRoles } from "../../../../services/https/employee";
 import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;

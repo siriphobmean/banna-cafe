@@ -11,18 +11,18 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import logo from "./assets/logo.png";
 
-import Mains from "./pages/main";
-import Menus from "./pages/menu";
-import MenuCreate from "./pages/menu/create";
-import MenuEdit from "./pages/menu/edit";
+import Mains from "./pages/Employee System/main";
+import Menus from "./pages/Employee System/menu";
+import MenuCreate from "./pages/Employee System/menu/create";
+import MenuEdit from "./pages/Employee System/menu/edit";
 
-import Employees from "./pages/employee";
-import EmployeeCreate from "./pages/employee/create";
-import EmployeeEdit from "./pages/employee/edit";
+import Employees from "./pages/Owner System/employee";
+import EmployeeCreate from "./pages/Owner System/employee/create";
+import EmployeeEdit from "./pages/Owner System/employee/edit";
 import "./mean.css";
-import IngredientMenus from "./pages/menu/ingredientMenu";
-import Members from "./pages/member";
-import MemberEdit from "./pages/member/edit";
+import IngredientMenus from "./pages/Employee System/menu/ingredientMenu";
+import Members from "./pages/Employee System/member";
+import MemberEdit from "./pages/Employee System/member/edit";
 
 const { Header, Content, Footer, Sider } = Layout;
 

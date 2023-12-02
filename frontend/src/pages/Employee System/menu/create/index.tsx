@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useId } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Space,
   Button,
@@ -12,58 +12,56 @@ import {
   Upload,
   Select,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { MenusInterface } from "../../../interfaces/IMenu";
-import { MenuTypesInterface } from "../../../interfaces/IMenuType";
-import { GetMenuTypes, GetMenuById, UpdateMenu } from "../../../services/https/menu";
-import { useNavigate, useParams } from "react-router-dom";
-import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../services/https/ingredientMenu"; // new
-import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu"; // new more
-import { IngredientsInterface } from "../../../interfaces/IIngredient"; // new more
-import { GetIngredients } from "../../../services/https/ingredientMenu"; // new more
-import { GetIngredientById } from "../../../services/https/ingredient"; // new more
-import { ImageUpload } from "../../../interfaces/IUpload";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import { MenusInterface } from "../../../../interfaces/IMenu";
+import { MenuTypesInterface } from "../../../../interfaces/IMenuType";
+import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu"; // new
+import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new
+import { ImageUpload } from "../../../../interfaces/IUpload";
+import { CreateMenu, GetMenuTypes } from "../../../../services/https/menu";
+import { CreateIngredientMenu, GetIngredients } from "../../../../services/https/ingredientMenu"; // new
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
-function MenuEdit() {
+function MenuCreate() {
   const navigate = useNavigate();
   const handleCancel = () => {
     navigate("/menu");
   };
-
+  
   const [messageApi, contextHolder] = message.useMessage();
-  const [menu, setMenu] = useState<MenusInterface>();
-  const [ingredientMenu, setIngredientMenu] = useState<IngredientMenusInterface>(); // new more
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
   const [menuImage, setMenuImage] = useState<ImageUpload>()
-
-  // รับข้อมูลจาก params
-  let { id } = useParams();
-  // อ้างอิง form กรอกข้อมูล
-  const [form] = Form.useForm();
+  console.log (menuTypes);
 
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
-    values.ID = menu?.ID;
-    // values.MenuCost = parseInt(values.MenuCost! .toString(), 10) // edit by saran :D
-    values.MenuCost = parseFloat(values.MenuCost!.toString());
     values.MenuImage = menuImage?.thumbUrl;
-    values.Amount = parseInt(values.Amount!.toString(), 10); // new
+    // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D
+    values.MenuCost = parseFloat(values.MenuCost!.toString());
+    values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
+    values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
     values.MenuStatus = parseInt(values.MenuStatus!.toString(), 10); // more
+    // console.log(values);
+    // let res = await CreateMenu(values); // use it -> keep data to db /menu
+    // let res = await CreateIngredientMenu(values); // use it -> keep data to db /ingredientMenu
+    // values.MenuID = 10; // กำหนดค่าได้ แต่ค่าไม่ส่งไปยัง Database (เป็น Null) -> update สามารถส่งค่าได้แล้ว 9:10 AM 28/11/2023
+    
+    console.log(values.MenuID); // in now undefined, more db setup // values in IngredientMenusInterface
 
-    if(!values.MenuImage) {
-      values.MenuImage = prevMenuImage;
-    } // more
+    // CreateMenu
+    let resMenu = await CreateMenu(values); // new
 
-    let resMenu = await UpdateMenu(values); // rename res -> resMenu
-    let resIngredientMenu = await UpdateIngredientMenu(values); // new
+    // CreateIngredientMenu
+    let resIngredientMenu = await CreateIngredientMenu(values); // new
+    
+    if (resMenu.status && resIngredientMenu.status) { // new
 
-    if (resMenu.status && resIngredientMenu.status) { // rename res -> resMenu
     // if (res.status) {
       messageApi.open({
         type: "success",
-        content: "แก้ไขข้อมูลสำเร็จ",
+        content: "บันทึกข้อมูลสำเร็จ",
       });
       setTimeout(function () {
         navigate("/menu");
@@ -71,7 +69,7 @@ function MenuEdit() {
     } else {
       messageApi.open({
         type: "error",
-        content: "แก้ไขข้อมูลไม่สำเร็จ",
+        content: "บันทึกข้อมูลไม่สำเร็จ",
       });
     }
     console.log(values);
@@ -91,46 +89,10 @@ function MenuEdit() {
     }
   }; // new -> select ingredient to use (combobox)
 
-  const getMenuById = async () => {
-    let res = await GetMenuById(Number(id));
-    if (res) {
-      setMenu(res);
-      setPrevMenuImage(res.MenuImage); // more
-      // set form ข้อมูลเริ่มของผู้ใช้ที่เราแก้ไข
-      form.setFieldsValue({ 
-        MenuName: res.MenuName ,
-        MenuNameEng: res.MenuNameEng ,
-        MenuCost: res.MenuCost ,
-        MenuTypeID: res.MenuTypeID , // พอบันทึกกลายเป็น Null ? -> แก้ได้แล้ว
-        // MenuImage: res.MenuImage , // ไม่สามารถใช้ส่วนนี้ได้ เลยปรับเป็นต้อง upload แทน
-        // IngredientID: res.IngredientID ,
-        // Amount: res.Amount ,
-        MenuID: res.MenuID, // new
-        MenuStatus: res.MenuStatus // more
-      });
-    }
-  };
-
-  const getIngredientMenuById = async () => {
-    let res = await GetIngredientMenuById(Number(id));
-    if (res) {
-      setIngredientMenu(res);
-      form.setFieldsValue({
-        Amount: res.Amount,
-        IngredientID: res.IngredientID,
-      });
-    }
-  }; // new
-
   useEffect(() => {
     getMenuType();
-    getMenuById();
-    getIngredient();
-    getIngredientMenuById();
-    getMenuById(); // more
+    getIngredient(); // new
   }, []);
-
-  const [prevMenuImage, setPrevMenuImage] = useState<string | undefined>(); // more
 
   const normFile = (e: any) => {
     if (Array.isArray(e)) {
@@ -144,11 +106,10 @@ function MenuEdit() {
     <div>
       {contextHolder}
       <Card>
-        <h2>แก้ไขข้อมูลเมนู</h2>
+        <h2>เพิ่มข้อมูลเมนู</h2>
         <Divider />
         <Form
           name="basic"
-          form={form}
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
@@ -211,16 +172,10 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                name="MenuTypeID"
-                label="ประเภทเมนู"
-                rules={[{ required: true, message: "กรุณาระบุประเภทเมนู !" }]}
-              >
+              <Form.Item name="MenuTypeID" label="ประเภทเมนู" rules={[{ required: true,  message: "กรุณาระบุประเภทเมนู !", }]}>
                 <Select allowClear>
                   {menuTypes.map((item) => (
-                    <Option value={item.ID} key={item.TypeName}>
-                      {item.TypeName}
-                    </Option>
+                    <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option>
                   ))}
                 </Select>
               </Form.Item>
@@ -246,13 +201,10 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" 
-                rules={[{
-                  required: true,  message: "กรุณาระบุวัตถุดิบ !",
-                }]}>
+              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบ !", }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
-                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option>
+                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // Nop
                   ))}
                 </Select>
               </Form.Item>
@@ -260,13 +212,8 @@ function MenuEdit() {
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="จำนวนวัตถุดิบ"
-                name="Amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
+                name="Amount" // Nop
+                rules={[{ required: true, message: "กรุณากรอกจำนวนวัตถุดิบ !", }]}
               >
                 <Input />
               </Form.Item>
@@ -277,7 +224,7 @@ function MenuEdit() {
                 name="MenuImage"
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
+                //rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]} // เอาออกก่อนเพราะตอนนี้ test
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>
@@ -307,14 +254,10 @@ function MenuEdit() {
               </Form.Item>
             </Col>
           </Row>
-          {/* <Form.Item
-            name="MenuImage" // more by flook pariwat :D
-          >
-          </Form.Item> */}
         </Form>
       </Card>
     </div>
   );
 }
 
-export default MenuEdit;
+export default MenuCreate;
