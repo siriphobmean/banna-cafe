@@ -232,17 +232,14 @@ function MenuEdit() {
                 rules={[
                   {
                     required: true,
-                    // message: "กรุณากรอกสถานะเมนู !",
-                    validator(_, value) {
-                      if (value === "0" || value === "1") {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(new Error("กรุณาป้อนค่า 0 หรือ 1 !"));
-                    },
+                    message: "กรุณาเลือกสถานะเมนู !",
                   },
                 ]}
               >
-                <Input />
+                <Select allowClear>
+                  <Option value="0">0</Option>
+                  <Option value="1">1</Option>
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
