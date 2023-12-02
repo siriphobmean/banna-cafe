@@ -35,44 +35,6 @@ function Mains() {
       dataIndex: "Email",
       key: "email",
     },
-    // {
-    //     title: "รหัสผ่าน",
-    //     dataIndex: "Password",
-    //     key: "password",
-    // },
-    // {
-    //   title: "เพศ",
-    //   dataIndex: "Gender",
-    //   key: "gender",
-    // },
-    // {
-    //     title: "อายุ",
-    //     dataIndex: "Age",
-    //     key: "age",
-    //   },
-    //   {
-    //     title: "เงินเดือน",
-    //     dataIndex: "Salary",
-    //     key: "salary",
-    //   },
-    // {
-    //   title: "แก้ไข/ลบข้อมูล",
-    //   dataIndex: "Manage",
-    //   key: "manage",
-    //   render: (text, record, index) => (
-    //     <>
-    //       {/* <Button  onClick={() =>  navigate(`/employee/edit/${record.ID}`)} shape="circle" icon={<EditOutlined />} size={"large"} />
-    //       <Button
-    //         onClick={() => showModal(record)}
-    //         style={{ marginLeft: 10 }}
-    //         shape="circle"
-    //         icon={<DeleteOutlined />}
-    //         size={"large"}
-    //         danger
-    //       /> */}
-    //     </>
-    //   ),
-    // },
   ];
 
   const navigate = useNavigate();
