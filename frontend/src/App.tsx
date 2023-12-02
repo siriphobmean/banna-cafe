@@ -20,19 +20,13 @@ import Employees from "./pages/Owner System/employee";
 import EmployeeCreate from "./pages/Owner System/employee/create";
 import EmployeeEdit from "./pages/Owner System/employee/edit";
 import "./mean.css";
-<<<<<<< HEAD
 import IngredientMenus from "./pages/Employee System/menu/ingredientMenu";
 import Members from "./pages/Employee System/member";
 import MemberEdit from "./pages/Employee System/member/edit";
-=======
-import IngredientMenus from "./pages/menu/ingredientMenu";
-import Members from "./pages/member";
-import MemberEdit from "./pages/member/edit";
-import Ingredient from "./pages/ingredient";
-import IngredientCreate from "./pages/ingredient/create";
-import IngredientEdit from "./pages/ingredient/edit";
-import History from "./pages/history";
->>>>>>> 6a0a55c719a46ee57c7416fbd8eb18e25a2e98f2
+import Ingredient from "./pages/Employee System/ingredient";
+import IngredientCreate from "./pages/Employee System/ingredient/create";
+import IngredientEdit from "./pages/Employee System/ingredient/edit";
+import History from "./pages/Employee System/history";
 
 const { Header, Content, Footer, Sider } = Layout;
 
