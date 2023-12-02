@@ -11,7 +11,6 @@ type Employee struct {
 	LastName string
 	Email string
 	Password string
-	Gender string
 	Age int
 	Salary float64
 
@@ -23,4 +22,6 @@ type Employee struct {
 	// FK
 	RoleID *uint
 	Role Role `gorm:"references:id"`
+	GenderID *uint
+	Gender Gender `gorm:"references:id"`
 } // Clear!

@@ -15,8 +15,9 @@ import {
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { EmployeesInterface } from "../../../../interfaces/IEmployee";
 import { RolesInterface } from "../../../../interfaces/IRole";
+import { GendersInterface } from "../../../../interfaces/IGender"; // more
 // import { ImageUpload } from "../../../interfaces/IUpload";
-import { CreateEmployee, GetRoles } from "../../../../services/https/employee";
+import { CreateEmployee, GetRoles, GetGenders} from "../../../../services/https/employee";
 import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
@@ -28,6 +29,7 @@ function EmployeeCreate() {
   };
   const [messageApi, contextHolder] = message.useMessage();
   const [roles, setRoles] = useState<RolesInterface[]>([]);
+  const [genders, setGenders] = useState<GendersInterface[]>([]);
 //   const [profile, setProfile] = useState<ImageUpload>()
 
   const onFinish = async (values: EmployeesInterface) => {
@@ -60,8 +62,16 @@ function EmployeeCreate() {
     }
   };
 
+  const getGender = async () => {
+    let res = await GetGenders();
+    if (res) {
+      setGenders(res);
+    }
+  };
+
   useEffect(() => {
     getRole();
+    getGender();
   }, []);
 
   const normFile = (e: any) => {
@@ -155,17 +165,12 @@ function EmployeeCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="เพศ"
-                name="Gender"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกเพศ !",
-                  },
-                ]}
-              >
-                <Input />
+              <Form.Item name="GenderID" label="เพศ" rules={[{ required: true,  message: "กรุณาระบุเพศ !", }]}>
+                <Select allowClear>
+                  {genders.map((item) => (
+                    <Option value={item.ID} key={item.GenderName}>{item.GenderName}</Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>

@@ -11,6 +11,7 @@ import (
 func CreateEmployee(c *gin.Context) {
 	var employee entity.Employee
 	var role entity.Role
+	var gender entity.Gender
 
 	// bind เข้าตัวแปร employee
 	if err := c.ShouldBindJSON(&employee); err != nil {
@@ -24,14 +25,20 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	// ค้นหา gender ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.GenderID).First(&gender); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
+		return
+	}
+
 	// สร้าง Employee
 	u := entity.Employee{
 		Role:    role,         // โยงความสัมพันธ์กับ Entity Role
+		Gender: gender,			// โยงความสัมพันธ์กับ Entity Gender
 		FirstName: employee.FirstName, // ตั้งค่าฟิลด์ FirstName
 		LastName:  employee.LastName,  // ตั้งค่าฟิลด์ LastName
 		Email:     employee.Email,     // ตั้งค่าฟิลด์ Email
 		Password:  employee.Password,     // ตั้งค่าฟิลด์ Password
-		Gender:   	employee.Gender,   // ตั้งค่าฟิลด์ Gender
 		Age:		employee.Age,
 		Salary:		employee.Salary,
 	}
@@ -53,6 +60,10 @@ func GetEmployee(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	if err := entity.DB().Preload("Gender").Raw("SELECT * FROM employees WHERE id = ?", id).Find(&employee).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{"data": employee})
 }
 
@@ -60,6 +71,10 @@ func GetEmployee(c *gin.Context) {
 func ListEmployees(c *gin.Context) {
 	var employees []entity.Employee
 	if err := entity.DB().Preload("Role").Raw("SELECT * FROM employees").Find(&employees).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := entity.DB().Preload("Gender").Raw("SELECT * FROM employees").Find(&employees).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

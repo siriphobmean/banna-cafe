@@ -15,7 +15,8 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import { EmployeesInterface } from "../../../../interfaces/IEmployee";
 import { RolesInterface } from "../../../../interfaces/IRole";
-import { CreateEmployee, GetRoles, GetEmployeeById, UpdateEmployee } from "../../../../services/https/employee";
+import { GendersInterface } from "../../../../interfaces/IGender"; // more
+import { CreateEmployee, GetRoles, GetEmployeeById, UpdateEmployee, GetGenders } from "../../../../services/https/employee";
 import { useNavigate, useParams } from "react-router-dom";
 
 const { Option } = Select;
@@ -29,6 +30,7 @@ function EmployeeEdit() {
 
   const [employee, setEmployee] = useState<EmployeesInterface>();
   const [roles, setRoles] = useState<RolesInterface[]>([]);
+  const [genders, setGenders] = useState<GendersInterface[]>([]);
 
   // รับข้อมูลจาก params
   let { id } = useParams();
@@ -64,18 +66,25 @@ function EmployeeEdit() {
     }
   };
 
+  const getGender = async () => {
+    let res = await GetGenders();
+    if (res) {
+      setGenders(res);
+    }
+  };
+
   const getEmployeeById = async () => {
     let res = await GetEmployeeById(Number(id));
     if (res) {
       setEmployee(res);
       // set form ข้อมูลเริ่มของผู้ใช้ที่เราแก้ไข
       form.setFieldsValue({ 
-        FirstName: res.FirstName ,
-        LastName : res.LastName ,
+        FirstName: res.FirstName,
+        LastName : res.LastName,
         RoleID: res.RoleID,
         Email: res.Email,
         Password: res.Password,
-        Gender: res.Gender,
+        GenderID: res.GenderID,
         Age: res.Age,
         Salary: res.Salary,
     });
@@ -84,6 +93,7 @@ function EmployeeEdit() {
 
   useEffect(() => {
     getRole();
+    getGender();
     getEmployeeById();
   }, []);
 
@@ -177,17 +187,12 @@ function EmployeeEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="เพศ"
-                name="Gender"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกเพศ !",
-                  },
-                ]}
-              >
-                <Input />
+              <Form.Item name="GenderID" label="เพศ" rules={[{ required: true,  message: "กรุณาระบุเพศ !", }]}>
+                <Select allowClear>
+                  {genders.map((item) => (
+                    <Option value={item.ID} key={item.GenderName}>{item.GenderName}</Option>
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>

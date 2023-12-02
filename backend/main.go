@@ -27,6 +27,7 @@ func main() {
 	r.DELETE("/employees/:id", controller.DeleteEmployee)
 	// Role Routes
 	r.GET("/roles", controller.ListRoles)
+	r.GET("/genders", controller.ListGenders)
 
 	// Ingredient Routes Update By nop 2/12/2566
 	r.GET("/ingredients", controller.ListIngredients)

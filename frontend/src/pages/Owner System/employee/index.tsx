@@ -44,6 +44,7 @@ function Employees() {
       title: "เพศ",
       dataIndex: "Gender",
       key: "gender",
+      render: (item) => Object.values(item.GenderName),
     },
     {
         title: "อายุ",

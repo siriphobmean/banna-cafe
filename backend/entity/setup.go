@@ -33,6 +33,7 @@ func SetupDatabase() {
 		&Promotion{}, // no mean
 		&Rating{},    // mean 50/50 tik
 		&Member{},    // mean 50/50 ?
+		&Gender{},
 	)
 	db = database
 
@@ -49,7 +50,7 @@ func SetupDatabase() {
 		db.Create(&menuType) // Assuming 'db' is your GORM database instance
 	}
 
-	// RoleName Data
+	// Role Data
 	role := []Role{
 		{RoleName: "Owner"},
 		{RoleName: "Employee"},
@@ -57,6 +58,17 @@ func SetupDatabase() {
 
 	for _, role := range role {
 		db.Create(&role) // Assuming 'db' is your GORM database instance
+	}
+
+	// Gender Data
+	gender := []Gender{
+		{GenderName: "ชาย"},
+		{GenderName: "หญิง"},
+		{GenderName: "เพศอื่น ๆ"},
+	}
+
+	for _, gender := range gender {
+		db.Create(&gender) // Assuming 'db' is your GORM database instance
 	}
 
 	// IngredientType Data Update 2/12/2566 By nop
