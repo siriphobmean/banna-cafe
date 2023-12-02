@@ -10,6 +10,7 @@ import (
 // POST /ingredients
 func CreateIngredient(c *gin.Context) {
 	var ingredient entity.Ingredient
+	var ingredientType entity.IngredientType
 	// var menuType entity.MenuType
 
 	// bind เข้าตัวแปร ingredient
@@ -18,19 +19,23 @@ func CreateIngredient(c *gin.Context) {
 		return
 	}
 
-	// ค้นหา menuType ด้วย id
-	// if tx := entity.DB().Where("id = ?", menu.MenuTypeID).First(&menuType); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "menuType not found"})
-	// 	return
-	// }
+	// ค้นหา ingredientType ด้วย id
+	if tx := entity.DB().Where("id = ?", ingredient.IngredientTypeID).First(&ingredientType); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredientType not found"})
+		return
+	}
 
 	// สร้าง Ingredient
 	u := entity.Ingredient{
+		IngredientType:   ingredientType,              // โยงความสัมพันธ์กับ Entity IngredientType
+		IngredientTypeID: ingredient.IngredientTypeID, // more 8:58 AM 28/11/2023
+
 		// MenuType:  menuType, // โยงความสัมพันธ์กับ Entity MenuType
-		IngredientName:  ingredient.IngredientName,
-		IngredientCost:  ingredient.IngredientCost,
-		IngredientAmount:  ingredient.IngredientAmount,
-		IngredientSource: ingredient.IngredientSource,
+		IngredientName:   ingredient.IngredientName,
+		IngredientCost:   ingredient.IngredientCost,
+		IngredientAmount: ingredient.IngredientAmount,
+		IngredientImage:  ingredient.IngredientImage,
+		IngredientExpert: ingredient.IngredientExpert,
 	}
 
 	// บันทึก
@@ -46,7 +51,17 @@ func CreateIngredient(c *gin.Context) {
 func GetIngredient(c *gin.Context) {
 	var ingredient entity.Ingredient
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM ingredients WHERE id = ?", id).Find(&ingredient).Error; err != nil {
+	if err := entity.DB().Preload("IngredientType").Raw("SELECT * FROM ingredients WHERE id = ?", id).Find(&ingredient).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ingredient})
+}
+
+// GET /lastingredients
+func GetLastIngredient(c *gin.Context) {
+	var ingredient entity.Ingredient
+	if err := entity.DB().Preload("IngredientType").Raw("SELECT * FROM ingredients ORDER BY id DESC LIMIT 1").Find(&ingredient).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -56,7 +71,7 @@ func GetIngredient(c *gin.Context) {
 // GET /ingredients
 func ListIngredients(c *gin.Context) {
 	var ingredients []entity.Ingredient
-	if err := entity.DB().Raw("SELECT * FROM ingredients").Find(&ingredients).Error; err != nil {
+	if err := entity.DB().Preload("IngredientType").Raw("SELECT * FROM ingredients").Find(&ingredients).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -18,17 +18,21 @@ func SetupDatabase() {
 	}
 
 	database.AutoMigrate(
-		&Ingredient{}, // no mean
-		&IngredientMenu{}, // mean 50/50 nop
-		&OrderMenu{}, // mean 50/50 ?
-		&Order{}, // no mean
+		&Ingredient{},         // no mean
+		&Resource{},           // Update 2/12/2566 by Nop
+		&IngredientResource{}, // Update 2/12/2566 by Nop
+		&IngredientType{},     // Update 2/12/2566 by Nop
+		&History{},            // Update 2/12/2566 by Nop
+		&IngredientMenu{},     // mean 50/50 nop
+		&OrderMenu{},          // mean 50/50 ?
+		&Order{},              // no mean
 		&Menu{},
 		&MenuType{},
 		&Employee{},
 		&Role{},
 		&Promotion{}, // no mean
-		&Rating{}, // mean 50/50 tik
-		&Member{}, // mean 50/50 ?
+		&Rating{},    // mean 50/50 tik
+		&Member{},    // mean 50/50 ?
 	)
 	db = database
 
@@ -55,47 +59,33 @@ func SetupDatabase() {
 		db.Create(&role) // Assuming 'db' is your GORM database instance
 	}
 
-	// Ingredient Data (ex)
-	ingredient := []Ingredient{
-		{
-			IngredientName: "ผงกาแฟ",
-			IngredientCost: 50.00,
-			IngredientAmount: 100,
-			IngredientSource: "ตลาดเซฟวัน",
-		},
-		{
-			IngredientName: "ผงชาเขียว",
-			IngredientCost: 60.00,
-			IngredientAmount: 120,
-			IngredientSource: "ตลาดเซฟวันโก",
-		},
-		{
-			IngredientName: "ผงชาไทย",
-			IngredientCost: 70.00,
-			IngredientAmount: 140,
-			IngredientSource: "ตลาดเซฟวันโก",
-		},
+	// IngredientType Data Update 2/12/2566 By nop
+	ingredientType := []IngredientType{
+		{TypeName: "DRIED (ชนิดแห้ง)"},
+		{TypeName: "LIQUID (ชนิดเหลว)"},
+		{TypeName: "POWDER (ชนิดผง)"},
+		{TypeName: "FRESH (ชนิดของสด)"},
 	}
 
-	for _, ingredient := range ingredient {
-		db.Create(&ingredient) // Assuming 'db' is your GORM database instance
+	for _, ingredientType := range ingredientType {
+		db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
 	}
 
 	// Member Data (ex)
 	member := []Member{
 		{
 			Username: "MeannY",
-			Email: "siriphob@gmail.com",
+			Email:    "siriphob@gmail.com",
 			Password: "mean1234",
-			Phone: "0981894780",
-			Point: 100,
+			Phone:    "0981894780",
+			Point:    100,
 		},
 		{
 			Username: "MeanKung",
-			Email: "siriphob1234@gmail.com",
+			Email:    "siriphob1234@gmail.com",
 			Password: "1234eeee",
-			Phone: "0626735910",
-			Point: 150,
+			Phone:    "0626735910",
+			Point:    150,
 		},
 	}
 
