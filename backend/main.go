@@ -18,7 +18,7 @@ func main() {
 	r.DELETE("/menus/:id", controller.DeleteMenu)
 	// MenuType Routes
 	r.GET("/menuTypes", controller.ListMenuTypes)
-	
+
 	// Employee Routes
 	r.GET("/employees", controller.ListEmployees)
 	r.GET("/employee/:id", controller.GetEmployee)
@@ -28,12 +28,16 @@ func main() {
 	// Role Routes
 	r.GET("/roles", controller.ListRoles)
 
-	// Ingredient Routes
+	// Ingredient Routes Update By nop 2/12/2566
 	r.GET("/ingredients", controller.ListIngredients)
-	r.GET("/ingredients/:id", controller.GetIngredient)
+	r.GET("/lastingredients", controller.GetLastIngredient)
+	r.GET("/ingredient/:id", controller.GetIngredient)
 	r.POST("/ingredients", controller.CreateIngredient)
 	r.PATCH("/ingredients", controller.UpdateIngredient)
 	r.DELETE("/ingredients/:id", controller.DeleteIngredient)
+
+	// IngredientType Routes Update By nop 2/12/2566
+	r.GET("/ingredientTypes", controller.ListIngredientTypes)
 
 	// IngredientMenu Routes
 	r.GET("/ingredientMenus", controller.ListIngredientMenus)
@@ -55,7 +59,29 @@ func main() {
 	r.POST("/ratings", controller.CreateRating)
 	r.PATCH("/ratings", controller.UpdateRating)
 	r.DELETE("/ratings/:id", controller.DeleteRating)
-	
+
+	// History Routes Update By nop 2/12/2566
+	r.GET("/histories", controller.ListHistory)
+	r.GET("/history/:id", controller.GetHistory)
+	r.POST("/histories", controller.CreateHistory)
+	r.PATCH("/histories", controller.UpdateHistory)
+	r.DELETE("/histories/:id", controller.DeleteHistory)
+
+	// Resource Routes Update By nop 2/12/2566
+	r.GET("/resources", controller.ListResource)
+	r.GET("/lastresources", controller.GetLastResource)
+	r.GET("/resource/:id", controller.GetResource)
+	r.POST("/resources", controller.CreateResource)
+	r.PATCH("/resources", controller.UpdateResource)
+	r.DELETE("/resources/:id", controller.DeleteResource)
+
+	// Ingredient Resource Routes  Update By nop 2/12/2566
+	r.GET("/ingredientresources", controller.ListIngredientResource)
+	r.GET("/ingredientresource/:id", controller.GetIngredientResource)
+	r.POST("/ingredientresources", controller.CreateIngredientResource)
+	r.PATCH("/ingredientresources", controller.UpdateIngredientResource)
+	r.DELETE("/ingredientresources/:id", controller.DeleteIngredientResource)
+
 	// Run the server
 	r.Run()
 }

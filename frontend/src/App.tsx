@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserOutlined, DashboardOutlined, ShoppingCartOutlined, ProfileOutlined, HomeOutlined, MenuOutlined, CoffeeOutlined, TeamOutlined, BookOutlined} from "@ant-design/icons";
+import { UserOutlined, DashboardOutlined, ShoppingCartOutlined, ProfileOutlined, HomeOutlined, MenuOutlined, CoffeeOutlined, TeamOutlined, BookOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import {
   BrowserRouter as Router,
@@ -20,9 +20,19 @@ import Employees from "./pages/Owner System/employee";
 import EmployeeCreate from "./pages/Owner System/employee/create";
 import EmployeeEdit from "./pages/Owner System/employee/edit";
 import "./mean.css";
+<<<<<<< HEAD
 import IngredientMenus from "./pages/Employee System/menu/ingredientMenu";
 import Members from "./pages/Employee System/member";
 import MemberEdit from "./pages/Employee System/member/edit";
+=======
+import IngredientMenus from "./pages/menu/ingredientMenu";
+import Members from "./pages/member";
+import MemberEdit from "./pages/member/edit";
+import Ingredient from "./pages/ingredient";
+import IngredientCreate from "./pages/ingredient/create";
+import IngredientEdit from "./pages/ingredient/edit";
+import History from "./pages/history";
+>>>>>>> 6a0a55c719a46ee57c7416fbd8eb18e25a2e98f2
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -68,7 +78,7 @@ const App: React.FC = () => {
     <Router>
       <Layout style={{ minHeight: "100vh" }}>
         <Sider
-        theme="dark"
+          theme="dark"
           style={{
             backgroundColor: '#678983',
           }}
@@ -132,7 +142,7 @@ const App: React.FC = () => {
               </Link>
             </Menu.Item>
             <Menu.Item key="ingredient" onClick={() => setCurrentPage("ingredient")}>
-              <Link to="/employee">
+              <Link to="/ingredient">
                 <CoffeeOutlined />
                 <span>จัดการวัตถุดิบ</span>
               </Link>
@@ -163,6 +173,10 @@ const App: React.FC = () => {
                 <Route path="/employee" element={<Employees />} />
                 <Route path="/member" element={<Members />} />
                 <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
+                <Route path="/ingredient" element={<Ingredient />} />
+                <Route path="/ingredient/create" element={<IngredientCreate />} />
+                <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
+                <Route path="/history" element={<History />} />
                 <Route path="/menu/create" element={<MenuCreate />} />
                 <Route path="/employee/create" element={<EmployeeCreate />} />
                 <Route path="/menu/edit/:id" element={<MenuEdit />} />
