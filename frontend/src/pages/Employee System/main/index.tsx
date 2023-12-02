@@ -56,38 +56,6 @@ function Mains() {
     }
   };
 
-  const showModal = (val: EmployeesInterface) => {
-    setModalText(
-      `คุณต้องการลบข้อมูลพนักงาน "${val.FirstName} ${val.LastName}" หรือไม่ ?`
-    );
-    setDeleteId(val.ID);
-    setOpen(true);
-  };
-
-  const handleOk = async () => {
-    setConfirmLoading(true);
-    let res = await DeleteEmployeeByID(deleteId);
-    if (res) {
-      setOpen(false);
-      messageApi.open({
-        type: "success",
-        content: "ลบข้อมูลสำเร็จ",
-      });
-      getEmployees();
-    } else {
-      setOpen(false);
-      messageApi.open({
-        type: "error",
-        content: "เกิดข้อผิดพลาด !",
-      });
-    }
-    setConfirmLoading(false);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
-
   useEffect(() => {
     getEmployees();
   }, []);
@@ -107,15 +75,6 @@ function Mains() {
       <div style={{ marginTop: 20 }}>
         <Table rowKey="ID" columns={columns} dataSource={employees} />
       </div>
-      <Modal
-        title="ลบข้อมูล ?"
-        open={open}
-        onOk={handleOk}
-        confirmLoading={confirmLoading}
-        onCancel={handleCancel}
-      >
-        <p>{modalText}</p>
-      </Modal>
     </>
   );
 }
