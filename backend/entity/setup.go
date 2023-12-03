@@ -34,6 +34,15 @@ func SetupDatabase() {
 		&Rating{},    // mean 50/50 tik
 		&Member{},    // mean 50/50 ?
 		&Gender{},
+		// For test!!! by Ball
+		&Payment{},
+		&StatusPayment{},
+		&PreOrder{},
+		&StatusApprove{},
+		&StatusApprovePreorder{},
+		&StatusReceive{},
+		&StatusReceivePreorder{},
+		// end of Test by Ball
 	)
 	db = database
 
@@ -105,4 +114,30 @@ func SetupDatabase() {
 		db.Create(&member) // Assuming 'db' is your GORM database instance
 	}
 
+	// For test by Ball
+	approveStatus := []StatusApprove{
+		{Name: "Waiting"},
+		{Name: "Approved"},
+		{Name: "Not Approved"},
+	}
+	for _, approveStatus := range approveStatus {
+		db.Create(&approveStatus)
+	}
+
+	receivestatus := []StatusReceive{
+		{Name: "Not Recievve"},
+		{Name: "Received"},
+	}
+	for _, receivestatus := range receivestatus {
+		db.Create(&receivestatus)
+	}
+
+	statuspayment := []StatusPayment{
+		{Name: "Finish"},
+		{Name: "Not Finish"},
+	}
+	for _, statuspayment := range statuspayment {
+		db.Create(&statuspayment)
+	}
+	// end of test by Ball
 }

@@ -2,49 +2,51 @@ package entity
 
 import (
 	"time"
+
 	"gorm.io/gorm"
 )
-type PreOrder struct{
+
+type PreOrder struct {
 	gorm.Model
 
 	TotalAmount int
-	CreateTime time.Time
-	PickupTime time.Time
-	Note string
-	Respond string
+	CreateTime  time.Time
+	PickupTime  time.Time
+	Note        string
+	Respond     string
 
 	//FK
 	MemberID *uint
-	Member Member `gorm:"references:id"`
+	Member   Member `gorm:"references:id"`
 }
-type ApproveStatusPreorder struct{
+type StatusApprovePreorder struct {
 	gorm.Model
 
 	//FK
 	PreorderID *uint
-	Preorder PreOrder `gorm:"references:id"`
+	Preorder   PreOrder `gorm:"references:id"`
 
 	ApproveStatusID *uint
-	ApproveStatus ApproveStatus `gorm:"references:id"`
+	ApproveStatus   StatusApprove `gorm:"references:id"`
 }
-type ApproveStatus struct{
+type StatusApprove struct {
 	gorm.Model
-	Name string
-	ApproveStatusPreorder []ApproveStatusPreorder `gorm:"foreignKey:ApproveStatusID"`
+	Name                  string
+	ApproveStatusPreorder []StatusApprovePreorder `gorm:"foreignKey:ApproveStatusID"`
 }
 
-type ReceiveStatusPreorder struct{
+type StatusReceivePreorder struct {
 	gorm.Model
 
 	//FK
 	PreorderID *uint
-	Preorder PreOrder `gorm:"references:id"`
+	Preorder   PreOrder `gorm:"references:id"`
 
 	ReceiveStatusID *uint
-	ReceiveStatus ReceiveStatus `gorm:"references:id"`
+	ReceiveStatus   StatusReceive `gorm:"references:id"`
 }
-type ReceiveStatus struct{
+type StatusReceive struct {
 	gorm.Model
-	Name string
-	ReceiveStatusPreorder []ReceiveStatusPreorder `gorm:"foreignKey:ReceiveStatusID"`
+	Name                  string
+	ReceiveStatusPreorder []StatusReceivePreorder `gorm:"foreignKey:ReceiveStatusID"`
 }
