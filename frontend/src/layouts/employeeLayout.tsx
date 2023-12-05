@@ -173,10 +173,7 @@ export default function EmployeeLayout() {
                   <Route path="/menu" element={<Menus />} />
                   <Route path="/menu/create" element={<MenuCreate />} />
                   <Route path="/menu/edit/:id" element={<MenuEdit />} />
-                  <Route
-                    path="/menu/ingredientMenu/:id"
-                    element={<IngredientMenus />}
-                  />
+                  <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
                   <Route path="/member" element={<Members />} />
                   <Route path="/member/edit/:id" element={<MemberEdit />} />
                   <Route path="/ingredient" element={<Ingredient />} />
