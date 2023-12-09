@@ -6,7 +6,8 @@ import {
 } from "react-router-dom";
 
 //Home
-
+import Home from "./pages/Home System/home";
+// import Login from "./pages/home/login";
 
 // For Employee
 // By Mean
@@ -35,17 +36,20 @@ import MemberLayout from "./layouts/memberLayout";
 // For Member
 //PreOrder
 
-//Profile
+//Member
+import MenuPreorder from "./pages/Member System/preOrder";
 
+//Profile
+import ProfileMember from "./pages/Member System/profile";
 // in now test...
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-      <>
+      <><Route index element={<Home/>}/>
           <Route path="" element={<MemberLayout/>}>
-              <Route path="/mainMember" element={<Mains/>}/>
+              <Route path="/menuPreorder" element={<MenuPreorder/>}/>
+              <Route path="/profileMember" element={<ProfileMember />} />
           </Route>
-
           <Route path="" element={<EmployeeLayout />}>
               <Route path="/mainEmployee" element={<Mains />}/>
               <Route path="/menu" element={<Menus />}/>
