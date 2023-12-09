@@ -5,6 +5,9 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
+//Home
+
+
 // For Employee
 // By Mean
 import EmployeeLayout from "./layouts/employeeLayout";
@@ -30,6 +33,10 @@ import EmployeeEdit from "./pages/Owner System/employee/edit";
 import MemberLayout from "./layouts/memberLayout";
 
 // For Member
+//PreOrder
+
+//Profile
+
 // in now test...
 
 const router = createBrowserRouter(
