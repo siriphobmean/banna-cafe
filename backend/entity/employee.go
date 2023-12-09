@@ -17,7 +17,7 @@ type Employee struct {
 	Order []Order `gorm:"foreignKey:EmployeeID"`
 	Promotion []Promotion `gorm:"foreignKey:EmployeeID"`
 	// Payment []Payment `gorm:"foreignKey:EmployeeID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity Payment
-	// Account []Account `gorm:"foreignKey:EmployeeID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity Account
+	// Accounting []Accounting `gorm:"foreignKey:EmployeeID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity Account
 
 	// FK
 	RoleID *uint

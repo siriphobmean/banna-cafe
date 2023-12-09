@@ -11,7 +11,6 @@ type Member struct {
 	Email string `gorm:"uniqueIndex"`
 	Password string
 	Phone string
-	Age int
 	MemberImage string `gorm:"type:longtext"`
 	Point int
 

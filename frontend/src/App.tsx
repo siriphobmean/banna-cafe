@@ -42,6 +42,10 @@ import MemberLayout from "./layouts/memberLayout";
 const router = createBrowserRouter(
   createRoutesFromElements(
       <>
+          <Route path="" element={<MemberLayout/>}>
+              <Route path="/mainMember" element={<Mains/>}/>
+          </Route>
+
           <Route path="" element={<EmployeeLayout />}>
               <Route path="/mainEmployee" element={<Mains />}/>
               <Route path="/menu" element={<Menus />}/>
@@ -61,10 +65,6 @@ const router = createBrowserRouter(
               <Route path="/employee" element={<Employees />}/>
               <Route path="/employee/create" element={<EmployeeCreate />}/>
               <Route path="/employee/edit/:id" element={<EmployeeEdit />}/>
-          </Route>
-
-          <Route path="" element={<MemberLayout/>}>
-              <Route path="/mainMember" element={<Mains/>}/>
           </Route>
       </>
   )
