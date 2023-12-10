@@ -63,11 +63,12 @@
     color: #181D31;
     font-size: 0.8vw;
 }
-.side-text a:focus{
+.side-text a:focus,.side-text a:hover{
     background-color: #E48F44;
     border-radius: 50%;
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     overflow: hidden;
+    color: #ffffff;
 }
 
 .side-text.profile{

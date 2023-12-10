@@ -34,6 +34,12 @@ func SetupDatabase() {
 		&Rating{},    // mean 50/50 tik
 		&Member{},    // mean 50/50 ?
 		&Gender{},
+		&Preorder{},  // Update 10/12/2566 by Tik
+		&PreorderMenu{},
+		&PreorderStatusApprove{},
+		&StatusApprovePreorder{},
+		&PreorderStatusRecive{},
+		&StatusRecivePreorder{},
 	)
 	db = database
 

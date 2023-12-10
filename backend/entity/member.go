@@ -16,6 +16,6 @@ type Member struct {
 
 	Order []Order `gorm:"foreignKey:MemberID"`
 	Rating []Rating `gorm:"foreignKey:MemberID"`
-	// PreOrder []PreOrder `gorm:"foreignKey:MemberID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity PreOrder
+	Preorders []Preorder `gorm:"foreignKey:MemberID"`
 
 } // Clear!

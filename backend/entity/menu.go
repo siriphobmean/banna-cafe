@@ -16,7 +16,7 @@ type Menu struct {
 
 	// OrderMenu []OrderMenu `gorm:"foreignKey:MenuID"`
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:MenuID"`
-	// PreOrderMenu []PreOrderMenu `gorm:"foreignKey:MenuID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity PreOrder, PreOrder Menu
+	PreorderMenus []PreorderMenu `gorm:"foreignKey:MenuID"`
 
 	// FK
 	MenuTypeID *uint
