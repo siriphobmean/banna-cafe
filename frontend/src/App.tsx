@@ -6,8 +6,7 @@ import {
 } from "react-router-dom";
 
 //Home
-import Home from "./pages/Home System/home";
-// import Login from "./pages/home/login";
+import Home from "./pages/HomeSystem/home";
 
 // For Employee
 // By Mean
@@ -37,10 +36,12 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/Member System/preOrder";
-
+//Preoeder
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 //Profile
-import ProfileMember from "./pages/Member System/profile";
+import ProfileMember from "./pages/MemberSystem/profile";
+
+
 // in now test...
 //tiktest
 const router = createBrowserRouter(
