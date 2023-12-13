@@ -3,7 +3,8 @@
     height: 65vh;
     display: grid;
     grid-template-columns: 20% 20% 20% 20% 20%;
-    justify-items: center;
+    grid-template-rows: 250px auto;
+    justify-items: start;
     align-items: center;
     row-gap: 60px;
     overflow-y: auto;
@@ -32,26 +33,27 @@
 }
 
 .menu-item {
-    width: 190px;
-    height: 220px;
+    width: 200px;
+    height: 240px;
     background-color: #F0E9D2;
     border-radius: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    padding: 10px;
+    padding: 5px;
     gap: 10px;
 }
 
 .menu-imge {
     width: 65%;
     height: 60%;
-    background-image: url(../../../../assets/menu2.png);
-    background-size: cover;
     margin-top: 10px;
 }
-
+.menu-imge  img{
+    width: 100%;
+    height: 100%;
+}
 .manu-name,
 .menu-cost {
     display: flex;
@@ -73,10 +75,10 @@
 
 .cost-btn {
     width: 100%;
-    height: 15%;
+    height: 18%;
     color: #F0E9D2;
     background-color: #678983;
-    border-radius: 0 0 15px 15px;
+    border-radius: 0 0 23px 23px;
     display: flex;
     overflow: hidden;
     font-size: 12px;

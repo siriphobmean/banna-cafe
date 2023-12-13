@@ -1,17 +1,18 @@
-
-.slide{
+.slide {
     width: 100%;
     height: 100vh;
     background-size: cover;
 }
+
 .slide.s1 {
     background-image: url(../../../assets/homeBK.png);
 }
 
-.circle{
+.circle {
     border-radius: 50%;
 }
-.content{
+
+.content {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -19,11 +20,13 @@
     align-items: center;
     transition: 1s;
 }
-.content0{
+
+.content0 {
     visibility: hidden;
-    transform:scale(0);
+    transform: scale(0);
     transition: transform 1s ease, height .2s ease;
 }
+
 .content .circle.c1 {
     background-color: #181D31;
     width: 60vh;
@@ -35,7 +38,7 @@
 
 .content .circle.c2 {
     background-color: #F0E9D2;
-    background-size: cover ;
+    background-size: cover;
     width: 52vh;
     height: 52vh;
     display: flex;
@@ -46,7 +49,7 @@
     transition: 1s;
 }
 
-.content .circle.c2 span{
+.content .circle.c2 span {
     font-weight: 700;
     font-size: 10vh;
     color: #678983;
@@ -60,12 +63,15 @@
     font-size: 2vh;
     color: #E48F44;
 }
-.content .circle.c1 a{
+
+.content .circle.c1 a {
     text-decoration: none;
 }
-.content .circle.c2:hover{
+
+.content .circle.c2:hover {
     box-shadow: 2px 1px 1px 32px rgba(0, 0, 0, 0.25) inset;
 }
+
 .content .circle.c2:active {
     box-shadow: 2px 1px 1px 32px #678983 inset;
 }
@@ -80,7 +86,7 @@
     display: flex;
 }
 
-.content.s3.left{
+.content.s3.left {
     width: 20%;
     height: 100%;
     /* border: 1px solid #000000; */
@@ -88,11 +94,12 @@
     flex-direction: column;
 }
 
-.content.s3.left span{
+.content.s3.left span {
     color: #E6DDC4;
     font-weight: 700;
-    font-size: 2em; 
+    font-size: 2em;
 }
+
 .btn-menu {
     margin-top: 2vh;
     height: 4vh;
@@ -104,10 +111,12 @@
     border-radius: 10px 0;
     transition: 0.5s;
 }
+
 .btn-menu:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
-.btn-menu.m1{
+
+.btn-menu.m1 {
     background-color: #ffffff;
     color: #E48F44;
 }
@@ -118,10 +127,12 @@
     display: flex;
     flex-direction: column;
 }
-.content.s3.right{
+
+.content.s3.right {
     color: #ffffff;
 }
-.content.s3.right h1{
+
+.content.s3.right h1 {
     font-size: 12em;
     margin: 0;
 }
@@ -130,7 +141,8 @@
     font-size: 5em;
     margin-top: -2vh;
 }
-.content.s3.right h2 span{
+
+.content.s3.right h2 span {
     color: #F0E9D2;
 }
 
@@ -143,14 +155,16 @@
     align-items: center;
     padding: 0 8vw;
 }
-.wordslide.s4{
+
+.wordslide.s4 {
     position: absolute;
     font-size: 17em;
     font-weight: 700;
     left: -3vw;
     color: #678983;
 }
-.card{
+
+.card {
     position: relative;
     width: 17vw;
     height: 35vh;
@@ -163,32 +177,39 @@
     transition: 0.5s;
     color: #678983;
 }
-.card span{
+
+.card span {
     visibility: hidden;
     transition: 0.5s;
     transform: scale(0.25);
 }
+
 .card a {
     position: relative;
     top: -2vh;
 }
+
 .card:hover span {
     visibility: visible;
     transform: scale(1);
 }
+
 .card:hover {
     height: 38vh;
 }
+
 .card:hover a {
     visibility: visible;
     top: 0vh;
 }
-.img-menu{
+
+.img-menu {
     width: 100%;
     height: 60%;
     display: flex;
     justify-content: center;
 }
+
 .img-menu.im {
     position: absolute;
     background-repeat: no-repeat;
@@ -201,15 +222,19 @@
 .img-menu.im.i1 {
     background-image: url(../../../assets/fruitDrink.png);
 }
+
 .img-menu.im.i2 {
     background-image: url(../../../assets/menu2.png);
 }
+
 .img-menu.im.i3 {
     background-image: url(../../../assets/menu3.png);
 }
+
 .img-menu.im.i4 {
     background-image: url(../../../assets/menu4.png);
 }
+
 .coaster {
     position: absolute;
     width: 70%;
@@ -218,6 +243,7 @@
     background-image: url(../../../assets/coaster.png);
     background-size: 100% 100%;
 }
+
 .img-menu p {
     position: absolute;
     font-weight: 700;
@@ -244,7 +270,7 @@
     flex-direction: row;
 }
 
-.content.s5.left{
+.content.s5.left {
     width: 40vw;
     height: 100%;
     background-image: url(../../../assets/homeBK4.png);
@@ -265,25 +291,26 @@
     background-size: 100% 100%;
 }
 
-.text.i5{
+.text.i5 {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     width: 50%;
 }
-.text.i5 p{
+
+.text.i5 p {
     text-align: center;
 }
 
-.span.s5-1{
+.span.s5-1 {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 5vw;
     color: #F0E9D2;
     font-weight: 700;
-    font-size: 2em; 
+    font-size: 2em;
 }
 
 .span.s5-2 {
@@ -291,7 +318,7 @@
     color: #E6DDC4;
 }
 
-.slide.s6{
+.slide.s6 {
     height: 50vh;
     display: flex;
     flex-direction: column;
@@ -307,14 +334,15 @@
     box-sizing: border-box;
 }
 
-.loginRegister{
+.loginRegister {
     width: 100%;
     height: 100%;
-    transition: transform 2s ease, height 2s ease; 
+    transition: transform 2s ease, height 2s ease;
 }
-.loginRegisteractive{
+
+.loginRegisteractive {
     position: fixed;
     width: 100vw;
     height: 100vh;
     transform: scale();
-} 
+}
