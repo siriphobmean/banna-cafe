@@ -15,4 +15,4 @@ func ListMenuUnits(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": menuUnits})
-} // more 13/12/66 hello, world
+} // more 13/12/66
