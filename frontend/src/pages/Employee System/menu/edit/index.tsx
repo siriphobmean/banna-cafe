@@ -17,12 +17,13 @@ import { MenusInterface } from "../../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../../interfaces/IMenuType";
 import { GetMenuTypes, GetMenuById, UpdateMenu } from "../../../../services/https/menu";
 import { useNavigate, useParams } from "react-router-dom";
-import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../../services/https/ingredientMenu"; // new
+import { GetIngredientMenuById, GetMenuUnits, UpdateIngredientMenu } from "../../../../services/https/ingredientMenu"; // new
 import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu"; // new more
 import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new more
 import { GetIngredients } from "../../../../services/https/ingredientMenu"; // new more
 import { GetIngredientById } from "../../../../services/https/ingredient"; // new more
 import { ImageUpload } from "../../../../interfaces/IUpload";
+import { MenuUnitsInterface } from "../../../../interfaces/IMenuUnit"; // more 13/12/66
 
 const { Option } = Select;
 
@@ -36,6 +37,7 @@ function MenuEdit() {
   const [menu, setMenu] = useState<MenusInterface>();
   const [ingredientMenu, setIngredientMenu] = useState<IngredientMenusInterface>(); // new more
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
+  const [menuUnits, setMenuUnits] = useState<MenuUnitsInterface[]>([]); // more 13/12/66
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
   const [menuImage, setMenuImage] = useState<ImageUpload>()
 
@@ -84,6 +86,13 @@ function MenuEdit() {
     }
   }; // select menuType to use (combobox)
 
+  const getMenuUnit = async () => {
+    let res = await GetMenuUnits();
+    if (res) {
+      setMenuUnits(res);
+    }
+  }; // more 13/12/66
+
   const getIngredient = async () => {
     let res = await GetIngredients();
     if (res) {
@@ -118,6 +127,7 @@ function MenuEdit() {
       form.setFieldsValue({
         Amount: res.Amount,
         IngredientID: res.IngredientID,
+        MenuUnitID: res.MenuUnitID,
       });
     }
   }; // new
@@ -128,6 +138,7 @@ function MenuEdit() {
     getIngredient();
     getIngredientMenuById();
     getMenuById(); // more
+    getMenuUnit(); // more 13/12/66
   }, []);
 
   const [prevMenuImage, setPrevMenuImage] = useState<string | undefined>(); // more
@@ -266,6 +277,15 @@ function MenuEdit() {
                 ]}
               >
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item name="MenuUnitID" label="หน่วย" rules={[{ required: true,  message: "กรุณาระบุหน่วยวัตถุดิบ !", }]}>
+                <Select allowClear>
+                  {menuUnits.map((item) => (
+                    <Option value={item.ID} key={item.UnitName}>{item.UnitName}</Option> // Nop
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>

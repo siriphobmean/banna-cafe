@@ -44,6 +44,27 @@ async function GetIngredients() {
   return res;
 }
 
+async function GetMenuUnits() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/menuUnits`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+} // more 13/12/66
+
 async function DeleteIngredientMenuByID(id: Number | undefined) {
   const requestOptions = {
     method: "DELETE"
@@ -127,5 +148,6 @@ export {
   GetIngredients,
   DeleteIngredientMenuByID,
   GetIngredientMenuById,
-  UpdateIngredientMenu
+  UpdateIngredientMenu,
+  GetMenuUnits, // more 13/12/66
 };

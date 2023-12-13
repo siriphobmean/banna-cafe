@@ -19,8 +19,9 @@ import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu
 import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new
 import { ImageUpload } from "../../../../interfaces/IUpload";
 import { CreateMenu, GetMenuTypes } from "../../../../services/https/menu";
-import { CreateIngredientMenu, GetIngredients } from "../../../../services/https/ingredientMenu"; // new
+import { CreateIngredientMenu, GetIngredients, GetMenuUnits } from "../../../../services/https/ingredientMenu"; // new +more 13/12/66
 import { useNavigate } from "react-router-dom";
+import { MenuUnitsInterface } from "../../../../interfaces/IMenuUnit"; // more 13/12/66
 
 const { Option } = Select;
 
@@ -33,6 +34,7 @@ function MenuCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [menuTypes, setMenuTypes] = useState<MenuTypesInterface[]>([]);
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
+  const [menuUnits, setMenuUnits] = useState<MenuUnitsInterface[]>([]); // more 13/12/66
   const [menuImage, setMenuImage] = useState<ImageUpload>()
   console.log (menuTypes);
 
@@ -82,6 +84,13 @@ function MenuCreate() {
     }
   }; // select menuType to use (combobox)
 
+  const getMenuUnit = async () => {
+    let res = await GetMenuUnits();
+    if (res) {
+      setMenuUnits(res);
+    }
+  }; // select menuUnit to use (combobox) +more 13/12/66
+
   const getIngredient = async () => {
     let res = await GetIngredients();
     if (res) {
@@ -92,6 +101,7 @@ function MenuCreate() {
   useEffect(() => {
     getMenuType();
     getIngredient(); // new
+    getMenuUnit(); // more 13/12/66
   }, []);
 
   const normFile = (e: any) => {
@@ -213,6 +223,15 @@ function MenuCreate() {
                 rules={[{ required: true, message: "กรุณากรอกจำนวนวัตถุดิบ !", }]}
               >
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item name="MenuUnitID" label="หน่วย" rules={[{ required: true,  message: "กรุณาระบุหน่วยวัตถุดิบ !", }]}>
+                <Select allowClear>
+                  {menuUnits.map((item) => (
+                    <Option value={item.ID} key={item.UnitName}>{item.UnitName}</Option> // Nop
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
