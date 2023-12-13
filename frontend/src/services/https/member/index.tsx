@@ -23,27 +23,6 @@ async function GetMembers() {
   return res;
 }
 
-// async function GetMenuTypes() {
-//   const requestOptions = {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   };
-
-//   let res = await fetch(`${apiUrl}/menuTypes`, requestOptions) // ok?
-//     .then((response) => response.json())
-//     .then((res) => {
-//       if (res.data) {
-//         return res.data;
-//       } else {
-//         return false;
-//       }
-//     });
-
-//   return res;
-// }
-
 async function DeleteMemberByID(id: Number | undefined) {
   const requestOptions = {
     method: "DELETE"
@@ -121,11 +100,51 @@ async function UpdateMember(data: MembersInterface) {
   return res;
 }
 
+async function LoginMember(data: MembersInterface) {
+  const requestOptions = {
+    method: "Post",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  let res = await fetch(`${apiUrl}/login`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return { status: true, message: res.data };
+      } else {
+        return { status: false, message: res.error };
+      }
+    });
+
+  return res;
+}
+
+async function CreateMemberRegister(data: MembersInterface) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  let res = await fetch(`${apiUrl}/membersRegister`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return { status: true, message: res.data };
+      } else {
+        return { status: false, message: res.error };
+      }
+    });
+
+  return res;
+}
 export {
   GetMembers,
   CreateMember,
-//   GetMenuTypes,
   DeleteMemberByID,
   GetMemberById,
-  UpdateMember
-}
+  UpdateMember,
+  LoginMember,
+  CreateMemberRegister,
+};

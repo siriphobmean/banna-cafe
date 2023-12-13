@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 //Home
-import Home from "./pages/Home System/home";
+import Home from "./pages/HomeSystem/home";
 // import Login from "./pages/home/login";
 
 // For Employee
@@ -37,10 +37,10 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/Member System/preOrder";
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 
 //Profile
-import ProfileMember from "./pages/Member System/profile";
+import ProfileMember from "./pages/MemberSystem/profile";
 // in now test...
 
 const router = createBrowserRouter(
