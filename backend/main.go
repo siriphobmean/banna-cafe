@@ -13,6 +13,16 @@ func main() {
 	r.Use(CORSMiddleware())
 	r.POST("/membersRegister", controller.CreateMemberRegister)
 	r.POST("/login", controller.Login)
+	// Menu Routes
+	r.GET("/menus", controller.ListMenus)
+	r.GET("/menu/:id", controller.GetMenu)
+	r.POST("/menus", controller.CreateMenu) // sholee & biw -> edit "menu"
+	r.PATCH("/menus", controller.UpdateMenu)
+	r.DELETE("/menus/:id", controller.DeleteMenu)
+	// MenuType Routes
+	r.GET("/menuTypes", controller.ListMenuTypes)
+	r.GET("/menuUnits", controller.ListMenuUnits) // more 13/12/66
+
 	// Employee Routes
 	r.GET("/employees", controller.ListEmployees)
 	r.GET("/employee/:id", controller.GetEmployee)

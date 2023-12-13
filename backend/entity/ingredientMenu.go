@@ -14,4 +14,7 @@ type IngredientMenu struct {
 
 	MenuID *uint `gorm:"uniqueIndex"` // new ทำให้ตอนกรอกลำดับซ้ำมา ข้อมูลไม่ถูกเก็บเข้า entity: ingredient_menus(menu_id.FK)
 	Menu Menu `gorm:"references:id"`
+
+	MenuUnitID *uint
+	MenuUnit MenuUnit `gorm:"references:id"` // more 13/12/66
 } // Clear!
