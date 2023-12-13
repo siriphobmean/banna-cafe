@@ -13,6 +13,7 @@ func main() {
 	r.Use(CORSMiddleware())
 	r.POST("/membersRegister", controller.CreateMemberRegister)
 	r.POST("/login", controller.Login)
+	
 	// Menu Routes
 	r.GET("/menus", controller.ListMenus)
 	r.GET("/menu/:id", controller.GetMenu)
@@ -86,20 +87,11 @@ func main() {
 	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
 	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
-	// Menu Routes
-
-	r.GET("/menus", controller.ListMenus)
-	r.GET("/menu/:id", controller.GetMenu)
-	r.POST("/menus", controller.CreateMenu) // sholee & biw -> edit "menu"
-	r.PATCH("/menus", controller.UpdateMenu)
-	r.DELETE("/menus/:id", controller.DeleteMenu)
 
 	// by tik 12/12/66
 	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 
 	r.GET("/menus/:name", controller.ListMenusByName) 
 
-	// MenuType Routes
-	r.GET("/menuTypes", controller.ListMenuTypes)
 	router := r.Group("")
 	{
 		router.Use(middlewares.Authorizes()) //wtf "s"
