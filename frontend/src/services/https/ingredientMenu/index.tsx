@@ -44,7 +44,7 @@ async function GetIngredients() {
   return res;
 }
 
-async function GetMenuUnits() {
+async function GetIngredientUnits() {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -52,7 +52,7 @@ async function GetMenuUnits() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/menuUnits`, requestOptions)
+  let res = await fetch(`${apiUrl}/ingredientUnits`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -149,5 +149,5 @@ export {
   DeleteIngredientMenuByID,
   GetIngredientMenuById,
   UpdateIngredientMenu,
-  GetMenuUnits, // more 13/12/66
+  GetIngredientUnits, // more 13/12/66 -> edit 15/12/66
 };

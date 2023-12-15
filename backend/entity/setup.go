@@ -28,7 +28,7 @@ func SetupDatabase() {
 		&Order{},              // no mean
 		&Menu{},
 		&MenuType{},
-		&MenuUnit{}, // more 13/12/66
+		&IngredientUnit{}, // more 13/12/66 -> edit 15/12/66
 		&Employee{},
 		&Role{},
 		&Promotion{}, // no mean
@@ -57,16 +57,16 @@ func SetupDatabase() {
 	// 	db.Create(&menuType) // Assuming 'db' is your GORM database instance
 	// }
 
-	// MenuUnit Data
-	menuUnit := []MenuUnit{
+	// IngredientUnit Data
+	ingredientUnit := []IngredientUnit{
 		{UnitName: "กรัม"},
 		{UnitName: "กิโลกรัม"},
 		{UnitName: "ซอง"},
 	}
 
-	for _, menuUnit := range menuUnit {
-		db.Create(&menuUnit) // Assuming 'db' is your GORM database instance
-	} // more 13/12/66
+	for _, ingredientUnit := range ingredientUnit {
+		db.Create(&ingredientUnit) // Assuming 'db' is your GORM database instance
+	} // more 13/12/66 edit 15/12/66
 
 	// Role Data
 	role := []Role{

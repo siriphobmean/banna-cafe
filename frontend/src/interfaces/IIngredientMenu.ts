@@ -1,6 +1,6 @@
 import { IngredientsInterface } from "./IIngredient";
 import { MenusInterface } from "./IMenu";
-import { MenuUnitsInterface } from "./IMenuUnit";
+import { IngredientUnitsInterface } from "./IIngredientUnit";
 
 export interface IngredientMenusInterface {
     ID?: number; // ok
@@ -12,6 +12,6 @@ export interface IngredientMenusInterface {
     IngredientID?: number; // ok
     Ingredient?: IngredientsInterface; // ok
 
-    MenuUnitID?: number;
-    MenuUnit?: MenuUnitsInterface; // more 13/12/66
+    IngredientUnitID?: number;
+    IngredientUnit?: IngredientUnitsInterface; // more 13/12/66 -> edit 15/12/66
   } // Clear!

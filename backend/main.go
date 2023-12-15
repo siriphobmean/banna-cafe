@@ -22,7 +22,8 @@ func main() {
 	r.DELETE("/menus/:id", controller.DeleteMenu)
 	// MenuType Routes
 	r.GET("/menuTypes", controller.ListMenuTypes)
-	r.GET("/menuUnits", controller.ListMenuUnits) // more 13/12/66
+	// IngredientUnit Routes
+	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
 
 	// Employee Routes
 	r.GET("/employees", controller.ListEmployees)

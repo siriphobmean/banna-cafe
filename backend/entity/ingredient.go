@@ -19,4 +19,7 @@ type Ingredient struct {
 	IngredientMenu   []IngredientMenu `gorm:"foreignKey:IngredientID"`
 	IngredientTypeID *uint
 	IngredientType   IngredientType `gorm:"references:id"`
+
+	IngredientUnitID *uint // by mean 15/12/66
+	IngredientUnit IngredientUnit `gorm:"references:id"` // by mean 15/12/66
 } // Clear! but Entity not finish
