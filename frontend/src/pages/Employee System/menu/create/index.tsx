@@ -201,10 +201,7 @@ function MenuCreate() {
                   },
                 ]}
               >
-                <Select allowClear>
-                  <Option value="0">0</Option>
-                  <Option value="1">1</Option>
-                </Select>
+                <Input />
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
