@@ -6,19 +6,13 @@ type PreorderMenu struct {
 	gorm.Model
 	Quantity  int
 	TotalCost float32 `gorm:"type:decimal(7,6);"`
+	Size      string
+	Sweetness string
+	Option    string
 
 	// FK
 	PreorderID *uint
 	Preorder   Preorder `gorm:"references:id"`
-	// FK
-	MenuSizeID *uint
-	MenuSize   Preorder `gorm:"references:id"`
-	// FK
-	SweetnessID *uint
-	Sweetness   Sweetness `gorm:"references:id"`
-	// FK
-	DrinkOptionID *uint
-	DrinkOption   DrinkOption `gorm:"references:id"`
 
 	// FK
 	MenuID *uint

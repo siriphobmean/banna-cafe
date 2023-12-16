@@ -9,8 +9,7 @@ type Rating struct {
 
 	Score int
 
-	MenuID *uint
-	Menu Menu `gorm:"references:id"`
+	Menu []Menu `gorm:"foreignKey:RatingID"`
 
 	// FK
 	MemberID *uint

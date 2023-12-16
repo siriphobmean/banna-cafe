@@ -17,9 +17,10 @@ type Menu struct {
 	// OrderMenu []OrderMenu `gorm:"foreignKey:MenuID"`
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:MenuID"`
 	PreorderMenus []PreorderMenu `gorm:"foreignKey:MenuID"`
-	Ratings []Rating `gorm:"foreignKey:MenuID"`
 
 	// FK
 	MenuTypeID *uint
 	MenuType MenuType `gorm:"references:id"`
+	RatingID *uint
+	Rating Rating `gorm:"references:id"`
 } // Clear!

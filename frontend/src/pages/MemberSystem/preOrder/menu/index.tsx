@@ -3,78 +3,28 @@ import './menu.css';
 import { FaStar } from "react-icons/fa";
 import { MenusInterface } from '../../../../interfaces/IMenu';
 import { GetMenusBYMenuTypeID } from '../../../../services/https/menu';
-import { MenuTypesInterface } from '../../../../interfaces/IMenuType';
-import { GetRatings } from '../../../../services/https/rating';
-import { RatingsInterface } from '../../../../interfaces/IRating';
 interface MenuAllProps {
   onAddmenupop: () => void;
-  menusSearch: MenusInterface[];
-  selectedMenuType: MenuTypesInterface | null;
-  searchText: string;
-  onAddMenuID: (id: number) => void;
-  onchangeMenus: (menus: MenusInterface[]) => void;
 }
-function MenuAll({
-  onAddmenupop,
-  menusSearch,
-  selectedMenuType,
-  searchText,
-  onAddMenuID,
-  onchangeMenus,
-}: MenuAllProps) {
+const MenuAll: React.FC<MenuAllProps> = ({ onAddmenupop }) => {
   const [menus, setMenus] = useState<MenusInterface[]>([]);
-  const [selectedMenutypeold, setSelectedMenutypeold] =
-    useState<MenusInterface | null>();
-  const [ratings, setRatings] = useState<RatingsInterface[]>([]);
-
-  const getMenusMenuType = async () => {
-    let res = await GetMenusBYMenuTypeID(Number(selectedMenuType?.ID));
+  const getMenusByName = async () => {
+    let res = await GetMenusBYMenuTypeID(Number(1));
     if (res) {
       setMenus(res);
-      onchangeMenus(res);
+      // console.log(res)
     }
   };
-  const getMenusRating = async () => {
-    let res = await GetRatings();
-    if (res) {
-      setRatings(res);
-    }
-  };
-  const getMenusRatingByMenuId = (id: number | undefined): number | string => {
-    if (id === undefined) {
-      return 0;
-    }
-    const menuRatings = ratings.filter((r) => r.MenuID === id);
-    if (menuRatings.length === 0) {
-      return "+";
-    }
-    let sumRating = 0;
-    for (let i = 0; i < menuRatings.length; i++) {
-      sumRating += menuRatings[i].Score || 0;
-    }
-    return sumRating / menuRatings.length;
-  };
-
+  
   useEffect(() => {
-    getMenusRating();
-    if (selectedMenuType !== selectedMenutypeold) {
-      getMenusMenuType();
-      setSelectedMenutypeold(selectedMenuType);
-    }
-
-    if (menusSearch.length !== 0 || searchText !== "") {
-      setMenus(menusSearch);
-    } else {
-      getMenusMenuType();
-    }
-  }, [menusSearch, selectedMenuType]);
+    getMenusByName();
+  }, []);
   return (
     <div className="menu-all">
       {menus.map((menu) => (
         <div className="menu-crad" key={menu.ID}>
           <div className="menu-crad menu-rating">
-            <FaStar />
-            <span>{getMenusRatingByMenuId(menu.ID)}</span>
+            <FaStar /> <span>4</span>
           </div>
           <div className="menu-item">
             <div className="menu-imge">
@@ -86,13 +36,7 @@ function MenuAll({
             </div>
             <div className="cost-btn">
               <div className="menu-cost">{menu.MenuCost}-.</div>
-              <button
-                className="btn-add"
-                onClick={() => {
-                  onAddmenupop();
-                  onAddMenuID(Number(menu.ID));
-                }}
-              >
+              <button className="btn-add" onClick={onAddmenupop}>
                 +เพิ่ม
               </button>
             </div>
