@@ -34,27 +34,30 @@ func SetupDatabase() {
 		&Rating{},    // mean 50/50 tik
 		&Member{},    // mean 50/50 ?
 		&Gender{},
-		&Preorder{},  // Update 10/12/2566 by Tik
+		&Preorder{}, // Update 10/12/2566 by Tik
 		&PreorderMenu{},
 		&PreorderStatusApprove{},
 		&StatusApprovePreorder{},
 		&PreorderStatusRecive{},
 		&StatusRecivePreorder{},
+		&DrinkOption{},
+		&Sweetness{},
+		&MenuSize{},
 	)
 	db = database
 
-	// // MenuType Data
-	// menuType := []MenuType{
-	// 	{TypeName: "BEVERAGE (เครื่องดื่ม)"},
-	// 	{TypeName: "PIZZA (พิซซ่า)"},
-	// 	{TypeName: "MEAL (อาหารมื้อ)"},
-	// 	{TypeName: "SNACK (อาหารว่าง)"},
-	// 	{TypeName: "CAKE & BAKERY (เค้กและเบเกอรี่)"},
-	// }
+	// MenuType Data
+	menuType := []MenuType{
+		{TypeName: "กาแฟ"},
+		{TypeName: "ชา & นม"},
+		{TypeName: "ผลไม้"},
+		{TypeName: "เค้ก & เบเกอรี่"},
+		{TypeName: "สำเร็จรูป"},
+	}
 
-	// for _, menuType := range menuType {
-	// 	db.Create(&menuType) // Assuming 'db' is your GORM database instance
-	// }
+	for _, menuType := range menuType {
+		db.Create(&menuType) // Assuming 'db' is your GORM database instance
+	}
 
 	// Role Data
 	role := []Role{
@@ -111,4 +114,65 @@ func SetupDatabase() {
 		db.Create(&member) // Assuming 'db' is your GORM database instance
 	}
 
+	// Sweetness Data (ex)
+	sweetness := []Sweetness{
+		{
+			Name:  "ไม่หวาน",
+			Value: 25,
+		},
+		{
+			Name:  "หวานน้อย",
+			Value: 50,
+		},
+		{
+			Name:  "หวานปกติ",
+			Value: 100,
+		},
+	}
+
+	for _, sweetness := range sweetness {
+		db.Create(&sweetness) // Assuming 'db' is your GORM database instance
+	}
+
+	// DrinkOption Data (ex)
+	drinkOption := []DrinkOption{
+		{
+			Name: "ร้อน",
+		},
+		{
+			Name: "เย็น",
+		},
+		{
+			Name: "ปั่น",
+		},
+	}
+
+	for _, drinkOption := range drinkOption {
+		db.Create(&drinkOption) // Assuming 'db' is your GORM database instance
+	}
+	// Sweetness Data (ex)
+	menuSize := []MenuSize{
+		{
+			Name:           "s",
+			AddAmount:      0,
+			Quantity:       360,
+			UnitOfQuantity: "ml",
+		},
+		{
+			Name:           "m",
+			AddAmount:      25,
+			Quantity:       480,
+			UnitOfQuantity: "ml",
+		},
+		{
+			Name:           "l",
+			AddAmount:      40,
+			Quantity:       600,
+			UnitOfQuantity: "ml",
+		},
+	}
+
+	for _, menuSize := range menuSize {
+		db.Create(&menuSize) // Assuming 'db' is your GORM database instance
+	}
 }

@@ -121,11 +121,33 @@ async function UpdateRating(data: RatingsInterface) {
   return res;
 }
 
+// async function GetRatingsByID(id: Number | undefined) {
+//   const requestOptions = {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   };
+
+//   let res = await fetch(`${apiUrl}/ratings/${id}`, requestOptions)
+//     .then((response) => response.json())
+//     .then((res) => {
+//       if (res.data) {
+//         return res.data;
+//       } else {
+//         return false;
+//       }
+//     });
+
+//   return res;
+// }
+
 export {
   GetRatings,
   CreateRating,
   // GetMenus, // GetMembers -> มีอยู่แล้ว
   DeleteRatingByID,
   GetRatingById,
-  UpdateRating
-}
+  UpdateRating,
+  // GetRatingsByID,
+};

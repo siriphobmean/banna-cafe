@@ -46,7 +46,7 @@ async function GetMenuTypes() {
 
 async function DeleteMenuByID(id: Number | undefined) {
   const requestOptions = {
-    method: "DELETE"
+    method: "DELETE",
   };
 
   let res = await fetch(`${apiUrl}/menus/${id}`, requestOptions)
@@ -64,7 +64,7 @@ async function DeleteMenuByID(id: Number | undefined) {
 
 async function GetMenuById(id: Number | undefined) {
   const requestOptions = {
-    method: "GET"
+    method: "GET",
   };
 
   let res = await fetch(`${apiUrl}/menu/${id}`, requestOptions)
@@ -119,6 +119,7 @@ async function UpdateMenu(data: MenusInterface) {
 
   return res;
 }
+
 // use by Preoder
 async function GetMenusBYMenuTypeID(id: Number | undefined) {
   const requestOptions = {
@@ -136,27 +137,24 @@ async function GetMenusBYMenuTypeID(id: Number | undefined) {
     });
   return res;
 }
-async function GetMenusByName(name: string | undefined) {
+async function GetMenusByName(name: string ) {
   const requestOptions = {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   };
-
   let res = await fetch(`${apiUrl}/menus/${name}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
-      if (res && res.data) {
+      if (res.data) {
         return res.data;
       } else {
         return false;
       }
     });
-
   return res;
 }
-
 
 export {
   GetMenus,

@@ -69,7 +69,7 @@
     border-radius: 50%;
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
-.side-text a{
+.side-text .menutype-item,.menutype-itemactive{
     width: 100%;
     height: 100%;
     display: flex;
@@ -82,12 +82,12 @@
 .side-text span{
     text-align: center;
 }
-.side-text a:focus,.side-text a:hover{
+.side-text .menutype-item:hover,.menutype-itemactive{
     background-color: #E48F44;
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     overflow: hidden;
     color: #ffffff;
-    transition: 0.5s ;
+    transition: 0.25s ;
 }
 
 .side-text.profile{
@@ -111,7 +111,7 @@
 .side-text.profile:hover{
     background-color: #181D31;
     color: #E48F44;
-    transition: 0.5s;
+    transition: 0.25s;
 }
 .side-text.point{
     margin: 0.75vw;

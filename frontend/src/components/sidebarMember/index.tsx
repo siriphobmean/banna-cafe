@@ -4,18 +4,33 @@ import "./sidebarMenu.css";
 import { NavLink } from "react-router-dom";
 import { MenuTypesInterface } from "../../interfaces/IMenuType";
 import { GetMenuTypes } from "../../services/https/menu";
-export default function SidebarMemu() {
+
+interface SidebarMemuProps {
+  onSelectMenuType: (menuType: MenuTypesInterface) => void;
+}
+
+export default function SidebarMemu({ onSelectMenuType }: SidebarMemuProps) {
   const [menuTypes, setmenuTypes] = useState<MenuTypesInterface[]>([]);
+  const [selectedMenuType, setSelectedMenuType] =
+    useState<MenuTypesInterface>();
+  const handleMenuTypeClick = (menuType: MenuTypesInterface) => {
+    setSelectedMenuType(menuType);
+    onSelectMenuType(menuType);
+  };
+
   const getMenuTypes = async () => {
     let res = await GetMenuTypes();
     if (res) {
       setmenuTypes(res);
-      // console.log(res);
+      onSelectMenuType(res[0]);
+      setSelectedMenuType(res[0]);
     }
   };
+  console.log(selectedMenuType);
   useEffect(() => {
     getMenuTypes();
   }, []);
+
   return (
     <div className="sidebar-menu1">
       <div className="top">
@@ -27,10 +42,16 @@ export default function SidebarMemu() {
           <ul>
             {menuTypes.map((item, index) => {
               return (
-                <li key={index} className="side-text">
-                  <NavLink to={"#"}>
+                <li className="side-text">
+                  <div
+                    key={index}
+                    className={`menutype-item${
+                      (selectedMenuType===item)? "active" : ""
+                    }`}
+                    onClick={() => handleMenuTypeClick(item)}
+                  >
                     <span>{item.TypeName}</span>
-                  </NavLink>
+                  </div>
                 </li>
               );
             })}
