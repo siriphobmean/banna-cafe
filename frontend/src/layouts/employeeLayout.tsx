@@ -15,20 +15,20 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import logo from "../assets/logo.png";
 
-import Mains from "../pages/Employee System/main";
-import Menus from "../pages/Employee System/menu";
-import MenuCreate from "../pages/Employee System/menu/create";
-import MenuEdit from "../pages/Employee System/menu/edit";
+import Mains from "../pages/EmployeeSystem/main";
+import Menus from "../pages/EmployeeSystem/menu";
+import MenuCreate from "../pages/EmployeeSystem/menu/create";
+import MenuEdit from "../pages/EmployeeSystem/menu/edit";
 
-import Ingredient from "../pages/Employee System/ingredient";
-import IngredientCreate from "../pages/Employee System/ingredient/create";
-import IngredientEdit from "../pages/Employee System/ingredient/edit";
-import History from "../pages/Employee System/history";
+import Ingredient from "../pages/EmployeeSystem/ingredient";
+import IngredientCreate from "../pages/EmployeeSystem/ingredient/create";
+import IngredientEdit from "../pages/EmployeeSystem/ingredient/edit";
+import History from "../pages/EmployeeSystem/history";
 
 import "./mean.css"
-import IngredientMenus from "../pages/Employee System/menu/ingredientMenu";
-import Members from "../pages/Employee System/member";
-import MemberEdit from "../pages/Employee System/member/edit";
+import IngredientMenus from "../pages/EmployeeSystem/menu/ingredientMenu";
+import Members from "../pages/EmployeeSystem/member";
+import MemberEdit from "../pages/EmployeeSystem/member/edit";
 
 const { Header, Content, Footer, Sider } = Layout;
 

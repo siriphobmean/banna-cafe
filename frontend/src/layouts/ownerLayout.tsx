@@ -16,10 +16,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import logo from "../assets/logo.png";
 
-import Mains from "../pages/Employee System/main";
-import Employees from "../pages/Owner System/employee";
-import EmployeeCreate from "../pages/Owner System/employee/create";
-import EmployeeEdit from "../pages/Owner System/employee/edit";
+import Mains from "../pages/EmployeeSystem/main";
+import Employees from "../pages/OwnerSystem/employee";
+import EmployeeCreate from "../pages/OwnerSystem/employee/create";
+import EmployeeEdit from "../pages/OwnerSystem/employee/edit";
 import "./mean.css"
 
 const { Header, Content, Footer, Sider } = Layout;
