@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	// "fmt" // more p'pond
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
@@ -12,7 +11,7 @@ func CreateIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
 	var menu entity.Menu             // FK เหมือนกับ MenuType -> Menu = MenuType
-	// fmt.Println(menu); // more p'pond
+	var ingredientUnit entity.IngredientUnit // fk -> 15/12/66
 
 	// bind เข้าตัวแปร ingredientMenu
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
@@ -33,6 +32,8 @@ func CreateIngredientMenu(c *gin.Context) {
 		MenuID: ingredientMenu.MenuID, // more 28/11/2023 8:51 AM
 		Ingredient: ingredient, // โยงความสัมพันธ์กับ Entity Ingredient
 		Menu:       menu,       // โยงความสัมพันธ์กับ Entity Menu
+		IngredientUnitID: ingredientMenu.IngredientUnitID, // more 13/12/66
+		IngredientUnit: ingredientUnit, // more 13/12/66 -> edit 15/12/66
 	}
 
 	// บันทึก
@@ -58,7 +59,7 @@ func GetIngredientMenu(c *gin.Context) {
 // GET /ingredientMenus
 func ListIngredientMenus(c *gin.Context) {
 	var ingredientMenus []entity.IngredientMenu
-	if err := entity.DB().Preload("Ingredient").Preload("menu").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
+	if err := entity.DB().Preload("IngredientUnit").Preload("Ingredient").Preload("Menu").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
