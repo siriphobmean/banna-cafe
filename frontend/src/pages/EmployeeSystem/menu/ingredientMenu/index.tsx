@@ -1,171 +1,178 @@
-import React, { useState, useEffect, useId } from "react";
-import {
-  Space,
-  Button,
-  Col,
-  Row,
-  Divider,
-  Form,
-  Input,
-  Card,
-  message,
-  Upload,
-  Select,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
+import type { ColumnsType } from "antd/es/table";
+import { GetMenus, DeleteMenuByID } from "../../../../services/https/menu";
+import { DeleteIngredientMenuByID } from "../../../../services/https/ingredientMenu";
 import { MenusInterface } from "../../../../interfaces/IMenu";
-import { GetMenuById, UpdateMenu } from "../../../../services/https/menu";
-import { useNavigate, useParams } from "react-router-dom";
-import { GetIngredientMenuById, UpdateIngredientMenu } from "../../../../services/https/ingredientMenu"; // new
-import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu"; // new more
-import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new more
-import { GetIngredients } from "../../../../services/https/ingredientMenu"; // new more
-
-const { Option } = Select;
+import { Link, useNavigate } from "react-router-dom";
+import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu";
 
 function IngredientMenus() {
+  
+  const columns: ColumnsType<MenusInterface> = [
+    {
+      title: "ลำดับ",
+      dataIndex: "MenuID", // default ID
+      key: "id",
+    },
+    {
+      title: "รูปเมนู", // รูปไฟล์
+      dataIndex: "MenuImage", // Profile
+      key: "menuimage", // profile
+      render: (text, record, index) => (
+        <img src={record.MenuImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
+      )
+    },
+    {
+      title: "ชื่อเมนู (TH)",
+      dataIndex: "MenuName",
+      key: "menuname",
+    },
+    {
+      title: "ชื่อเมนู (ENG)",
+      dataIndex: "MenuNameEng",
+      key: "menunameeng",
+    },
+    {
+      title: "ราคา",
+      dataIndex: "MenuCost",
+      key: "menucost",
+      render:(record)=>(
+        <div>{(record).toFixed(2)} ฿</div>
+      )
+    },
+    {
+      title: "ประเภท",
+      dataIndex: "MenuType",
+      key: "menutype",
+      render: (item) => Object.values(item.TypeName),
+    },
+    {
+      title: "สถานะเมนู",
+      dataIndex: "MenuStatus",
+      key: "menustatus",
+      render: (status) => (
+        <span>{status === 0 ? "ไม่พร้อมขาย" : "พร้อมขาย"}</span>
+      ),
+    },
+    {
+      title: "วัตถุดิบ",
+      dataIndex: "IngredientData",
+      key: "ingredientdata",
+      render: (text, record, index) => (
+        <>
+          <Button  onClick={() =>  navigate(`/menu/ingredientMenu/${record.ID}`)} shape="circle" icon={<EyeOutlined />} size={"large"} />
+        </>
+      ),
+    },
+    {
+      title: "แก้ไข/ลบข้อมูล",
+      dataIndex: "Manage",
+      key: "manage",
+      render: (text, record, index) => (
+        <>
+          <Button  onClick={() =>  navigate(`/menu/edit/${record.ID}`)} shape="circle" icon={<EditOutlined />} size={"large"} />
+          <Button
+            onClick={() => showModal(record)}
+            style={{ marginLeft: 10 }}
+            shape="circle"
+            icon={<DeleteOutlined />}
+            size={"large"}
+            danger
+          />
+        </>
+      ),
+    },
+  ];
+
   const navigate = useNavigate();
-  const handleCancel = () => {
-    navigate("/menu");
-  };
+
+  const [menus, setMenus] = useState<MenusInterface[]>([]);
 
   const [messageApi, contextHolder] = message.useMessage();
-  const [menu, setMenu] = useState<MenusInterface>();
-  const [ingredientMenu, setIngredientMenu] = useState<IngredientMenusInterface>(); // new more'
-  const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
 
-  // รับข้อมูลจาก params
-  let { id } = useParams();
-  // อ้างอิง form กรอกข้อมูล
-  const [form] = Form.useForm();
+  // Model
+  const [open, setOpen] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [modalText, setModalText] = useState<String>();
+  const [deleteId, setDeleteId] = useState<Number>();
 
-  const onFinish = async (values: MenusInterface & IngredientMenusInterface) => {
-    values.ID = menu?.ID;
-    values.Amount = parseInt(values.Amount!.toString(), 10); // new
+  const getMenus = async () => {
+    let res = await GetMenus();
+    if (res) {
+      setMenus(res);
+    }
+  };
 
-    let res = await UpdateMenu(values);
-    let resIngredientMenu = await UpdateIngredientMenu(values); // new
-    if (res.status && resIngredientMenu.status) { // add more
+  const showModal = (val: MenusInterface & IngredientMenusInterface) => {
+    setModalText(
+      `คุณต้องการลบเมนู "${val.MenuName}" หรือไม่ ?`
+    );
+    setDeleteId(val.ID);
+    setOpen(true);
+  };
+
+  const handleOk = async () => {
+    setConfirmLoading(true);
+    let resIngredient = await DeleteIngredientMenuByID(deleteId);
+    let res = await DeleteMenuByID(deleteId);
+    if (res & resIngredient) {
+      setOpen(false);
       messageApi.open({
         type: "success",
-        content: "แก้ไขข้อมูลสำเร็จ",
+        content: "ลบข้อมูลสำเร็จ",
       });
-      setTimeout(function () {
-        navigate("/menu");
-      }, 2000);
+      getMenus();
     } else {
+      setOpen(false);
       messageApi.open({
         type: "error",
-        content: "แก้ไขข้อมูลไม่สำเร็จ",
+        content: "เกิดข้อผิดพลาด !",
       });
     }
-    console.log(values);
+    setConfirmLoading(false);
   };
 
-  const getMenuById = async () => {
-    let res = await GetMenuById(Number(id));
-    if (res) {
-      setMenu(res);
-      // set form ข้อมูลเริ่มของผู้ใช้ที่เราแก้ไข
-      form.setFieldsValue({ 
-        MenuName: res.MenuName ,
-        MenuNameEng: res.MenuNameEng ,
-    });
-    }
+  const handleCancel = () => {
+    setOpen(false);
   };
-
-  const getIngredientMenuById = async () => {
-    let res = await GetIngredientMenuById(Number(id));
-    if (res) {
-      setIngredientMenu(res);
-      form.setFieldsValue({
-        Amount: res.Amount,
-        IngredientID: res.IngredientID,
-      });
-    }
-  }; // new
-
-  const getIngredient = async () => {
-    let res = await GetIngredients();
-    if (res) {
-      setIngredients(res);
-    }
-  }; // new -> select ingredient to use (combobox)
 
   useEffect(() => {
-    getMenuById();
-    getIngredient(); // new
-    getIngredientMenuById(); // new
+    getMenus();
   }, []);
 
   return (
-    <div>
+    <>
       {contextHolder}
-      <Card>
-        <h2>รายละเอียดวัตถุดิบ ของเมนู</h2>
-        <Divider />
-        <Form
-          name="basic"
-          form={form}
-          layout="vertical"
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="ชื่อเมนู (TH)"
-                name="MenuName"
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item 
-                label="ชื่อเมนู (ENG)"
-                name="MenuNameEng"
-              > 
-                <Input readOnly/> 
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ [1]" 
-                rules={[{
-                  required: true,  message: "กรุณาระบุวัตถุดิบ !",
-                }]}>
-                <Select allowClear>
-                  {ingredients.map((item) => (
-                    <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="จำนวนวัตถุดิบ [1]"
-                name="Amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกจำนวนวัตถุดิบ !",
-                  },
-                ]}
-              >
-                <Input readOnly/>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row justify="end">
-            <Col style={{ marginTop: "40px" }}>
-              <Form.Item>
-                <Space>
-                </Space>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </Card>
-    </div>
+      <Row>
+        <Col span={12}>
+          <h2>จัดการข้อมูลเมนู</h2>
+        </Col>
+        <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
+          <Space>
+            <Link to="/menu/create">
+              <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
+                เพิ่มเมนู
+              </Button>
+            </Link>
+          </Space>
+        </Col>
+      </Row>
+      <Divider />
+      <div style={{ marginTop: 20 }}>
+        <Table rowKey="ID" columns={columns} dataSource={menus} />
+      </div >
+      <Modal
+        title="ลบข้อมูล ?"
+        open={open}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+      >
+        <p>{modalText}</p>
+      </Modal>
+    </>
   );
 }
 
