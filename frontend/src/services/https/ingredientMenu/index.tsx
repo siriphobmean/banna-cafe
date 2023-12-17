@@ -2,7 +2,7 @@ import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu";
 
 const apiUrl = "http://localhost:8080";
 
-async function GetIngredientMenus() {
+async function GetIngredientMenus(id: Number) {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -10,7 +10,7 @@ async function GetIngredientMenus() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/ingredientMenus`, requestOptions)
+  let res = await fetch(`${apiUrl}/menu/ingredientMenus/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -100,7 +100,6 @@ async function GetIngredientMenuById(id: Number | undefined) {
 
   return res;
 }
-
 
 async function CreateIngredientMenu(data: IngredientMenusInterface) {
   const requestOptions = {

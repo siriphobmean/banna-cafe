@@ -2,77 +2,47 @@ import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
-import { GetMenus, DeleteMenuByID } from "../../../../services/https/menu";
-import { DeleteIngredientMenuByID } from "../../../../services/https/ingredientMenu";
+import { GetMenus, DeleteMenuByID, GetMenuById } from "../../../../services/https/menu";
+import { DeleteIngredientMenuByID, GetIngredientMenus } from "../../../../services/https/ingredientMenu";
 import { MenusInterface } from "../../../../interfaces/IMenu";
-import { Link, useNavigate } from "react-router-dom";
-import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu"; // new
+import { GetIngredient } from "../../../../services/https/ingredient"; // new 2
+import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new 2
 
 function IngredientMenus() {
   
-  const columns: ColumnsType<MenusInterface> = [
-    {
-      title: "ลำดับ",
-      dataIndex: "MenuID", // default ID
-      key: "id",
-    },
-    {
-      title: "รูปเมนู", // รูปไฟล์
-      dataIndex: "MenuImage", // Profile
-      key: "menuimage", // profile
-      render: (text, record, index) => (
-        <img src={record.MenuImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
-      )
-    },
-    {
-      title: "ชื่อเมนู (TH)",
-      dataIndex: "MenuName",
-      key: "menuname",
-    },
-    {
-      title: "ชื่อเมนู (ENG)",
-      dataIndex: "MenuNameEng",
-      key: "menunameeng",
-    },
-    {
-      title: "ราคา",
-      dataIndex: "MenuCost",
-      key: "menucost",
-      render:(record)=>(
-        <div>{(record).toFixed(2)} ฿</div>
-      )
-    },
-    {
-      title: "ประเภท",
-      dataIndex: "MenuType",
-      key: "menutype",
-      render: (item) => Object.values(item.TypeName),
-    },
-    {
-      title: "สถานะเมนู",
-      dataIndex: "MenuStatus",
-      key: "menustatus",
-      render: (status) => (
-        <span>{status === 0 ? "ไม่พร้อมขาย" : "พร้อมขาย"}</span>
-      ),
-    },
+  const columns: ColumnsType<IngredientMenusInterface> = [
+    // {
+    //   title: "ชื่อเมนู",
+    //   dataIndex: "Menu",
+    //   key: "menu",
+    //   render: (item) => Object.values(item.MenuName),
+    // },
     {
       title: "วัตถุดิบ",
-      dataIndex: "IngredientData",
-      key: "ingredientdata",
-      render: (text, record, index) => (
-        <>
-          <Button  onClick={() =>  navigate(`/menu/ingredientMenu/${record.ID}`)} shape="circle" icon={<EyeOutlined />} size={"large"} />
-        </>
-      ),
+      dataIndex: "Ingredient",
+      key: "ingredient",
+      render: (item) => Object.values(item.IngredientName),
     },
     {
-      title: "แก้ไข/ลบข้อมูล",
+      title: "จำนวน",
+      dataIndex: "Amount",
+      key: "amount",
+    },
+    {
+      title: "หน่วย",
+      dataIndex: "IngredientUnit",
+      key: "ingredientunit",
+      render: (item) => Object.values(item.UnitName),
+    },
+    {
+      title: "ลบวัตถุดิบ",
       dataIndex: "Manage",
       key: "manage",
       render: (text, record, index) => (
         <>
-          <Button  onClick={() =>  navigate(`/menu/edit/${record.ID}`)} shape="circle" icon={<EditOutlined />} size={"large"} />
+          {/* <Button  onClick={() =>  navigate(`/menu/edit/${record.ID}`)} shape="circle" icon={<EditOutlined />} size={"large"} /> */}
           <Button
             onClick={() => showModal(record)}
             style={{ marginLeft: 10 }}
@@ -89,6 +59,8 @@ function IngredientMenus() {
   const navigate = useNavigate();
 
   const [menus, setMenus] = useState<MenusInterface[]>([]);
+  const [ingredientMenus, setIngredientMenus] = useState<IngredientMenusInterface[]>([]); // new
+  const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]) // new 2
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -98,6 +70,9 @@ function IngredientMenus() {
   const [modalText, setModalText] = useState<String>();
   const [deleteId, setDeleteId] = useState<Number>();
 
+  let { id } = useParams();
+  console.log(id);
+
   const getMenus = async () => {
     let res = await GetMenus();
     if (res) {
@@ -105,25 +80,40 @@ function IngredientMenus() {
     }
   };
 
-  const showModal = (val: MenusInterface & IngredientMenusInterface) => {
+  const getIngredients = async () => {
+    let res = await GetIngredient();
+    if (res) {
+      setIngredients(res);
+    }
+  }; // new 2
+
+  const getIngredientMenus = async () => {
+    let res = await GetIngredientMenus(Number(id));
+    if (res) {
+      setIngredientMenus(res);
+    }
+  }; // new
+
+  const showModal = (val: IngredientMenusInterface) => {
     setModalText(
-      `คุณต้องการลบเมนู "${val.MenuName}" หรือไม่ ?`
+      `คุณต้องการลบวัตถุดิบหรือไม่ ?`
     );
     setDeleteId(val.ID);
     setOpen(true);
-  };
+  }; // new
 
   const handleOk = async () => {
     setConfirmLoading(true);
     let resIngredient = await DeleteIngredientMenuByID(deleteId);
-    let res = await DeleteMenuByID(deleteId);
-    if (res & resIngredient) {
+    if (resIngredient) { // delete: res &
       setOpen(false);
       messageApi.open({
         type: "success",
-        content: "ลบข้อมูลสำเร็จ",
+        content: "ลบวัตถุดิบสำเร็จ",
       });
-      getMenus();
+      //getMenus();
+      getIngredientMenus(); // new
+      //getIngredients(); // new 2
     } else {
       setOpen(false);
       messageApi.open({
@@ -138,22 +128,34 @@ function IngredientMenus() {
     setOpen(false);
   };
 
+  const [menuName, setMenuName] = useState<string>("");
+
   useEffect(() => {
-    getMenus();
-  }, []);
+    //getMenus();
+    getIngredientMenus(); // new
+    //getIngredients(); // new 2
+    const fetchMenuName = async () => {
+      const res = await GetMenuById(Number(id)); // เรียกใช้งาน API หรือฟังก์ชันที่เรียกชื่อเมนูจาก ID
+      if (res) {
+        setMenuName(res.MenuName); // ตั้งค่าชื่อเมนูที่ได้จากการเรียก API
+      }
+    };
+  
+    fetchMenuName();
+  }, [id]);
 
   return (
     <>
       {contextHolder}
       <Row>
         <Col span={12}>
-          <h2>จัดการข้อมูลเมนู</h2>
+          <h2>จัดการวัตถุดิบเมนู - {menuName}</h2>
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
-            <Link to="/menu/create">
+            <Link to="/menu/ingredientMenu/create">
               <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
-                เพิ่มเมนู
+                เพิ่มวัตถุดิบ
               </Button>
             </Link>
           </Space>
@@ -161,7 +163,7 @@ function IngredientMenus() {
       </Row>
       <Divider />
       <div style={{ marginTop: 20 }}>
-        <Table rowKey="ID" columns={columns} dataSource={menus} />
+        <Table rowKey="ID" columns={columns} dataSource={ingredientMenus} />
       </div >
       <Modal
         title="ลบข้อมูล ?"

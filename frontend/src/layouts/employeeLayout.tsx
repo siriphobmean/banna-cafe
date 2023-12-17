@@ -27,6 +27,7 @@ import History from "../pages/EmployeeSystem/history";
 
 import "./mean.css"
 import IngredientMenus from "../pages/EmployeeSystem/menu/ingredientMenu";
+import IngredientMenuCreate from "../pages/EmployeeSystem/menu/ingredientMenuCreate";
 import Members from "../pages/EmployeeSystem/member";
 import MemberEdit from "../pages/EmployeeSystem/member/edit";
 
@@ -174,6 +175,7 @@ export default function EmployeeLayout() {
                   <Route path="/menu/create" element={<MenuCreate />} />
                   <Route path="/menu/edit/:id" element={<MenuEdit />} />
                   <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
+                  <Route path="/menu/ingredientMenu/create" element={<IngredientMenuCreate />} />
                   <Route path="/member" element={<Members />} />
                   <Route path="/member/edit/:id" element={<MemberEdit />} />
                   <Route path="/ingredient" element={<Ingredient />} />

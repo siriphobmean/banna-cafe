@@ -7,14 +7,14 @@ import (
 type Employee struct {
 	gorm.Model
 
-	FirstName string
-	LastName string
-	Email string
-	Password string
-	Age int
-	Salary float64
+	FirstName string `gorm:"not null"`
+	LastName string `gorm:"not null"`
+	Email string `gorm:"not null"`
+	Password string `gorm:"not null"`
+	Age int `gorm:"not null"`
+	Salary float64 `gorm:"not null"`
 
-	Order []Order `gorm:"foreignKey:EmployeeID"`
+	Order []Order `gorm:"foreignKey:EmployeeID;"`
 	Promotion []Promotion `gorm:"foreignKey:EmployeeID"`
 	// Payment []Payment `gorm:"foreignKey:EmployeeID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity Payment
 	// Accounting []Accounting `gorm:"foreignKey:EmployeeID"` // ตอนรวมไฟล์กับเพื่อน ค่อยเอา comment ออก -> เพราะยังไม่ได้สร้าง entity Account
