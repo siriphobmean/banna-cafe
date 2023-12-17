@@ -7,12 +7,12 @@ import (
 type Member struct {
 	gorm.Model
 
-	Username string `gorm:"uniqueIndex"`
-	Email string `gorm:"uniqueIndex"`
-	Password string
-	Phone string
+	Username string `gorm:"not null;uniqueIndex"`
+	Email string `gorm:"not null;uniqueIndex"`
+	Password string `gorm:"not null"`
+	Phone string `gorm:"not null"`
 	MemberImage string `gorm:"type:longtext"`
-	Point int
+	Point int 
 
 	Order []Order `gorm:"foreignKey:MemberID"`
 	Rating []Rating `gorm:"foreignKey:MemberID"`

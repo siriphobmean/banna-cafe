@@ -56,15 +56,26 @@ func GetIngredientMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": ingredientMenu})
 }
 
+// // GET /ingredientMenus
+// func ListIngredientMenus(c *gin.Context) {
+// 	var ingredientMenus []entity.IngredientMenu
+// 	if err := entity.DB().Preload("IngredientUnit").Preload("Ingredient").Preload("Menu").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{"data": ingredientMenus})
+// }
+
 // GET /ingredientMenus
 func ListIngredientMenus(c *gin.Context) {
 	var ingredientMenus []entity.IngredientMenu
-	if err := entity.DB().Preload("IngredientUnit").Preload("Ingredient").Preload("Menu").Raw("SELECT * FROM ingredient_menus").Find(&ingredientMenus).Error; err != nil {
+	id := c.Param("id")
+	if err := entity.DB().Preload("IngredientUnit").Preload("Ingredient").Preload("Menu").Raw("SELECT * FROM ingredient_menus WHERE menu_id = ?", id).Find(&ingredientMenus).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": ingredientMenus})
-}
+} // OMG !!!
 
 // DELETE /ingredientMenus/:id
 func DeleteIngredientMenu(c *gin.Context) {

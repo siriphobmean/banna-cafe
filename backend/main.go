@@ -83,7 +83,7 @@ func main() {
 	r.GET("/ingredientTypes", controller.ListIngredientTypes)
 
 	// IngredientMenu Routes
-	r.GET("/ingredientMenus", controller.ListIngredientMenus)
+	r.GET("/menu/ingredientMenus/:id", controller.ListIngredientMenus)
 	r.GET("/ingredientMenus/:id", controller.GetIngredientMenu)
 	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
