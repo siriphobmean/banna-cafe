@@ -1,26 +1,38 @@
 /* #181D31 #E48F44 #678983 #F0E9D2, #E6DDC4 */
 
-.edit-crad h5,.edit-crad h4, .edit-crad h6{
+.edit-crad h5,
+.edit-crad h4,
+.edit-crad h6 {
     margin: 0;
 }
 
-.rat-cost{
+.rat-costEdit {
+    width: 100%;
+    height: 3%;
+    display: flex;
     justify-content: end;
+    padding: 12px 0 12px;
 }
 
-.form-edit{
+.rat-costEdit span {
+    padding: 0 12px;
+}
+
+.form-edit {
     width: auto;
     height: 84%;
     display: flex;
     flex-direction: column;
     padding: 0 40px 10px 40px;
 }
-.form-edit hr{
+
+.form-edit hr {
     width: 100%;
     border-top: 2px solid #E6DDC4;
     margin: 0;
 }
-.basket-menu{
+
+.basket-menu {
     height: 70%;
     display: flex;
     flex-direction: column;
@@ -29,28 +41,32 @@
     gap: 10px;
 }
 
-.menu-data{
+.menu-data {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 5px;
 }
-.imge-item{
+
+.imge-item {
     width: 60px;
     height: 60px;
     background-image: url(../../../../assets/menu2.png);
     background-size: cover;
 }
-.name-item{
+
+.name-item {
     width: 25%;
     overflow: hidden;
 }
-.name-item span,.quantity{
+
+.name-item span,
+.quantity {
     color: #E48F44;
 }
 
-.add-minus{
+.add-minus {
     width: 40px;
     height: 20px;
     border-radius: 5px;
@@ -59,19 +75,21 @@
     flex-direction: row;
 }
 
-.btn-quantity{
+.btn-quantity {
     width: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color:#E48F44;
+    color: #E48F44;
 }
-.btn-quantity.add{
+
+.btn-quantity.add {
     background-color: #678983;
     border-radius: 5px;
     color: #000;
 }
-.btn-description{
+
+.btn-description {
     width: 80px;
     height: 20px;
     display: flex;
@@ -81,7 +99,7 @@
     border-radius: 5px;
 }
 
-.data-preOrder{
+.data-preOrder {
     padding: 10px 0;
     height: 30%;
     display: flex;
@@ -89,20 +107,22 @@
     grid-auto-flow: 10px;
     gap: 10px;
 }
-.data-preOrder label input{
+
+.data-preOrder label input {
     width: 100%;
     border: 2px solid #678983;
     border-radius: 5px;
     padding: 0 10px;
     outline: none;
 }
-.datetime-recive{
+
+.datetime-recive {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
 
-.total-amout-allMenu{
+.total-amout-allMenu {
     display: flex;
     justify-content: space-between;
     align-items: center;

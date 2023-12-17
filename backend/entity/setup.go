@@ -47,18 +47,19 @@ func SetupDatabase() {
 	)
 	db = database
 
-	// // MenuType Data
-	// menuType := []MenuType{
-	// 	{TypeName: "BEVERAGE (เครื่องดื่ม)"},
-	// 	{TypeName: "PIZZA (พิซซ่า)"},
-	// 	{TypeName: "MEAL (อาหารมื้อ)"},
-	// 	{TypeName: "SNACK (อาหารว่าง)"},
-	// 	{TypeName: "CAKE & BAKERY (เค้กและเบเกอรี่)"},
-	// }
+	// MenuType Data
+	menuType := []MenuType{
+		{TypeName: "กาแฟ"},
+		{TypeName: "ชา & นม"},
+		{TypeName: "ผลไม้"},
+		{TypeName: "เค้ก & เบเกอรี่"},
+		{TypeName: "สำเร็จรูป"},
+	}
 
-	// for _, menuType := range menuType {
-	// 	db.Create(&menuType) // Assuming 'db' is your GORM database instance
-	// }
+	for _, menuType := range menuType {
+		db.Create(&menuType) // Assuming 'db' is your GORM database instance
+	}
+
 
 	// IngredientUnit Data
 	ingredientUnit := []IngredientUnit{
