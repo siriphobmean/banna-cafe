@@ -93,6 +93,8 @@ func main() {
 	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 
 	r.GET("/menus/:name", controller.ListMenusByName) 
 
+	// MenuType Routes
+	r.GET("/menuTypes", controller.ListMenuTypes)
 	router := r.Group("")
 	{
 		router.Use(middlewares.Authorizes()) //wtf "s"
