@@ -50,6 +50,7 @@ func GetRating(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": rating})
 }
 
+
 // GET /ratings
 func ListRatings(c *gin.Context) {
 	var ratings []entity.Rating
@@ -90,4 +91,15 @@ func UpdateRating(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": rating})
+}
+
+// GET /ratingsByMenuID/:id by tik
+func GetRatingsByMenuID(c *gin.Context) {
+	var ratings entity.Rating
+	id := c.Param("id")
+	if err := entity.DB().Preload("menu").Raw("SELECT * FROM ratings WHERE menu_id = ?", id).Find(&ratings).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ratings})
 }

@@ -20,13 +20,14 @@ export default function MenuPreorder() {
 
   const handleSelectMenuType = (menuType: MenuTypesInterface) => {
     setSelectedMenuType(menuType);
-    console.log(menuType);
   };
   const [searchText, setSearchText] = useState(String);
   const [menusSearch, setMenusSearch] = useState<MenusInterface[]>([]);
   const [menus, setMenus] = useState<MenusInterface[]>([]);
   const [menuslide, setMenuSlide] = useState<MenusInterface>();
-  const [menuID, setMenuID] = useState(Number);
+  const [menu, setMenu] = useState<MenusInterface>();
+  console.log("menu");
+  console.log(menu);
   const getMenusByMenuName = async (e: string) => {
     if (
       e.trim() &&
@@ -86,7 +87,7 @@ export default function MenuPreorder() {
             <div className="menu-slide">
               <MenuSlide
                 onAddmenupop={() => setAddmenupop(true)}
-                onAddMenuID={(id) => setMenuID(id)}
+                onAddMenu={(menu) => setMenu(menu)}
                 menus={menus}
                 setMenushow={(menu) => setMenuSlide(menu)}
               />
@@ -120,7 +121,7 @@ export default function MenuPreorder() {
               menusSearch={menusSearch}
               searchText={searchText}
               selectedMenuType={selectedMenuType}
-              onAddMenuID={(id) => setMenuID(id)}
+              onAddMenu={(menu) => setMenu(menu[0])}
               onchangeMenus={(munus) => setMenus(munus)}
             />
             <br />
@@ -137,6 +138,7 @@ export default function MenuPreorder() {
             onCloseAddmenupop={() => {
               setAddmenupop(false);
             }}
+            addMenu={menu}
           />
         </div>
       )}

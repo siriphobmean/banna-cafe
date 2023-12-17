@@ -5,13 +5,13 @@ import "../menuPreorder.css";
 interface MenuSlides {
   onAddmenupop: () => void;
   menus: MenusInterface[];
-  onAddMenuID: (id: number) => void;
+  onAddMenu: (menu: MenusInterface) => void;
   setMenushow: (menu: MenusInterface) => void;
 }
 function MenuSlide({
   onAddmenupop,
   menus,
-  onAddMenuID,
+  onAddMenu,
   setMenushow,
 }: MenuSlides) {
   const [indexStart, setIndexStart] = useState(0);
@@ -58,7 +58,7 @@ function MenuSlide({
             <button
               onClick={() => {
                 onAddmenupop();
-                onAddMenuID(Number(menushow[1].ID));
+                onAddMenu(menushow[1]);
               }}
             >
               <span>+</span>

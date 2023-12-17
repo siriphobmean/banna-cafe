@@ -23,26 +23,6 @@ async function GetRatings() {
   return res;
 }
 
-// async function GetMenus() {
-//   const requestOptions = {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   };
-
-//   let res = await fetch(`${apiUrl}/menus`, requestOptions) // ok?
-//     .then((response) => response.json())
-//     .then((res) => {
-//       if (res.data) {
-//         return res.data;
-//       } else {
-//         return false;
-//       }
-//     });
-
-//   return res;
-// }
 
 async function DeleteRatingByID(id: Number | undefined) {
   const requestOptions = {
@@ -121,11 +101,30 @@ async function UpdateRating(data: RatingsInterface) {
   return res;
 }
 
+async function GetRatingsByMenuID(id: Number | undefined) {
+ const requestOptions = {
+    method: "GET"
+  };
+
+  let res = await fetch(`${apiUrl}/ratingsByMenuID/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 export {
   GetRatings,
   CreateRating,
   // GetMenus, // GetMembers -> มีอยู่แล้ว
   DeleteRatingByID,
   GetRatingById,
-  UpdateRating
-}
+  UpdateRating,
+  GetRatingsByMenuID,
+};

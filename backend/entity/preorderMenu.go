@@ -12,7 +12,7 @@ type PreorderMenu struct {
 	Preorder   Preorder `gorm:"references:id"`
 	// FK
 	MenuSizeID *uint
-	MenuSize   Preorder `gorm:"references:id"`
+	MenuSize   MenuSize `gorm:"references:id"`
 	// FK
 	SweetnessID *uint
 	Sweetness   Sweetness `gorm:"references:id"`

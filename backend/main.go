@@ -92,9 +92,15 @@ func main() {
 	// Preoder Routes
 	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 
 	r.GET("/menus/:name", controller.ListMenusByName) 
+	r.GET("/ratingsByMenuID/:id", controller.GetRatingsByMenuID)
 	r.GET("/preorder/:id", controller.GetPreorderByID)
 	r.POST("/preorders", controller.CreatePreorder)
-	// r.PATCH("/preorders", controller.UpdatePreorder)
+
+	// PreoderMenu Routes
+	r.POST("/preorderMenus", controller.CreatePreorderMenu)
+	r.GET("/sweetnesses", controller.ListSweetnesses)
+	r.GET("/menuSizes", controller.ListMenuSizes)
+	r.GET("/drinkOptions", controller.ListDrinkOptions)
 
 	router := r.Group("")
 	{

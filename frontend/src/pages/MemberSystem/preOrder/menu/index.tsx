@@ -11,7 +11,7 @@ interface MenuAllProps {
   menusSearch: MenusInterface[];
   selectedMenuType: MenuTypesInterface | null;
   searchText: string;
-  onAddMenuID: (id: number) => void;
+  onAddMenu: (menu: MenusInterface[]) => void;
   onchangeMenus: (menus: MenusInterface[]) => void;
 }
 function MenuAll({
@@ -19,7 +19,7 @@ function MenuAll({
   menusSearch,
   selectedMenuType,
   searchText,
-  onAddMenuID,
+  onAddMenu,
   onchangeMenus,
 }: MenuAllProps) {
   const [menus, setMenus] = useState<MenusInterface[]>([]);
@@ -70,7 +70,7 @@ function MenuAll({
   }, [menusSearch, selectedMenuType]);
   return (
     <div className="menu-all">
-      {menus.map((menu) => (
+      {menus.map((menu,index) => (
         <div className="menu-crad" key={menu.ID}>
           <div className="menu-crad menu-rating">
             <FaStar />
@@ -89,8 +89,8 @@ function MenuAll({
               <button
                 className="btn-add"
                 onClick={() => {
+                  onAddMenu([menu]);
                   onAddmenupop();
-                  onAddMenuID(Number(menu.ID));
                 }}
               >
                 +เพิ่ม

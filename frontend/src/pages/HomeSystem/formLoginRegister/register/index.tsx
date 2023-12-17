@@ -123,7 +123,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
             <input type="checkbox" /> I agree to the terms & conditions
           </label>
         </div>
-        <button type="submit" className="btn">
+        <button type="submit" className="btn" >
           Register
         </button>
         <div className="login-register">

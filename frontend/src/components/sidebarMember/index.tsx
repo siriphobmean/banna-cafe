@@ -26,7 +26,6 @@ export default function SidebarMemu({ onSelectMenuType }: SidebarMemuProps) {
       setSelectedMenuType(res[0]);
     }
   };
-  console.log(selectedMenuType);
   useEffect(() => {
     getMenuTypes();
   }, []);
