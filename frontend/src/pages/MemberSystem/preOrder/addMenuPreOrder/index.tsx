@@ -1,11 +1,11 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
-import "./addMenuPreOrder.css";
-interface AddMenuPreOrderProps {
+import "./addMenuPreorder.css";
+interface AddMenuPreorderProps {
   onCloseAddmenupop: () => void;
 }
-const AddMenuPreOrder: React.FC<AddMenuPreOrderProps> = ({
+const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   onCloseAddmenupop,
 }) => {
   return (
@@ -91,4 +91,4 @@ const AddMenuPreOrder: React.FC<AddMenuPreOrderProps> = ({
     </div>
   );
 };
-export default AddMenuPreOrder;
+export default AddMenuPreorder;

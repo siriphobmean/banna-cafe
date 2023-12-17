@@ -4,8 +4,8 @@ import { IoSearch } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
 import SidebarMemu from "../../../components/sidebarMember";
 import MenuAll from "./menu";
-import AddMenuPreOrder from "./addMenuPreOrder";
-import EditPreOrder from "./editPreOrder";
+import AddMenuPreorder from "./addMenuPreorder";
+import EditPreorder from "./editPreorder";
 import MenuSlide from "./menuslide";
 import Footer from "../../../components/footer";
 import { GetMenusByName } from "../../../services/https/preorder";
@@ -133,7 +133,7 @@ export default function MenuPreorder() {
 
       {addMenupop && (
         <div className="add-menu">
-          <AddMenuPreOrder
+          <AddMenuPreorder
             onCloseAddmenupop={() => {
               setAddmenupop(false);
             }}
@@ -142,7 +142,7 @@ export default function MenuPreorder() {
       )}
       {basketMenupop && (
         <div className="edit-basketes">
-          <EditPreOrder onClosebasketMenupop={() => setBasketMenupop(false)} />
+          <EditPreorder onClosebasketMenupop={() => setBasketMenupop(false)} />
         </div>
       )}
     </div>

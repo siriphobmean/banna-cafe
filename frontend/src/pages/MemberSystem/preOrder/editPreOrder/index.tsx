@@ -1,11 +1,11 @@
 import React from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
-import "../addMenuPreOrder/addMenuPreOrder.css";
-import "./editPreOrder.css";
-interface EditMenuPreOrderProps {
+import "../addMenuPreorder/addMenuPreorder.css";
+import "./editPreorder.css";
+interface EditPreorderProps {
   onClosebasketMenupop: () => void;
 }
-const EditMenuPreOrder: React.FC<EditMenuPreOrderProps> = ({
+const EditPreorder: React.FC<EditPreorderProps> = ({
   onClosebasketMenupop,
 }) => {
   return (
@@ -61,4 +61,4 @@ const EditMenuPreOrder: React.FC<EditMenuPreOrderProps> = ({
     </div>
   );
 };
-export default EditMenuPreOrder;
+export default EditPreorder;

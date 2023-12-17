@@ -89,9 +89,12 @@ func main() {
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
 	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
 
-	// by tik 12/12/66
+	// Preoder Routes
 	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 
 	r.GET("/menus/:name", controller.ListMenusByName) 
+	r.GET("/preorder/:id", controller.GetPreorderByID)
+	r.POST("/preorders", controller.CreatePreorder)
+	// r.PATCH("/preorders", controller.UpdatePreorder)
 
 	router := r.Group("")
 	{
