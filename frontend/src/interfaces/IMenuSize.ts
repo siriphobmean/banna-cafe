@@ -1,4 +1,4 @@
-export interface SweetnessesInterface {
+export interface MenuSizesInterface {
     ID?: number;
     Name?: string;
     AddAmount?: number;
