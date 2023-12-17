@@ -60,7 +60,6 @@ func SetupDatabase() {
 		db.Create(&menuType) // Assuming 'db' is your GORM database instance
 	}
 
-
 	// IngredientUnit Data
 	ingredientUnit := []IngredientUnit{
 		{UnitName: "กรัม"},

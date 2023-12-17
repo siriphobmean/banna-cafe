@@ -12,25 +12,25 @@ import Home from "./pages/HomeSystem/home";
 // For Employee
 // By Mean
 import EmployeeLayout from "./layouts/employeeLayout";
-import Mains from "./pages/Employee System/main";
-import Menus from "./pages/Employee System/menu";
-import MenuCreate from "./pages/Employee System/menu/create";
-import MenuEdit from "./pages/Employee System/menu/edit";
-import IngredientMenus from "./pages/Employee System/menu/ingredientMenu";
-import Members from "./pages/Employee System/member";
-import MemberEdit from "./pages/Employee System/member/edit";
+import Mains from "./pages/EmployeeSystem/main";
+import Menus from "./pages/EmployeeSystem/menu";
+import MenuCreate from "./pages/EmployeeSystem/menu/create";
+import MenuEdit from "./pages/EmployeeSystem/menu/edit";
+import IngredientMenus from "./pages/EmployeeSystem/menu/ingredientMenu";
+import Members from "./pages/EmployeeSystem/member";
+import MemberEdit from "./pages/EmployeeSystem/member/edit";
 
 // By Nop
-import Ingredient from "./pages/Employee System/ingredient";
-import IngredientCreate from "./pages/Employee System/ingredient/create";
-import IngredientEdit from "./pages/Employee System/ingredient/edit";
-import History from "./pages/Employee System/history";
+import Ingredient from "./pages/EmployeeSystem/ingredient";
+import IngredientCreate from "./pages/EmployeeSystem/ingredient/create";
+import IngredientEdit from "./pages/EmployeeSystem/ingredient/edit";
+import History from "./pages/EmployeeSystem/history";
 
 // For Owner
 import OwnerLayout from "./layouts/ownerLayout"; 
-import Employees from "./pages/Owner System/employee";
-import EmployeeCreate from "./pages/Owner System/employee/create";
-import EmployeeEdit from "./pages/Owner System/employee/edit";
+import Employees from "./pages/OwnerSystem/employee";
+import EmployeeCreate from "./pages/OwnerSystem/employee/create";
+import EmployeeEdit from "./pages/OwnerSystem/employee/edit";
 import MemberLayout from "./layouts/memberLayout";
 
 // For Member
