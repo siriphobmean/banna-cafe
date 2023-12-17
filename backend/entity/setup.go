@@ -41,6 +41,9 @@ func SetupDatabase() {
 		&StatusApprovePreorder{},
 		&PreorderStatusRecive{},
 		&StatusRecivePreorder{},
+		&DrinkOption{},
+		&Sweetness{},
+		&MenuSize{},
 	)
 	db = database
 
