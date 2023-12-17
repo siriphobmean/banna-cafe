@@ -90,6 +90,26 @@ async function GetPreorderMenuById(id: Number | undefined) {
   let res = await fetch(`${apiUrl}/preorderMenu/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
+      if (res && res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+async function GetMenuSize() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/menuSizes`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
       if (res.data) {
         return res.data;
       } else {
@@ -99,11 +119,53 @@ async function GetPreorderMenuById(id: Number | undefined) {
 
   return res;
 }
+async function GetDrinkOptions() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
+  let res = await fetch(`${apiUrl}/drinkOptions`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+async function GetSweetnesses() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/sweetnesses`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
 export {
   CreatePreorderMenu,
   UpdatePreorderMenu,
   DeletePreorderMenuByID,
   GetPreorderMenus,
   GetPreorderMenuById,
+  GetSweetnesses,
+  GetDrinkOptions,
+  GetMenuSize,
 };
