@@ -1,30 +1,80 @@
-import { useState, useEffect} from 'react';
-import './menu.css';
+import { useState, useEffect } from "react";
+import "./menu.css";
 import { FaStar } from "react-icons/fa";
-import { MenusInterface } from '../../../../interfaces/IMenu';
-import { GetMenusBYMenuTypeID } from '../../../../services/https/menu';
+import { MenusInterface } from "../../../../interfaces/IMenu";
+import { GetMenusBYMenuTypeID } from "../../../../services/https/preorder";
+import { MenuTypesInterface } from "../../../../interfaces/IMenuType";
+import { GetRatings } from "../../../../services/https/rating";
+import { RatingsInterface } from "../../../../interfaces/IRating";
 interface MenuAllProps {
   onAddmenupop: () => void;
+  menusSearch: MenusInterface[];
+  selectedMenuType: MenuTypesInterface | null;
+  searchText: string;
+  onAddMenuID: (id: number) => void;
+  onchangeMenus: (menus: MenusInterface[]) => void;
 }
-const MenuAll: React.FC<MenuAllProps> = ({ onAddmenupop }) => {
+function MenuAll({
+  onAddmenupop,
+  menusSearch,
+  selectedMenuType,
+  searchText,
+  onAddMenuID,
+  onchangeMenus,
+}: MenuAllProps) {
   const [menus, setMenus] = useState<MenusInterface[]>([]);
-  const getMenusByName = async () => {
-    let res = await GetMenusBYMenuTypeID(Number(1));
+  const [selectedMenutypeold, setSelectedMenutypeold] =
+    useState<MenusInterface | null>();
+  const [ratings, setRatings] = useState<RatingsInterface[]>([]);
+
+  const getMenusMenuType = async () => {
+    let res = await GetMenusBYMenuTypeID(Number(selectedMenuType?.ID));
     if (res) {
       setMenus(res);
-      // console.log(res)
+      onchangeMenus(res);
     }
   };
-  
+  const getMenusRating = async () => {
+    let res = await GetRatings();
+    if (res) {
+      setRatings(res);
+    }
+  };
+  const getMenusRatingByMenuId = (id: number | undefined): number | string => {
+    if (id === undefined) {
+      return 0;
+    }
+    const menuRatings = ratings.filter((r) => r.MenuID === id);
+    if (menuRatings.length === 0) {
+      return "+";
+    }
+    let sumRating = 0;
+    for (let i = 0; i < menuRatings.length; i++) {
+      sumRating += menuRatings[i].Score || 0;
+    }
+    return sumRating / menuRatings.length;
+  };
+
   useEffect(() => {
-    getMenusByName();
-  }, []);
+    getMenusRating();
+    if (selectedMenuType !== selectedMenutypeold) {
+      getMenusMenuType();
+      setSelectedMenutypeold(selectedMenuType);
+    }
+
+    if (menusSearch.length !== 0 || searchText !== "") {
+      setMenus(menusSearch);
+    } else {
+      getMenusMenuType();
+    }
+  }, [menusSearch, selectedMenuType]);
   return (
     <div className="menu-all">
       {menus.map((menu) => (
         <div className="menu-crad" key={menu.ID}>
           <div className="menu-crad menu-rating">
-            <FaStar /> <span>4</span>
+            <FaStar />
+            <span>{getMenusRatingByMenuId(menu.ID)}</span>
           </div>
           <div className="menu-item">
             <div className="menu-imge">
@@ -36,7 +86,13 @@ const MenuAll: React.FC<MenuAllProps> = ({ onAddmenupop }) => {
             </div>
             <div className="cost-btn">
               <div className="menu-cost">{menu.MenuCost}-.</div>
-              <button className="btn-add" onClick={onAddmenupop}>
+              <button
+                className="btn-add"
+                onClick={() => {
+                  onAddmenupop();
+                  onAddMenuID(Number(menu.ID));
+                }}
+              >
                 +เพิ่ม
               </button>
             </div>

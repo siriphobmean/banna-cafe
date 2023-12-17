@@ -50,10 +50,12 @@
     height: 60%;
     margin-top: 10px;
 }
-.menu-imge  img{
+
+.menu-imge img {
     width: 100%;
     height: 100%;
 }
+
 .manu-name,
 .menu-cost {
     display: flex;
