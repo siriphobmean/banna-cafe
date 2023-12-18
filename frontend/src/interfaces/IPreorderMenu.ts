@@ -1,7 +1,7 @@
 export interface PreorderMenusInterface {
     ID?: number; 
     Quantity?: number;
-    TotalCost?: string;
+    TotalCost?: number;
     
     MenuID?: number;
     Menu?: MenusInterface;

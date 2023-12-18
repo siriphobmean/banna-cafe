@@ -35,7 +35,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   } = useForm<PreorderMenusInterface>({
     defaultValues: {
       Quantity: 1,
-      TotalCost: "",
+      TotalCost: addMenu?.MenuCost,
       MenuID: addMenu?.ID,
       PreorderID: 1,
       MenuSizeID: 0,
@@ -43,7 +43,6 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       OptionDrinkID: 0,
     },
   });
-
   const onSubmitAddMenuPreorder = async (
     values: PreorderMenusInterface & PreordersInterface
   ) => {
@@ -147,58 +146,40 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         </div>
         <h5>
           ขนาด
-          <div className="menu-size">
-            <label className="lc">
-              <input type="checkbox" className="ic" />
-              175 ml.
-            </label>
-            <label>
-              <input type="checkbox" />
-              300 ml.
-            </label>
-            <label>
-              <input type="checkbox" />
-              500 ml.
-            </label>
-          </div>
+          {menuSize.map((menuSize, index) => (
+            <div className="menu-size">
+              <label className="lc">
+                <input type="checkbox" className="ic" />
+                {menuSize.Quantity} ml.
+              </label>
+            </div>
+          ))}
         </h5>
         <h5>
           ความหวาน
-          <div className="menu-sweetness">
-            <label>
-              <input type="checkbox" />
-              หวานปกติ <span>100%</span>
-            </label>
-            <label>
-              <input type="checkbox" />
-              หวานปานกลาง <span>50%</span>
-            </label>
-            <label>
-              <input type="checkbox" />
-              หวานน้อย <span>25%</span>
-            </label>
-          </div>
+          {sweetness.map((sweetness, index) => (
+            <div className="menu-sweetness">
+              <label>
+                <input type="checkbox" />
+                {sweetness.Name} <span>100%</span>
+              </label>
+            </div>
+          ))}
         </h5>
         <h5>
           รูปแบบ
-          <div className="menu-option">
-            <label>
-              <input type="checkbox" />
-              ร้อน
-            </label>
-            <label>
-              <input type="checkbox" />
-              ปั่น
-            </label>
-            <label>
-              <input type="checkbox" />
-              เย็น
-            </label>
-          </div>
+          {drinkOption.map((drinkOption, index) => (
+            <div className="menu-option">
+              <label>
+                <input type="checkbox" />
+                {drinkOption.Name}
+              </label>
+            </div>
+          ))}
         </h5>
         <div className="menu-total">
           <span>ราคา</span>
-          <p>49-.</p>
+          <p>{(addMenu?.MenuCost ?? 1)}-.</p>
         </div>
       </div>
       <button className="btn-addmenu" type="submit">
