@@ -125,5 +125,66 @@ func SetupDatabase() {
 	for _, member := range member {
 		db.Create(&member) // Assuming 'db' is your GORM database instance
 	}
+	
+	// Sweetness Data (ex)
+	sweetness := []Sweetness{
+		{
+			Name:  "ไม่หวาน",
+			Value: 25,
+		},
+		{
+			Name:  "หวานน้อย",
+			Value: 50,
+		},
+		{
+			Name:  "หวานปกติ",
+			Value: 100,
+		},
+	}
 
+	for _, sweetness := range sweetness {
+		db.Create(&sweetness) // Assuming 'db' is your GORM database instance
+	}
+
+	// DrinkOption Data (ex)
+	drinkOption := []DrinkOption{
+		{
+			Name: "ร้อน",
+		},
+		{
+			Name: "เย็น",
+		},
+		{
+			Name: "ปั่น",
+		},
+	}
+
+	for _, drinkOption := range drinkOption {
+		db.Create(&drinkOption) // Assuming 'db' is your GORM database instance
+	}
+	// Sweetness Data (ex)
+	menuSize := []MenuSize{
+		{
+			Name:           "s",
+			AddAmount:      0,
+			Quantity:       360,
+			UnitOfQuantity: "ml",
+		},
+		{
+			Name:           "m",
+			AddAmount:      25,
+			Quantity:       480,
+			UnitOfQuantity: "ml",
+		},
+		{
+			Name:           "l",
+			AddAmount:      40,
+			Quantity:       600,
+			UnitOfQuantity: "ml",
+		},
+	}
+
+	for _, menuSize := range menuSize {
+		db.Create(&menuSize) // Assuming 'db' is your GORM database instance
+	}
 }
