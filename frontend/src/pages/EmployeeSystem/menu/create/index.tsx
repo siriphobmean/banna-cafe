@@ -205,7 +205,7 @@ function MenuCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบ !", }]}>
+              <Form.Item name="IngredientID" label="วัตถุดิบหลัก" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบหลัก !", }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
                     <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // Nop
