@@ -120,6 +120,27 @@ async function UpdateMenu(data: MenusInterface) {
   return res;
 }
 
+async function GetLatestMenuID() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/latestMenuID`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+} // new 20/12/66
+
 export {
   GetMenus,
   CreateMenu,
@@ -127,4 +148,5 @@ export {
   DeleteMenuByID,
   GetMenuById,
   UpdateMenu,
+  GetLatestMenuID, // new 20/12/66
 };

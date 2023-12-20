@@ -165,7 +165,7 @@ function MenuEdit() {
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          {/* <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ลำดับเมนู"
                 name="MenuID"
@@ -178,7 +178,7 @@ function MenuEdit() {
               >
                 <Input />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ชื่อเมนู (TH)"
@@ -325,6 +325,7 @@ function MenuEdit() {
             name="MenuImage" // more by flook pariwat :D
           >
           </Form.Item> */}
+          <Form.Item name="MenuID"></Form.Item>
         </Form>
       </Card>
     </div>

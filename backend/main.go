@@ -20,6 +20,7 @@ func main() {
 	r.POST("/menus", controller.CreateMenu) // sholee & biw -> edit "menu"
 	r.PATCH("/menus", controller.UpdateMenu)
 	r.DELETE("/menus/:id", controller.DeleteMenu)
+	r.GET("/latestMenuID", controller.GetLatestMenuID) // new 20/12/66
 	// MenuType Routes
 	r.GET("/menuTypes", controller.ListMenuTypes)
 	// IngredientUnit Routes
