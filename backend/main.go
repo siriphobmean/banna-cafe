@@ -24,6 +24,7 @@ func main() {
 	r.GET("/menuTypes", controller.ListMenuTypes)
 	// IngredientUnit Routes
 	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
+	r.GET("/menuNames", controller.ListMenuNames) // more 20/12/66
 
 	// Employee Routes
 	r.GET("/employees", controller.ListEmployees)
@@ -86,6 +87,7 @@ func main() {
 	r.GET("/menu/ingredientMenus/:id", controller.ListIngredientMenus)
 	r.GET("/ingredientMenus/:id", controller.GetIngredientMenu)
 	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
+	r.POST("/ingredientMenus/menuNames", controller.CreateIngredientMenuByMenuName) // more 20/12/2023
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
 	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
 	r.DELETE("/menu/ingredientMenus/:id", controller.DeleteIngredientMenuSet) // more 20/12/2023

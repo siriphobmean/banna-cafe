@@ -15,7 +15,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../../interfaces/IMenu";
 import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu";
 import { IngredientsInterface } from "../../../../interfaces/IIngredient";
-import { CreateIngredientMenu, GetIngredients, GetIngredientUnits } from "../../../../services/https/ingredientMenu";
+import { CreateIngredientMenu, GetIngredients, GetIngredientUnits, CreateIngredientMenuByMenuName, GetMenuNames } from "../../../../services/https/ingredientMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import { IngredientUnitsInterface } from "../../../../interfaces/IIngredientUnit";
 
@@ -30,14 +30,15 @@ function IngredientMenuCreate() {
   const [messageApi, contextHolder] = message.useMessage();
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
   const [ingredientUnits, setIngredientUnits] = useState<IngredientUnitsInterface[]>([]); // more 13/12/66
+  const [menuNames, setMenuNames] = useState<MenusInterface[]>([]); // more 20/12/66
 
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
     values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
     values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
     console.log(values.MenuID);
 
-    // CreateIngredientMenu
-    let res = await CreateIngredientMenu(values); // new
+    // CreateIngredientMenu -> edit to CreateIngredientMenuByMenuName
+    let res = await CreateIngredientMenuByMenuName(values); // new -> edit 20/12/66
     
     if (res.status) {
       messageApi.open({
@@ -56,6 +57,13 @@ function IngredientMenuCreate() {
     console.log(values);
   };
 
+  const getMenuName = async () => {
+    let res = await GetMenuNames();
+    if (res) {
+      setMenuNames(res);
+    }
+  }; // select menuName to use (combobox) more 20/12/66
+
   const getIngredientUnit = async () => {
     let res = await GetIngredientUnits();
     if (res) {
@@ -73,6 +81,7 @@ function IngredientMenuCreate() {
   useEffect(() => {
     getIngredient(); // new
     getIngredientUnit(); // more 13/12/66
+    getMenuName(); // more 20/12/66
   }, []);
 
   const [form] = Form.useForm();
@@ -91,18 +100,13 @@ function IngredientMenuCreate() {
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item
-                label="ลำดับเมนู"
-                name="MenuID"
-                rules={[
-                  {
-                    required: true,
-                    message: "กรุณากรอกลำดับเมนู !",
-                  },
-                ]}
-              >
-                <Input />
+          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              <Form.Item name="MenuID" label="เมนู" rules={[{ required: true,  message: "กรุณาระบุเมนู !", }]}>
+                <Select allowClear>
+                  {menuNames.map((item) => (
+                    <Option value={item.ID} key={item.MenuName}>{item.MenuName}</Option> // Nop
+                  ))}
+                </Select>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
