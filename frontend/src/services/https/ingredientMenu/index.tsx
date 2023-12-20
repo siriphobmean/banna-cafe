@@ -83,6 +83,24 @@ async function DeleteIngredientMenuByID(id: Number | undefined) {
   return res;
 }
 
+async function DeleteIngredientMenuSet(id: Number | undefined) {
+  const requestOptions = {
+    method: "DELETE"
+  };
+
+  let res = await fetch(`${apiUrl}/menu/ingredientMenus/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+} // more 20/12/2023
+
 async function GetIngredientMenuById(id: Number | undefined) {
   const requestOptions = {
     method: "GET"
@@ -149,4 +167,5 @@ export {
   GetIngredientMenuById,
   UpdateIngredientMenu,
   GetIngredientUnits, // more 13/12/66 -> edit 15/12/66
+  DeleteIngredientMenuSet, // more 20/12/66
 };

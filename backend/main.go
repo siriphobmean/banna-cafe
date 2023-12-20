@@ -88,6 +88,7 @@ func main() {
 	r.POST("/ingredientMenus", controller.CreateIngredientMenu)
 	r.PATCH("/ingredientMenus", controller.UpdateIngredientMenu)
 	r.DELETE("/ingredientMenus/:id", controller.DeleteIngredientMenu)
+	r.DELETE("/menu/ingredientMenus/:id", controller.DeleteIngredientMenuSet) // more 20/12/2023
 
 	// Preoder Routes
 	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 

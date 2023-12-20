@@ -251,9 +251,9 @@ function MenuEdit() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" 
+              <Form.Item name="IngredientID" label="วัตถุดิบหลัก" 
                 rules={[{
-                  required: true,  message: "กรุณาระบุวัตถุดิบ !",
+                  required: true,  message: "กรุณาระบุวัตถุดิบหลัก !",
                 }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (

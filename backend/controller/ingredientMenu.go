@@ -87,6 +87,16 @@ func DeleteIngredientMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
+// DELETE /ingredientMenus/:id
+func DeleteIngredientMenuSet(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM ingredient_menus WHERE menu_id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredientMenu not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": id})
+} // more
+
 // PATCH /ingredientMenus
 func UpdateIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu

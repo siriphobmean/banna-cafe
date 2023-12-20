@@ -3,7 +3,7 @@ import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMenus, DeleteMenuByID } from "../../../services/https/menu";
-import { DeleteIngredientMenuByID } from "../../../services/https/ingredientMenu";
+import { DeleteIngredientMenuByID, DeleteIngredientMenuSet } from "../../../services/https/ingredientMenu";
 import { MenusInterface } from "../../../interfaces/IMenu";
 import { Link, useNavigate } from "react-router-dom";
 import { IngredientMenusInterface } from "../../../interfaces/IIngredientMenu";
@@ -115,7 +115,8 @@ function Menus() {
 
   const handleOk = async () => {
     setConfirmLoading(true);
-    let resIngredient = await DeleteIngredientMenuByID(deleteId);
+    // let resIngredient = await DeleteIngredientMenuByID(deleteId);
+    let resIngredient = await DeleteIngredientMenuSet(deleteId);
     let res = await DeleteMenuByID(deleteId);
     if (res & resIngredient) {
       setOpen(false);
