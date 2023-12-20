@@ -120,3 +120,47 @@ func UpdateIngredientMenu(c *gin.Context) {
 
 }
 
+// POST /ingredientMenus
+func CreateIngredientMenuByMenuName(c *gin.Context) {
+	var ingredientMenu entity.IngredientMenu
+	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
+	var menuName entity.Menu             // FK เหมือนกับ MenuType -> Menu = MenuType
+	var ingredientUnit entity.IngredientUnit // fk -> 15/12/66
+
+	// bind เข้าตัวแปร ingredientMenu
+	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// ค้นหา ingredient ด้วย id
+	if tx := entity.DB().Where("id = ?", ingredientMenu.IngredientID).First(&ingredient); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredient not found"})
+		return
+	}
+
+	// ค้นหา menuName ด้วย id
+	if tx := entity.DB().Where("id = ?", ingredientMenu.MenuID).First(&menuName); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menuName not found"})
+		return
+	}
+
+	// สร้าง IngredientMenu
+	u := entity.IngredientMenu{
+		Amount:     ingredientMenu.Amount,
+		IngredientID: ingredientMenu.IngredientID, // more 28/11/2023 8:51 AM
+		MenuID: ingredientMenu.MenuID, // more 28/11/2023 8:51 AM
+		Ingredient: ingredient, // โยงความสัมพันธ์กับ Entity Ingredient
+		Menu:       menuName,     // โยงความสัมพันธ์กับ Entity Menu
+		IngredientUnitID: ingredientMenu.IngredientUnitID, // more 13/12/66
+		IngredientUnit: ingredientUnit, // more 13/12/66 -> edit 15/12/66
+	}
+
+	// บันทึก
+	if err := entity.DB().Create(&u).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": u})
+}
