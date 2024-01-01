@@ -25,6 +25,7 @@ func main() {
 	r.GET("/menuTypes", controller.ListMenuTypes)
 	// IngredientUnit Routes
 	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
+	// MenuName Routes
 	r.GET("/menuNames", controller.ListMenuNames) // more 20/12/66
 
 	// Employee Routes
