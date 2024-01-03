@@ -1,19 +1,29 @@
-import React from "react";
+import { useState } from "react";
 import SidebarMemu from "../../../components/sidebarMember";
 import Footer from "../../../components/footer";
 import "./profileMember.css";
+import { MenuTypesInterface } from "../../../interfaces/IMenuType";
+
 export default function ProfileMember() {
+  const [selectedMenuType, setSelectedMenuType] =
+    useState<MenuTypesInterface | null>(null);
+
+  const handleSelectMenuType = (menuType: MenuTypesInterface) => {
+    setSelectedMenuType(menuType);
+  };
   return (
     <div className="ProfileMember">
       <div className="sidebarProflie">
-        {/* <SidebarMemu onSelectMenuType={handleSelectMenuType} /> */}
+        <SidebarMemu onSelectMenuType={handleSelectMenuType} />
       </div>
       <div className="contentprofile">
         <div className="dataProflie-member">
           <div className="head-profile">
             <div className="imge-profile">
               <span className="span1">ban</span>
-              <div className="imge-member"></div>
+              <div className="imge-member">
+                {/* <input type="file" src="" alt="" /> */}
+              </div>
               <span>na.</span>
               <div className="leave"></div>
             </div>

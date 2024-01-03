@@ -48,8 +48,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
       <><Route index element={<Home/>}/>
           <Route path="" element={<MemberLayout/>}>
-              <Route path="/menuPreorder" element={<MenuPreorder/>}/>
-              <Route path="/profileMember" element={<ProfileMember />} />
+            <Route path="/menuPreorder" element={<MenuPreorder/>}/>
+            <Route path="/profileMember" element={<ProfileMember />} />
           </Route>
           <Route path="" element={<EmployeeLayout />}>
               <Route path="/mainEmployee" element={<Mains />}/>

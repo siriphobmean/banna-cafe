@@ -6,7 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import "./addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
-import { CreatePreorderMenu, GetDrinkOptions, GetMenuSize, GetSweetnesses } from "../../../../services/https/preoederMenu";
+import {
+  CreatePreorderMenu,
+  GetDrinkOptions,
+  GetMenuSize,
+  GetSweetnesses,
+} from "../../../../services/https/preoederMenu";
 import { MenusInterface } from "../../../../interfaces/IMenu";
 import { PreordersInterface } from "../../../../interfaces/IPreorder";
 import { GetRatingsByMenuID } from "../../../../services/https/rating";
@@ -14,6 +19,7 @@ import { RatingsInterface } from "../../../../interfaces/IRating";
 import { MenuSizesInterface } from "../../../../interfaces/IMenuSize";
 import { SweetnessesInterface } from "../../../../interfaces/ISweetness";
 import { OptionDrinksInterface } from "../../../../interfaces/IOptionDrink";
+import { CreatePreorder } from "../../../../services/https/preorder";
 interface AddMenuPreorderProps {
   onCloseAddmenupop: () => void;
   addMenu: MenusInterface | undefined;
@@ -31,33 +37,30 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<PreorderMenusInterface>({
     defaultValues: {
       Quantity: 1,
       TotalCost: addMenu?.MenuCost,
-      MenuID: addMenu?.ID,
+      MenuID: 2,
       PreorderID: 1,
-      MenuSizeID: 0,
-      SweetnessID: 0,
-      OptionDrinkID: 0,
+      MenuSizeID: 1,
+      SweetnessID: 1,
+      DrinkOptionID: 1,
     },
   });
-  const onSubmitAddMenuPreorder = async (
-    values: PreorderMenusInterface & PreordersInterface
-  ) => {
-    console.log("datapreoder");
-    console.log(values);
-    let res = await CreatePreorderMenu(values);
-    if (res.status) {
+  const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface) => {
+    // let res1 = await CreatePreorder(values);
+    let res2 = await CreatePreorderMenu(values);
+    if (res2.status) {
       messageApi.open({
         type: "success",
         content: "บันทึกเมนูสำเร็จ",
       });
       setTimeout(function () {
-        window.location.reload();
+        onCloseAddmenupop();
       }, 1000);
-      onCloseAddmenupop();
     } else {
       messageApi.open({
         type: "error",
@@ -103,7 +106,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     }
   };
   useEffect(() => {
-    const fetchData = async () => {;
+    const fetchData = async () => {
       await Promise.all([
         getMenusRating(),
         getMenuSizes(),
@@ -114,7 +117,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
 
     fetchData();
   }, [addMenu?.ID]);
-  
+
   return (
     <form
       className="add-crad"
@@ -146,22 +149,39 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         </div>
         <h5>
           ขนาด
-          {menuSize.map((menuSize, index) => (
-            <div className="menu-size">
+          <div className="menu-size">
+            {menuSize.map((menuSize, index) => (
               <label className="lc">
-                <input type="checkbox" className="ic" />
+                <input
+                  type="checkbox"
+                  className="ic"
+                  {...register("MenuSizeID", {
+                    required: { value: true, message: "this is require" },
+                  })}
+                  checked={watch("MenuSizeID") === menuSize.ID}
+                />
                 {menuSize.Quantity} ml.
               </label>
-            </div>
-          ))}
+            ))}
+          </div>
+          {/* {errors.MenuSizeID && (
+              <p className="errorMsg">{errors.MenuSizeID.message}</p>
+          )} */}
         </h5>
         <h5>
           ความหวาน
           {sweetness.map((sweetness, index) => (
             <div className="menu-sweetness">
               <label>
-                <input type="checkbox" />
-                {sweetness.Name} <span>100%</span>
+                <input
+                  type="checkbox"
+                  className="ic"
+                  {...register("SweetnessID", {
+                    required: { value: true, message: "this is require" },
+                  })}
+                  checked={watch("SweetnessID") === sweetness.ID}
+                />
+                {sweetness.Name} <span>{sweetness.Value}%</span>
               </label>
             </div>
           ))}
@@ -179,7 +199,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         </h5>
         <div className="menu-total">
           <span>ราคา</span>
-          <p>{(addMenu?.MenuCost ?? 1)}-.</p>
+          <p>{addMenu?.MenuCost ?? 1}-.</p>
         </div>
       </div>
       <button className="btn-addmenu" type="submit">

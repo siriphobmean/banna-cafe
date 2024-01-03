@@ -26,13 +26,11 @@ func CreatePreorderMenu(c *gin.Context) {
 	var menuSize entity.MenuSize
 	var sweetness entity.Sweetness
 	var drinkOption entity.DrinkOption
-
 	// bind เข้าตัวแปร preorderMenu
 	if err := c.ShouldBindJSON(&preorderMenu); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	// ค้นหา menu ด้วย id
 	if tx := entity.DB().Where("id = ?", preorderMenu.MenuID).First(&menu); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})

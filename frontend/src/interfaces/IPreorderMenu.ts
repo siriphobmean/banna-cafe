@@ -2,7 +2,7 @@ export interface PreorderMenusInterface {
     ID?: number; 
     Quantity?: number;
     TotalCost?: number;
-    
+ 
     MenuID?: number;
     Menu?: MenusInterface;
     PreorderID?: number;
@@ -11,8 +11,8 @@ export interface PreorderMenusInterface {
     MenuSize?: MenuSizesInterface;
     SweetnessID?: number;
     Sweetness?: SweetnessesInterface;
-    OptionDrinkID?: number;
-    OptionDrin?: OptionDrinksInterface;
+    DrinkOptionID?: number;
+    OptionDrinK?: OptionDrinksInterface;
 } 
 
 import { PreordersInterface } from "./IPreorder";

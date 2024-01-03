@@ -4,7 +4,7 @@
     /* width: 34vw; */
     /* height: 70vh; */
     width: 480px;
-    height: 645px;
+    height: 650px;
     background-color: #F0E9D2;
     border-radius: 25px;
     box-shadow: 4px 4px 4px 3px #678983 inset, -4px -4px 4px 3px #678983 inset;
@@ -97,10 +97,11 @@
 
 .menu-size {
     width: auto;
-    height: auto;
+    height: 25px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    flex-direction: row;
 }
 
 .menu-size label {
