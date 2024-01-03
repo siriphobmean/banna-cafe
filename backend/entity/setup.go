@@ -44,6 +44,7 @@ func SetupDatabase() {
 		&DrinkOption{},
 		&Sweetness{},
 		&MenuSize{},
+		&Payment{}, // add by Ball 03/01/2567
 	)
 	db = database
 
