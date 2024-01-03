@@ -1,7 +1,7 @@
 import React from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
-import "../addMenuPreorder/addMenuPreorder.css";
-import "./editPreorder.css";
+import "../addMenuPreOrder/addMenuPreOrder.css";
+import "./editPreOrder.css";
 interface EditPreorderProps {
   onClosebasketMenupop: () => void;
 }

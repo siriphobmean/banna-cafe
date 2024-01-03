@@ -65,7 +65,7 @@ function MenuEdit() {
     // if (res.status) {
       messageApi.open({
         type: "success",
-        content: "แก้ไขข้อมูลสำเร็จ",
+        content: "แก้ไขเมนูสำเร็จ",
       });
       setTimeout(function () {
         navigate("/menu");
@@ -73,7 +73,7 @@ function MenuEdit() {
     } else {
       messageApi.open({
         type: "error",
-        content: "แก้ไขข้อมูลไม่สำเร็จ",
+        content: resMenu.message,
       });
     }
     console.log(values);

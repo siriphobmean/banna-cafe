@@ -166,7 +166,7 @@ function IngredientMenus() {
         <Table rowKey="ID" columns={columns} dataSource={ingredientMenus} />
       </div >
       <Modal
-        title="ลบข้อมูล ?"
+        title="ลบวัตถุดิบ ?"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
-	"github.com/asaskevich/govalidator"
 )
 
 // POST /ingredientMenus
@@ -25,11 +24,6 @@ func CreateIngredientMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredient not found"})
 		return
 	}
-
-	if _, err := govalidator.ValidateStruct(menu); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	} // more 2/1/2024 10:41PM
 
 	// สร้าง IngredientMenu
 	u := entity.IngredientMenu{
@@ -132,6 +126,7 @@ func CreateIngredientMenuByMenuName(c *gin.Context) {
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
 	var menuName entity.Menu             // FK เหมือนกับ MenuType -> Menu = MenuType
 	var ingredientUnit entity.IngredientUnit // fk -> 15/12/66
+	var existingIngredientMenu entity.IngredientMenu
 
 	// bind เข้าตัวแปร ingredientMenu
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
@@ -148,6 +143,12 @@ func CreateIngredientMenuByMenuName(c *gin.Context) {
 	// ค้นหา menuName ด้วย id
 	if tx := entity.DB().Where("id = ?", ingredientMenu.MenuID).First(&menuName); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menuName not found"})
+		return
+	}
+
+	// ตรวจสอบว่ามี IngredientMenu ที่มี IngredientID เดียวกันอยู่แล้วหรือไม่
+	if tx := entity.DB().Where("ingredient_id = ?", ingredientMenu.IngredientID).First(&existingIngredientMenu); tx.RowsAffected > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "วัตถุดิบนี้ถูกใช้ไปแล้ว กรุณาเลือกวัตถุดิบอื่น"})
 		return
 	}
 
