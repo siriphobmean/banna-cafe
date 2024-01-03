@@ -65,6 +65,27 @@ async function GetIngredientUnits() {
   return res;
 } // more 13/12/66
 
+async function GetMenuNames() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/menuNames`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+} // more 20/12/66
+
 async function DeleteIngredientMenuByID(id: Number | undefined) {
   const requestOptions = {
     method: "DELETE"
@@ -82,6 +103,24 @@ async function DeleteIngredientMenuByID(id: Number | undefined) {
 
   return res;
 }
+
+async function DeleteIngredientMenuSet(id: Number | undefined) {
+  const requestOptions = {
+    method: "DELETE"
+  };
+
+  let res = await fetch(`${apiUrl}/menu/ingredientMenus/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+} // more 20/12/2023
 
 async function GetIngredientMenuById(id: Number | undefined) {
   const requestOptions = {
@@ -121,6 +160,26 @@ async function CreateIngredientMenu(data: IngredientMenusInterface) {
   return res;
 }
 
+async function CreateIngredientMenuByMenuName(data: IngredientMenusInterface) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  };
+
+  let res = await fetch(`${apiUrl}/ingredientMenus/menuNames`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return { status: true, message: res.data };
+      } else {
+        return { status: false, message: res.error };
+      }
+    });
+
+  return res;
+} // more 20/12/66
+
 async function UpdateIngredientMenu(data: IngredientMenusInterface) {
   const requestOptions = {
     method: "PATCH",
@@ -149,4 +208,7 @@ export {
   GetIngredientMenuById,
   UpdateIngredientMenu,
   GetIngredientUnits, // more 13/12/66 -> edit 15/12/66
+  DeleteIngredientMenuSet, // more 20/12/66
+  CreateIngredientMenuByMenuName, // more 20/12/66
+  GetMenuNames, // more 20/12/66
 };

@@ -22,6 +22,7 @@ import { CreateMenu, GetMenuTypes } from "../../../../services/https/menu";
 import { CreateIngredientMenu, GetIngredients, GetIngredientUnits } from "../../../../services/https/ingredientMenu"; // new +more 13/12/66
 import { useNavigate } from "react-router-dom";
 import { IngredientUnitsInterface } from "../../../../interfaces/IIngredientUnit"; // more 13/12/66
+import { GetLatestMenuID } from "../../../../services/https/menu"; // new 20/12/66
 
 const { Option } = Select;
 
@@ -36,14 +37,31 @@ function MenuCreate() {
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
   const [ingredientUnits, setIngredientUnits] = useState<IngredientUnitsInterface[]>([]); // more 13/12/66
   const [menuImage, setMenuImage] = useState<ImageUpload>()
+  const [latestMenuID, setLatestMenuID] = useState<number | undefined>(undefined); // new 20/12/66
   console.log (menuTypes);
 
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
+
+    // Fetch latest menu ID
+    let latestID = await GetLatestMenuID();
+    // Increment the latest ID by 1 for the new menu ID
+    if (latestID !== false) {
+      latestID += 1; // Increment the latest ID by 1
+      values.MenuID = latestID; // Assign the incremented ID to the MenuID field
+    } else {
+      // Handle if the latest ID retrieval fails
+      messageApi.open({
+        type: "error",
+        content: "ไม่สามารถดึงข้อมูล ID เมนูล่าสุดได้",
+      });
+    return;
+  }
+
     values.MenuImage = menuImage?.thumbUrl;
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D
     values.MenuCost = parseFloat(values.MenuCost!.toString());
     values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
-    values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
+    //values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
     values.MenuStatus = parseInt(values.MenuStatus!.toString(), 10); // more
     // console.log(values);
     // let res = await CreateMenu(values); // use it -> keep data to db /menu
@@ -102,6 +120,11 @@ function MenuCreate() {
     getMenuType();
     getIngredient(); // new
     getIngredientUnit(); // more 13/12/66
+    const fetchLatestMenuID = async () => {
+      const latestID = await GetLatestMenuID();
+      setLatestMenuID(latestID); // Set the latest menu ID retrieved from the backend
+    };
+    fetchLatestMenuID();
   }, []);
 
   const normFile = (e: any) => {
@@ -125,7 +148,7 @@ function MenuCreate() {
           autoComplete="off"
         >
           <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+          {/* <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ลำดับเมนู"
                 name="MenuID"
@@ -138,7 +161,7 @@ function MenuCreate() {
               >
                 <Input />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
                 label="ชื่อเมนู (TH)"
@@ -205,7 +228,7 @@ function MenuCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบ !", }]}>
+              <Form.Item name="IngredientID" label="วัตถุดิบหลัก" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบหลัก !", }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
                     <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // Nop

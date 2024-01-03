@@ -98,3 +98,23 @@ func UpdateMenu(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": menu})
 }
+
+// GET /menuNames
+func ListMenuNames(c *gin.Context) {
+	var menuNames []entity.Menu
+	if err := entity.DB().Preload("MenuType").Raw("SELECT * FROM menus").Scan(&menuNames).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": menuNames})
+}
+
+// GET /latestMenuID
+func GetLatestMenuID(c *gin.Context) {
+    var menu entity.Menu
+    if err := entity.DB().Preload("MenuType").Order("id desc").First(&menu).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": menu.ID})
+} // new 20/12/66
