@@ -1,2 +1,24 @@
 Hello, World
-สวัสดีครับ :D
+
+- backup - by mean :D
+func TestTrueAll(t *testing.T) {
+
+	g := NewGomegaWithT(t)
+
+	t.Run(`Data is true all.`, func(t *testing.T) {
+		menu := entity.Menu{
+			MenuID:      1,
+			MenuName:    "กาแฟดำ",
+			MenuNameEng: "Black Coffee",
+			MenuCost:    550.05,
+			MenuImage:   "",
+			MenuStatus:  1,
+			MenuTypeID:  1,
+		}
+
+		ok, err := govalidator.ValidateStruct(menu)
+
+		g.Expect(ok).To(BeTrue())
+		g.Expect(err).To(BeNil())
+	})
+}
