@@ -93,16 +93,16 @@ func UpdateMenu(c *gin.Context) {
 		return
 	}
 
-	// if _, err := govalidator.ValidateStruct(menu); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// } ?????? 2:49 AM 3/1/2024
-
 	// ค้นหา menu ด้วย id
 	if tx := entity.DB().Where("id = ?", menu.ID).First(&result); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
 		return
 	}
+
+	if _, err := govalidator.ValidateStruct(menu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} // more 3/1/2024 4:58PM
 
 	if err := entity.DB().Save(&menu).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

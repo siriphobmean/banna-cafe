@@ -51,7 +51,7 @@ function IngredientMenuCreate() {
     } else {
       messageApi.open({
         type: "error",
-        content: "บันทึกข้อมูลไม่สำเร็จ",
+        content: res.message,
       });
     }
     console.log(values);

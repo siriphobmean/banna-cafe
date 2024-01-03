@@ -74,6 +74,7 @@ func SetupDatabase() {
 	// Role Data
 	role := []Role{
 		{RoleName: "Owner"},
+		{RoleName: "Manager"},
 		{RoleName: "Employee"},
 	}
 
@@ -118,6 +119,20 @@ func SetupDatabase() {
 
 	for _, menu := range menu {
 		db.Create(&menu) // Assuming 'db' is your GORM database instance
+	}
+
+	// IngredientMenu Data (ex)
+	ingredientMenu := []IngredientMenu{
+		{
+			Amount: 10,
+			IngredientID: 1,
+			MenuID: 1,
+			IngredientUnitID: 1,
+		},
+	}
+
+	for _, ingredientMenu := range ingredientMenu {
+		db.Create(&ingredientMenu) // Assuming 'db' is your GORM database instance
 	}
 
 	// Member Data (ex)
