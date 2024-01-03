@@ -42,20 +42,34 @@ function MenuCreate() {
 
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
 
-    // Fetch latest menu ID
-    let latestID = await GetLatestMenuID();
-    // Increment the latest ID by 1 for the new menu ID
-    if (latestID !== false) {
-      latestID += 1; // Increment the latest ID by 1
-      values.MenuID = latestID; // Assign the incremented ID to the MenuID field
+    // // Fetch latest menu ID
+    // let latestID = await GetLatestMenuID();
+    // // Increment the latest ID by 1 for the new menu ID
+    // if (latestID !== false) {
+    //   latestID += 1; // Increment the latest ID by 1
+    //   values.MenuID = latestID; // Assign the incremented ID to the MenuID field
+    // } else {
+    //   // Handle if the latest ID retrieval fails
+    //   messageApi.open({
+    //     type: "error",
+    //     content: "ไม่สามารถดึงข้อมูล ID เมนูล่าสุดได้",
+    //   });
+    //   return;
+    // }
+
+    let lastestID = await GetLatestMenuID();
+    if (lastestID == false) {
+      values.MenuID = 1;
+    } else if (lastestID !== false) {
+      lastestID += 1;
+      values.MenuID = lastestID;
     } else {
-      // Handle if the latest ID retrieval fails
       messageApi.open({
         type: "error",
-        content: "ไม่สามารถดึงข้อมูล ID เมนูล่าสุดได้",
-      });
-    return;
-  }
+        content: "Error Krub :("
+      })
+      return;
+    }
 
     values.MenuImage = menuImage?.thumbUrl;
     // values.MenuCost = parseInt(values.MenuCost! .toString(), 10); // edit by saran :D

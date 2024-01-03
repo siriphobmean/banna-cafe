@@ -1,7 +1,7 @@
 package unit
 
 import (
-	"fmt"
+	//"fmt" -> not use :D
 	"testing"
 
 	"github.com/asaskevich/govalidator"
@@ -29,7 +29,7 @@ func TestMenuName(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกชื่อเมนู ! โดยมีตัวอักษรไม่เกิน 50 ตัว")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกชื่อเมนู !")))
 	})
 
 	t.Run(`menu_name pattern is not true`, func(t *testing.T) {
@@ -48,7 +48,8 @@ func TestMenuName(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuName: %s does not validate as maxstringlength(50)", menu.MenuName)))
+		// g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuName: %s does not validate as maxstringlength(50)", menu.MenuName)))
+		g.Expect(err.Error()).To(Equal(("ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว")))
 	})
 
 	t.Run(`menu_name pattern is valid`, func(t *testing.T) {
@@ -93,24 +94,24 @@ func TestMenuCost(t *testing.T) {
 		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
 	})
 
-	// t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
-	// 	menu := entity.Menu{
-	// 		MenuID:      1,
-	// 		MenuName:    "กาแฟดำ",
-	// 		MenuNameEng: "Black Coffee",
-	// 		MenuCost:    50, // incorrect x -> but in now 50 = correct T..T
-	// 		MenuImage:   "", // longtext
-	// 		MenuStatus:  1,
-	// 		MenuTypeID:  1,
-	// 	}
+	t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
+		menu := entity.Menu{
+			MenuID:      1,
+			MenuName:    "กาแฟดำ",
+			MenuNameEng: "Black Coffee",
+			MenuCost:    0, // incorrect :(
+			MenuImage:   "", // longtext
+			MenuStatus:  1,
+			MenuTypeID:  1,
+		}
 
-	// 	ok, err := govalidator.ValidateStruct(menu)
+		ok, err := govalidator.ValidateStruct(menu)
 
-	// 	g.Expect(ok).NotTo(BeTrue())
-	// 	g.Expect(err).NotTo(BeNil())
+		g.Expect(ok).NotTo(BeTrue())
+		g.Expect(err).NotTo(BeNil())
 
-	// 	g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
-	// })
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
+	})
 
 	t.Run(`menu_cost pattern is valid`, func(t *testing.T) {
 		menu := entity.Menu{
@@ -151,7 +152,7 @@ func TestMenuStatus(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะเลข 1 หรือ 2")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกสถานะเมนู !")))
 	})
 
 	t.Run(`menu_status pattern is not true`, func(t *testing.T) {
@@ -170,7 +171,8 @@ func TestMenuStatus(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuStatus: %d does not validate as range(1|2)", menu.MenuStatus)))
+		// g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuStatus: %d does not validate as range(1|2)", menu.MenuStatus)))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น")))
 	})
 
 	t.Run(`menu_status pattern is valid`, func(t *testing.T) {
