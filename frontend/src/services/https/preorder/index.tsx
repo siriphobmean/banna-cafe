@@ -42,12 +42,29 @@ async function UpdatePreorder(data: PreordersInterface) {
   return res;
 }
 
-async function GetPreorderById(id: Number | undefined) {
+async function GetNewPreorderByMemberID(id: Number | undefined) {
   const requestOptions = {
     method: "GET",
   };
 
-  let res = await fetch(`${apiUrl}/preorder/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/newPreorderMember/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+async function GetPreorderStatusPaymentByMemberID(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET",
+  };
+
+  let res = await fetch(`${apiUrl}/preorderMember/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -98,8 +115,9 @@ async function GetMenusByName(name: string | undefined) {
 }
 export {
   CreatePreorder,
-  GetPreorderById,
+  GetNewPreorderByMemberID,
   UpdatePreorder,
   GetMenusBYMenuTypeID,
+  GetPreorderStatusPaymentByMemberID,
   GetMenusByName,
 };

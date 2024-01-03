@@ -9,10 +9,13 @@ export interface PreorderMenusInterface {
     Preoeder?: PreordersInterface;
     MenuSizeID?: number;
     MenuSize?: MenuSizesInterface;
+    MenuSizeStatus?: number;
     SweetnessID?: number;
     Sweetness?: SweetnessesInterface;
+    SweetnessStatus?: number;
     DrinkOptionID?: number;
-    OptionDrinK?: OptionDrinksInterface;
+    DrinKOption?: OptionDrinksInterface;
+    DrinkOptionStatus?: number;
 } 
 
 import { PreordersInterface } from "./IPreorder";

@@ -7,7 +7,6 @@ type Preorder struct {
 	gorm.Model
 	PreoderID   string
 	TotalAmount int64
-	CreateTime  time.Time
 	PickUpTime  time.Time
 	PickUpDate  time.Time
 	Note        string

@@ -99,6 +99,8 @@ func main() {
 	r.GET("/menus/:name", controller.ListMenusByName) 
 	r.GET("/ratingsByMenuID/:id", controller.GetRatingsByMenuID)
 	r.GET("/preorder/:id", controller.GetPreorderByID)
+	r.GET("/preorderMember/:id", controller.GetPreorderStatusPaymentByMemberID)
+	r.GET("/newPreorderMember/:id", controller.GetNewPreorderByMemberID)
 	r.POST("/preorders", controller.CreatePreorder)
 
 	// PreoderMenu Routes
@@ -106,6 +108,8 @@ func main() {
 	r.GET("/sweetnesses", controller.ListSweetnesses)
 	r.GET("/menuSizes", controller.ListMenuSizes)
 	r.GET("/drinkOptions", controller.ListDrinkOptions)
+
+	
 
 	router := r.Group("")
 	{

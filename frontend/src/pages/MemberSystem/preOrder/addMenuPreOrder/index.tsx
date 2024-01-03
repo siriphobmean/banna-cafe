@@ -19,7 +19,14 @@ import { RatingsInterface } from "../../../../interfaces/IRating";
 import { MenuSizesInterface } from "../../../../interfaces/IMenuSize";
 import { SweetnessesInterface } from "../../../../interfaces/ISweetness";
 import { OptionDrinksInterface } from "../../../../interfaces/IOptionDrink";
-import { CreatePreorder } from "../../../../services/https/preorder";
+import {
+  CreatePreorder,
+  GetNewPreorderByMemberID,
+  GetPreorderStatusPaymentByMemberID,
+} from "../../../../services/https/preorder";
+import { StatusApprovePreordersInterface } from "../../../../interfaces/IStatusApprovePreorder";
+import { PreorderStatusApprovesInterface } from "../../../../interfaces/IPreorderStatusApprove";
+import { PreorderStatusRecivesInterface } from "../../../../interfaces/IPreorderStatusRecive";
 interface AddMenuPreorderProps {
   onCloseAddmenupop: () => void;
   addMenu: MenusInterface | undefined;
@@ -34,24 +41,60 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   const [menuSize, setMenuSize] = useState<MenuSizesInterface[]>([]);
   const [sweetness, setSweetness] = useState<SweetnessesInterface[]>([]);
   const [drinkOption, setDrinkOption] = useState<OptionDrinksInterface[]>([]);
+  const [preorder_status_approver, setPreorder_status_approver] =
+    useState<StatusApprovePreordersInterface>();
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
-  } = useForm<PreorderMenusInterface>({
+  } = useForm<
+    PreorderMenusInterface &
+      PreordersInterface &
+      PreorderStatusApprovesInterface &
+      PreorderStatusRecivesInterface
+  >({
     defaultValues: {
       Quantity: 1,
       TotalCost: addMenu?.MenuCost,
-      MenuID: 2,
+      MenuID: addMenu?.ID,
       PreorderID: 1,
-      MenuSizeID: 1,
+      MenuSizeID: 1, // Assuming it's an array for multiple selections
       SweetnessID: 1,
       DrinkOptionID: 1,
+      DrinkOptionStatus: 1,
+      SweetnessStatus: 1,
+      MenuSizeStatus: 1,
+
+      TotalAmount: 0,
+      MemberID: 1,
+      // PickupTime: "2006-01-02T15:04:05Z07:00",
+      // PickupDate: "2006-01-02T15:04:05Z07:00",
+      Note: "",
+      Respond: "",
+
+      StatusApprovePreorderID: 2,
+      StatusRecivePreorderID: 2,
     },
   });
-  const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface) => {
-    // let res1 = await CreatePreorder(values);
+
+  const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface & PreordersInterface) => {
+    console.log("values");
+    console.log(values);
+    if (preorder_status_approver?.ID === 1) {
+      let res1 = await CreatePreorder(values);
+      if (!res1.status) {
+        messageApi.open({
+          type: "error",
+          content: "เกิดข้อผิดพลาด1",
+        });
+        return; // Early return if creating preorder fails
+      }
+    }
+
+    values.PreorderID = await getNewPreoderByMember(1);
+    console.log(values);
     let res2 = await CreatePreorderMenu(values);
     if (res2.status) {
       messageApi.open({
@@ -105,6 +148,18 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       setDrinkOption(res);
     }
   };
+  const getPreoderStatusPaymentByMember = async (id: number) => {
+    let res = await GetPreorderStatusPaymentByMemberID(id);
+    if (res) {
+      setPreorder_status_approver(res);
+    }
+  };
+  const getNewPreoderByMember = async (id: number) => {
+    let res = await GetNewPreorderByMemberID(id);
+    if (res) {
+      return(res.ID);
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
@@ -112,12 +167,27 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         getMenuSizes(),
         getDrinkOptions(),
         getSweetnesses(),
+        getPreoderStatusPaymentByMember(1),
       ]);
     };
-
     fetchData();
   }, [addMenu?.ID]);
 
+  const quantity = watch("Quantity");
+  const handleDecrease = () => {
+    if (quantity !== undefined && quantity > 1) {
+      setValue("Quantity", quantity - 1);
+    }
+  };
+
+  const handleIncrease = () => {
+    if (quantity !== undefined && quantity >= 1) {
+      setValue("Quantity", quantity + 1);
+    }
+  };
+  
+  console.log("preorder");
+  console.log(preorder_status_approver);
   return (
     <form
       className="add-crad"
@@ -143,30 +213,38 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
           <span>{addMenu?.MenuNameEng} </span>
         </div>
         <div className="menu-amount">
-          <div className="btn-amout minus">-</div>
-          <span>1</span>
-          <div className="btn-amout add">+</div>
+          <div className="btn-amount minus" onClick={handleDecrease}>
+            -
+          </div>
+          <span>{quantity}</span>
+          <div className="btn-amount plus" onClick={handleIncrease}>
+            +
+          </div>
         </div>
         <h5>
           ขนาด
           <div className="menu-size">
-            {menuSize.map((menuSize, index) => (
-              <label className="lc">
+            {menuSize.map((menuSize: MenuSizesInterface, index: number) => (
+              <label className="lc" key={index}>
                 <input
                   type="checkbox"
                   className="ic"
-                  {...register("MenuSizeID", {
-                    required: { value: true, message: "this is require" },
+                  {...register("MenuSizeStatus", {
+                    required: { value: true, message: "this is required" },
                   })}
-                  checked={watch("MenuSizeID") === menuSize.ID}
+                  onClick={() => {
+                    const newMenuSizeID = menuSize.ID;
+                    setValue("MenuSizeID", newMenuSizeID);
+                  }}
+                  checked={menuSize.ID === watch("MenuSizeID")}
                 />
                 {menuSize.Quantity} ml.
               </label>
             ))}
           </div>
-          {/* {errors.MenuSizeID && (
-              <p className="errorMsg">{errors.MenuSizeID.message}</p>
-          )} */}
+          {errors.MenuSizeID && (
+            <p className="errorMsg">{errors.MenuSizeID.message}</p>
+          )}
         </h5>
         <h5>
           ความหวาน
@@ -176,9 +254,13 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
                 <input
                   type="checkbox"
                   className="ic"
-                  {...register("SweetnessID", {
+                  {...register("SweetnessStatus", {
                     required: { value: true, message: "this is require" },
                   })}
+                  onClick={() => {
+                    const newMenuSweetnessID = sweetness.ID;
+                    setValue("SweetnessID", newMenuSweetnessID);
+                  }}
                   checked={watch("SweetnessID") === sweetness.ID}
                 />
                 {sweetness.Name} <span>{sweetness.Value}%</span>
@@ -191,7 +273,18 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
           {drinkOption.map((drinkOption, index) => (
             <div className="menu-option">
               <label>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  className="ic"
+                  {...register("DrinkOptionStatus", {
+                    required: { value: true, message: "this is require" },
+                  })}
+                  onClick={() => {
+                    const newDrinkOptionID = drinkOption.ID;
+                    setValue("DrinkOptionID", newDrinkOptionID);
+                  }}
+                  checked={watch("DrinkOptionID") === drinkOption.ID}
+                />
                 {drinkOption.Name}
               </label>
             </div>
