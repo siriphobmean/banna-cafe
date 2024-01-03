@@ -126,7 +126,7 @@ func CreateIngredientMenuByMenuName(c *gin.Context) {
 	var ingredient entity.Ingredient // FK เหมือนกับ MenuType -> Ingredient = MenuType
 	var menuName entity.Menu             // FK เหมือนกับ MenuType -> Menu = MenuType
 	var ingredientUnit entity.IngredientUnit // fk -> 15/12/66
-	var existingIngredientMenu entity.IngredientMenu
+	// var existingIngredientMenu entity.IngredientMenu
 
 	// bind เข้าตัวแปร ingredientMenu
 	if err := c.ShouldBindJSON(&ingredientMenu); err != nil {
@@ -146,11 +146,11 @@ func CreateIngredientMenuByMenuName(c *gin.Context) {
 		return
 	}
 
-	// ตรวจสอบว่ามี IngredientMenu ที่มี IngredientID เดียวกันอยู่แล้วหรือไม่
-	if tx := entity.DB().Where("ingredient_id = ?", ingredientMenu.IngredientID).First(&existingIngredientMenu); tx.RowsAffected > 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "วัตถุดิบนี้ถูกใช้ไปแล้ว กรุณาเลือกวัตถุดิบอื่น"})
-		return
-	}
+	// // ตรวจสอบว่ามี IngredientMenu ที่มี IngredientID เดียวกันอยู่แล้วหรือไม่
+	// if tx := entity.DB().Where("ingredient_id = ?", ingredientMenu.IngredientID).First(&existingIngredientMenu); tx.RowsAffected > 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "วัตถุดิบนี้ถูกใช้ไปแล้ว กรุณาเลือกวัตถุดิบอื่น"})
+	// 	return
+	// }
 
 	// สร้าง IngredientMenu
 	u := entity.IngredientMenu{
