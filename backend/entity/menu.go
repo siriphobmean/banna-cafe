@@ -7,20 +7,21 @@ import (
 type Menu struct {
 	gorm.Model
 
-	MenuID int `gorm:"not null;uniqueIndex"` // more 12:43 AM 29/11/2023 -> // new ทำให้ตอนกรอกลำดับซ้ำมา ข้อมูลไม่ถูกเก็บเข้า entity: menus(menu_id ท้ายสุด)
-	MenuName string `gorm:"not null;uniqueIndex"`
-	MenuNameEng string `gorm:"not null;uniqueIndex"`
-	MenuCost float64 `gorm:"not null"`
-	MenuImage string `gorm:"type:longtext"`
-	MenuStatus int `gorm:"not null"`
+	MenuID int `gorm:"uniqueIndex" valid:"required~MenuID is required"` // ok!
+	MenuName string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(50)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว"` // ok!
+	MenuNameEng string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(50)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว"` // ok!
+	MenuCost float64 `valid:"required~กรุณากรอกเป็นเลขทศนิยม, float~กรุณากรอกเป็นเลขทศนิยม"` // ok!...
+	MenuImage string `gorm:"type:longtext"` // ok!
+	MenuStatus int `valid:"required~กรุณากรอกสถานะเมนู !, range(1|2)~กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น"` // ok
 
 	// OrderMenu []OrderMenu `gorm:"foreignKey:MenuID"`
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:MenuID"`
 	PreorderMenus []PreorderMenu `gorm:"foreignKey:MenuID"`
 
 	// FK
-	MenuTypeID *uint
+	MenuTypeID uint `valid:"required~MenuType is required"`
 	MenuType MenuType `gorm:"references:id"`
+
 	RatingID *uint
 	Rating Rating `gorm:"references:id"` // in now don't have not null
 } // Clear!

@@ -43,7 +43,7 @@ function IngredientMenuCreate() {
     if (res.status) {
       messageApi.open({
         type: "success",
-        content: "บันทึกข้อมูลสำเร็จ",
+        content: "เพิ่มวัตถุดิบสำเร็จ",
       });
       setTimeout(function () {
         navigate("/menu");
@@ -51,7 +51,7 @@ function IngredientMenuCreate() {
     } else {
       messageApi.open({
         type: "error",
-        content: "บันทึกข้อมูลไม่สำเร็จ",
+        content: res.message,
       });
     }
     console.log(values);

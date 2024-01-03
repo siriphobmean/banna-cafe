@@ -12,7 +12,7 @@ func DB() *gorm.DB {
 }
 
 func SetupDatabase() {
-	database, err := gorm.Open(sqlite.Open("sa-project.db"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open("se-banna.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect database")
 	}
@@ -74,6 +74,7 @@ func SetupDatabase() {
 	// Role Data
 	role := []Role{
 		{RoleName: "Owner"},
+		{RoleName: "Manager"},
 		{RoleName: "Employee"},
 	}
 
@@ -102,6 +103,62 @@ func SetupDatabase() {
 
 	for _, ingredientType := range ingredientType {
 		db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
+	}
+
+	// Menu Data (ex)
+	menu := []Menu{
+		{
+			MenuID: 1,
+			MenuName: "กาแฟดำ",
+			MenuNameEng: "Black Coffee",
+			MenuCost: 65.55,
+			MenuStatus: 1,
+			MenuTypeID: 1,
+		},
+	}
+
+	for _, menu := range menu {
+		db.Create(&menu) // Assuming 'db' is your GORM database instance
+	}
+
+	var count1 int64
+	db.Model(&IngredientMenu{}).Count(&count1)
+
+	if count1 == 0 {
+    // Create IngredientMenu data
+    menu := []Menu{
+        {
+            MenuID: 1,
+			MenuName: "กาแฟดำ",
+			MenuNameEng: "Black Coffee",
+			MenuCost: 65.55,
+			MenuStatus: 1,
+			MenuTypeID: 1,
+        },
+    }
+
+    for _, menu := range menu {
+        	db.Create(&menu)
+    	}
+	}
+
+	var count2 int64
+	db.Model(&IngredientMenu{}).Count(&count2)
+
+	if count2 == 0 {
+    // Create IngredientMenu data
+    ingredientMenu := []IngredientMenu{
+        {
+            Amount:          10,
+            IngredientID:    1,
+            MenuID:          1,
+            IngredientUnitID: 1,
+        },
+    }
+
+    for _, ingredientMenu := range ingredientMenu {
+        	db.Create(&ingredientMenu)
+    	}
 	}
 
 	// Member Data (ex)
