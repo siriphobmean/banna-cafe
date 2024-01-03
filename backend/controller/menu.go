@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
+	"github.com/asaskevich/govalidator"
 )
 
 // POST /menus
@@ -23,6 +24,11 @@ func CreateMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menuType not found"})
 		return
 	}
+
+	if _, err := govalidator.ValidateStruct(menu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} // more 2/1/2024 10:41PM
 
 	// สร้าง Menu
 	u := entity.Menu{
@@ -86,6 +92,12 @@ func UpdateMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	// if _, err := govalidator.ValidateStruct(menu); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// } ?????? 2:49 AM 3/1/2024
+
 	// ค้นหา menu ด้วย id
 	if tx := entity.DB().Where("id = ?", menu.ID).First(&result); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})

@@ -89,7 +89,7 @@ function MenuCreate() {
     } else {
       messageApi.open({
         type: "error",
-        content: "บันทึกข้อมูลไม่สำเร็จ",
+        content: resMenu.message,
       });
     }
     console.log(values);
@@ -169,7 +169,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อเมนู !",
+                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 50 ตัวอักษร)",
                   },
                 ]}
               >
@@ -183,7 +183,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อเมนู !",
+                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 50 ตัวอักษร)",
                   },
                 ]}
               >
@@ -197,7 +197,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกราคาเมนู !",
+                    message: "กรุณากรอกราคาเมนู ! (เลขทศนิยม 2 ตำแหน่ง)",
                   },
                 ]}
               >
@@ -205,7 +205,9 @@ function MenuCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="MenuTypeID" label="ประเภทเมนู" rules={[{ required: true,  message: "กรุณาระบุประเภทเมนู !", }]}>
+              <Form.Item name="MenuTypeID" label="ประเภทเมนู" rules={[{ 
+                required: true,  
+                message: "กรุณาระบุประเภทเมนู !", }]}>
                 <Select allowClear>
                   {menuTypes.map((item) => (
                     <Option value={item.ID} key={item.TypeName}>{item.TypeName}</Option>
@@ -215,12 +217,12 @@ function MenuCreate() {
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
               <Form.Item
-                label="สถานะเมนู (0 คือ ไม่พร้อมขาย / 1 คือ พร้อมขาย)"
+                label="สถานะเมนู (1 คือ ไม่พร้อมขาย / 2 คือ พร้อมขาย)"
                 name="MenuStatus"
                 rules={[
                   {
                     required: true,
-                    message: "กรุณาเลือกสถานะเมนู !",
+                    message: "กรุณากรอกสถานะเมนู ! (เลข 1 หรือ 2 เท่านั้น)",
                   },
                 ]}
               >
@@ -228,7 +230,9 @@ function MenuCreate() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientID" label="วัตถุดิบหลัก" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบหลัก !", }]}>
+              <Form.Item name="IngredientID" label="วัตถุดิบหลัก" rules={[{ 
+                required: true,  
+                message: "กรุณาระบุวัตถุดิบหลัก !", }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
                     <Option value={item.ID} key={item.IngredientName}>{item.IngredientName}</Option> // Nop
@@ -240,13 +244,17 @@ function MenuCreate() {
               <Form.Item
                 label="จำนวนวัตถุดิบ"
                 name="Amount" // Nop
-                rules={[{ required: true, message: "กรุณากรอกจำนวนวัตถุดิบ !", }]}
+                rules={[{ 
+                  required: true, 
+                  message: "กรุณากรอกจำนวนวัตถุดิบ !", }]}
               >
                 <Input />
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="IngredientUnitID" label="หน่วย" rules={[{ required: true,  message: "กรุณาระบุหน่วยวัตถุดิบ !", }]}>
+              <Form.Item name="IngredientUnitID" label="หน่วย" rules={[{ 
+                required: true,  
+                message: "กรุณาระบุหน่วยวัตถุดิบ !", }]}>
                 <Select allowClear>
                   {ingredientUnits.map((item) => (
                     <Option value={item.ID} key={item.UnitName}>{item.UnitName}</Option> // Nop

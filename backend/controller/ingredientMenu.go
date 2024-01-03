@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
+	"github.com/asaskevich/govalidator"
 )
 
 // POST /ingredientMenus
@@ -24,6 +25,11 @@ func CreateIngredientMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredient not found"})
 		return
 	}
+
+	if _, err := govalidator.ValidateStruct(menu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} // more 2/1/2024 10:41PM
 
 	// สร้าง IngredientMenu
 	u := entity.IngredientMenu{

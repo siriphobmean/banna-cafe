@@ -12,7 +12,7 @@ func DB() *gorm.DB {
 }
 
 func SetupDatabase() {
-	database, err := gorm.Open(sqlite.Open("sa-project.db"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open("se-banna.db"), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect database")
 	}
@@ -102,6 +102,22 @@ func SetupDatabase() {
 
 	for _, ingredientType := range ingredientType {
 		db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
+	}
+
+	// Menu Data (ex)
+	menu := []Menu{
+		{
+			MenuID: 1,
+			MenuName: "กาแฟดำ",
+			MenuNameEng: "Black Coffee",
+			MenuCost: 65.55,
+			MenuStatus: 1,
+			MenuTypeID: 1,
+		},
+	}
+
+	for _, menu := range menu {
+		db.Create(&menu) // Assuming 'db' is your GORM database instance
 	}
 
 	// Member Data (ex)

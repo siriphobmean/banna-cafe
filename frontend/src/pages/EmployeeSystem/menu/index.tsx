@@ -53,7 +53,7 @@ function Menus() {
       dataIndex: "MenuStatus",
       key: "menustatus",
       render: (status) => (
-        <span>{status === 0 ? "ไม่พร้อมขาย" : "พร้อมขาย"}</span>
+        <span>{status === 1 ? "ไม่พร้อมขาย" : "พร้อมขาย"}</span>
       ),
     },
     {
