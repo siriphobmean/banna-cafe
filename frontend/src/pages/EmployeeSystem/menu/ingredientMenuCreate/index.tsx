@@ -15,7 +15,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { MenusInterface } from "../../../../interfaces/IMenu";
 import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu";
 import { IngredientsInterface } from "../../../../interfaces/IIngredient";
-import { CreateIngredientMenu, GetIngredients, GetIngredientUnits, CreateIngredientMenuByMenuName, GetMenuNames } from "../../../../services/https/ingredientMenu";
+import { CreateIngredientMenu, GetIngredients, GetIngredientUnits, CreateIngredientMenuByMenuName, GetMenuNames, GetIngredientMenuById, GetMenuNameById } from "../../../../services/https/ingredientMenu";
 import { useNavigate, useParams } from "react-router-dom";
 import { IngredientUnitsInterface } from "../../../../interfaces/IIngredientUnit";
 
@@ -24,14 +24,15 @@ const { Option } = Select;
 function IngredientMenuCreate() {
   const navigate = useNavigate();
   const handleCancel = () => {
-    navigate("/menu");
+    navigate(`/menu/ingredientMenu/${id}`); // edit 4/1/2024
   };
   
   const [messageApi, contextHolder] = message.useMessage();
   const [ingredients, setIngredients] = useState<IngredientsInterface[]>([]); // new
   const [ingredientUnits, setIngredientUnits] = useState<IngredientUnitsInterface[]>([]); // more 13/12/66
   const [menuNames, setMenuNames] = useState<MenusInterface[]>([]); // more 20/12/66
-
+  const [menuNameID, setMenuNameID] = useState<IngredientMenusInterface[]>([]); // new 4/1/2024
+  
   const onFinish = async (values: MenusInterface & IngredientMenusInterface) => { // more & IngredientMenusInterface
     values.Amount = parseInt(values.Amount!.toString(), 10); // new more 12:40 AM 30/11/2023
     values.MenuID = parseInt(values.MenuID!.toString(), 10); // new more 12:35 AM 29/11/2023
@@ -46,7 +47,7 @@ function IngredientMenuCreate() {
         content: "เพิ่มวัตถุดิบสำเร็จ",
       });
       setTimeout(function () {
-        navigate("/menu");
+        navigate(`/menu/ingredientMenu/${id}`); // edit 4/1/2024
       }, 2000);
     } else {
       messageApi.open({
@@ -78,38 +79,53 @@ function IngredientMenuCreate() {
     }
   }; // new -> select ingredient to use (combobox)
 
+  const getMenuNameById = async () => {
+    let res = await GetMenuNameById(Number(id));
+    if (res) {
+      setMenuNameID(res);
+      form.setFieldsValue({
+        MenuName: res.MenuName,
+        MenuID: res.MenuID,
+      });
+    }
+  }; // new 4/1/2024
+
+  let { id } = useParams();
+  const [form] = Form.useForm();
+
+  const [menuName, setMenuName] = useState<string>("");
+
   useEffect(() => {
     getIngredient(); // new
     getIngredientUnit(); // more 13/12/66
     getMenuName(); // more 20/12/66
-  }, []);
-
-  const [form] = Form.useForm();
-  let { id } = useParams();
+    getMenuNameById(); // new 4/1/2024
+    const fetchMenuName = async () => {
+      const res = await GetMenuNameById(Number(id)); // เรียกใช้งาน API หรือฟังก์ชันที่เรียกชื่อเมนูจาก ID
+      if (res) {
+        setMenuName(res.MenuName); // ตั้งค่าชื่อเมนูที่ได้จากการเรียก API
+      }
+    };
+    console.log(menuName)
+  
+    fetchMenuName();
+  }, [id]);
 
   return (
     <div>
       {contextHolder}
       <Card>
-        <h2>เพิ่มข้อมูลวัตถุดิบของเมนู</h2>
+        <h2>เพิ่มวัตถุดิบเมนู - {menuName}</h2>
         <Divider />
         <Form
           name="basic"
           layout="vertical"
           onFinish={onFinish}
           autoComplete="off"
+          form={form} // more 4/1/2024
         >
           <Row gutter={[16, 16]}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={12}>
-              <Form.Item name="MenuID" label="เมนู" rules={[{ required: true,  message: "กรุณาระบุเมนู !", }]}>
-                <Select allowClear>
-                  {menuNames.map((item) => (
-                    <Option value={item.ID} key={item.MenuName}>{item.MenuName}</Option> // Nop
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
               <Form.Item name="IngredientID" label="วัตถุดิบ" rules={[{ required: true,  message: "กรุณาระบุวัตถุดิบ !", }]}>
                 <Select allowClear>
                   {ingredients.map((item) => (
@@ -118,7 +134,7 @@ function IngredientMenuCreate() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
               <Form.Item
                 label="จำนวนวัตถุดิบ"
                 name="Amount" // Nop
@@ -127,7 +143,7 @@ function IngredientMenuCreate() {
                 <Input />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={24} md={24} lg={24} xl={12}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={8}>
               <Form.Item name="IngredientUnitID" label="หน่วย" rules={[{ required: true,  message: "กรุณาระบุหน่วยวัตถุดิบ !", }]}>
                 <Select allowClear>
                   {ingredientUnits.map((item) => (
@@ -138,7 +154,7 @@ function IngredientMenuCreate() {
             </Col>
           </Row>
           <Row justify="end">
-            <Col style={{ marginTop: "40px" }}>
+            <Col style={{ marginTop: "0px" }}>
               <Form.Item>
                 <Space>
                   <Button htmlType="button" style={{ marginRight: "10px" }} onClick={handleCancel}>
@@ -156,6 +172,8 @@ function IngredientMenuCreate() {
               </Form.Item>
             </Col>
           </Row>
+          <Form.Item name="MenuName"></Form.Item>
+          <Form.Item name="MenuID"></Form.Item>
         </Form>
       </Card>
     </div>

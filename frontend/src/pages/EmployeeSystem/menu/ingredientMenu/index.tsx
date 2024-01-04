@@ -153,7 +153,7 @@ function IngredientMenus() {
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
-            <Link to="/menu/ingredientMenu/create">
+            <Link to={`/menu/ingredientMenu/create/${id}`}>
               <Button type="primary" icon={<PlusOutlined />} style={{ background: '#E48F44' }}>
                 เพิ่มวัตถุดิบ
               </Button>
