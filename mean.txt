@@ -22,3 +22,21 @@ func TestTrueAll(t *testing.T) {
 		g.Expect(err).To(BeNil())
 	})
 }
+
+- backup - by mean :)
+<Col xs={24} sm={24} md={24} lg={24} xl={12}>
+              {/* <Form.Item name="MenuName" label="เมนู" rules={[{ required: true,  message: "กรุณาระบุเมนู !", }]}>
+                <Select allowClear>
+                  {menuNames.map((item) => (
+                    <Option value={item.ID} key={item.MenuName}>{item.MenuName}</Option> // Nop
+                  ))}
+                </Select>
+              </Form.Item> */}
+              <Form.Item
+                label="เมนู"
+                name="MenuName" // Nop
+                rules={[{ required: true, message: "กรุณาระบุเมนู !", }]}
+              >
+                <Input readOnly/>
+              </Form.Item>
+            </Col>
