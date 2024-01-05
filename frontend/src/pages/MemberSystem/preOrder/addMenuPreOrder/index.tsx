@@ -82,7 +82,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   });
 
   const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface & PreordersInterface) => {
-    if (preorder_status_approver?.ID === 2 || preorder === null) {
+    if (preorder_status_approver?.ID === 2 || preorder === undefined) {
       const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
       values.TotalAmount = parseFloat(TotalAmount);
       let res1 = await CreatePreorder(values);
@@ -109,10 +109,8 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         return;
       }
     }
-      getNewPreoderByMember(1);
+      values.PreorderID = (await getIDPreoderByMember(1)) ?? 0;
       console.log("preorder");
-      console.log(preorder);
-      values.PreorderID = preorder?.ID;
       console.log(values.PreorderID);
       let res2 = await CreatePreorderMenu(values);
       if (res2.status) {
@@ -178,6 +176,16 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     if (res) {
       setPreorder(res);
       setValue("TotalAmount", res.TotalAmount);
+    }
+  };
+  const getIDPreoderByMember = async (
+    id: number
+  ): Promise<number | undefined> => {
+    let res = await GetNewPreorderByMemberID(id);
+    if (res) {
+      return res.ID;
+    } else {
+      return undefined;
     }
   };
 

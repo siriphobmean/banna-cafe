@@ -9,7 +9,7 @@ import (
 )
 type preoderPayload struct {
 	PreoderID   string
-	TotalAmount int64
+	TotalAmount float32 
 	CreateTime  time.Time
 	PickUpTime  time.Time
 	PickUpDate  time.Time
