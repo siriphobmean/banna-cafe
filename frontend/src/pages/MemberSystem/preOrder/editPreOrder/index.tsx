@@ -22,8 +22,24 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   const [preordermenus, setrPeorderMenus] = useState<PreorderMenusInterface[]>([]);
   const [preorder, setPreorder] = useState<PreordersInterface>();
   const [menus, setMenus] = useState<MenusInterface[]>([]);
-  console.log("preordermenus");
-  console.log(preorder);
+  const {
+     register,
+     handleSubmit,
+     watch,
+     setValue,
+     formState: { errors },
+   } = useForm<PreordersInterface>({
+     defaultValues: {
+       TotalAmount: preorder?.TotalAmount || 0,
+       MemberID: 1,
+       PickupTime: "",
+       PickupDate: "",
+       //  PickupTime: new Date(),
+       //  PickupDate: new Date(),
+       Note: "",
+       Respond: "",
+     },
+   });
   
   const getNewPreoderByMember = async (
     id: number
@@ -63,24 +79,6 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   useEffect(() => {
     getNewPreoderByMember(1);
   }, []);
-   const {
-     register,
-     handleSubmit,
-     watch,
-     setValue,
-     formState: { errors },
-   } = useForm<PreordersInterface>({
-     defaultValues: {
-       TotalAmount: preorder?.TotalAmount || 0,
-       MemberID: 1,
-       PickupTime:"",
-       PickupDate: "",
-      //  PickupTime: new Date(),
-      //  PickupDate: new Date(),
-       Note: "",
-       Respond: "",
-     },
-   });
   const onSubmitUpDatePreorderMenu = async (
     values: PreorderMenusInterface & PreordersInterface
   ) => {
@@ -91,8 +89,6 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
     values.Note = preorder?.Note;
     values.Respond = preorder?.Respond;
     values.TotalAmount = watch("TotalAmount")
-    // console.log("values");
-    // console.log(values);
     let res2 = await UpdatePreorder(values);
     if (!res1.status && !res2.status) {
       messageApi.open({
@@ -104,7 +100,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   const onSubmitUpDatePreorder = async (values: PreordersInterface) => {
     values.ID = preorder?.ID;
     values.PickupTime = "0021-01-01T00:00:00Z";
-    values.PickupDate = "0021-01-01T00:00:00Z";
+    values.PickupDate = "0021-01-01T00:00:00Z"; // datatype input not match in data base 05/01/2024
     console.log("values");
     console.log(values);
      let res = await UpdatePreorder(values);

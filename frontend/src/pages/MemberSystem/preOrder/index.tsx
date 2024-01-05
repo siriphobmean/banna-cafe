@@ -145,8 +145,8 @@ export default function MenuPreorder() {
       {basketMenupop && (
         <div className="edit-basketes">
           <EditPreorder onClosebasketMenupop={() => {
-            setBasketMenupop(false);
-          }}
+              setBasketMenupop(false);
+            }}
           />
         </div>
       )}
