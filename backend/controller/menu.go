@@ -63,6 +63,17 @@ func GetMenu(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": menu})
 }
 
+// GET /menuNames/:id
+func GetMenuName(c *gin.Context) {
+	var menuName entity.Menu
+	id := c.Param("id")
+	if err := entity.DB().Preload("MenuType").Raw("SELECT * FROM menus WHERE id = ?", id).Find(&menuName).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": menuName})
+} // more 4/1/2024
+
 // GET /menus
 func ListMenus(c *gin.Context) {
 	var menus []entity.Menu

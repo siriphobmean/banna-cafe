@@ -27,6 +27,7 @@ func main() {
 	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
 	// MenuName Routes
 	r.GET("/menuNames", controller.ListMenuNames) // more 20/12/66
+	r.GET("/menuNames/:id", controller.GetMenuName) // more 4/1/2024
 
 	// Employee Routes
 	r.GET("/employees", controller.ListEmployees)

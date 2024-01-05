@@ -44,6 +44,7 @@ func SetupDatabase() {
 		&DrinkOption{},
 		&Sweetness{},
 		&MenuSize{},
+		&Payment{}, // add by Ball 03/01/2567
 	)
 	db = database
 
@@ -105,27 +106,11 @@ func SetupDatabase() {
 		db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
 	}
 
-	// Menu Data (ex)
-	menu := []Menu{
-		{
-			MenuID: 1,
-			MenuName: "กาแฟดำ",
-			MenuNameEng: "Black Coffee",
-			MenuCost: 65.55,
-			MenuStatus: 1,
-			MenuTypeID: 1,
-		},
-	}
-
-	for _, menu := range menu {
-		db.Create(&menu) // Assuming 'db' is your GORM database instance
-	}
-
 	var count1 int64
 	db.Model(&IngredientMenu{}).Count(&count1)
 
 	if count1 == 0 {
-    // Create IngredientMenu data
+    // Create Menu data
     menu := []Menu{
         {
             MenuID: 1,

@@ -38,7 +38,7 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/MemberSystem/preorder";
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
@@ -57,7 +57,7 @@ const router = createBrowserRouter(
               <Route path="/menu/create" element={<MenuCreate />}/>
               <Route path="/menu/edit/:id" element={<MenuEdit />}/>
               <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />}/>
-              <Route path="/menu/ingredientMenu/create" element={<IngredientMenuCreate />}/>
+              <Route path="/menu/ingredientMenu/create/:id" element={<IngredientMenuCreate />}/>
               <Route path="/member" element={<Members />}/>
               <Route path="/member/edit/:id" element={<MemberEdit />}/>
               <Route path="/ingredient" element={<Ingredient />} />
