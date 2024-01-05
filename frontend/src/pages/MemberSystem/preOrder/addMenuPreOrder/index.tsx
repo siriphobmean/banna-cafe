@@ -74,27 +74,26 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       Note: "",
       Respond: "",
 
-      StatusApprovePreorderID: 2,
-      StatusRecivePreorderID: 2,
+      StatusApprovePreorderID: 1,
+      StatusRecivePreorderID: 1,
     },
   });
 
   const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface & PreordersInterface) => {
-    console.log("values");
-    console.log(values);
-    if (preorder_status_approver?.ID === 1) {
+
+    if (preorder_status_approver?.ID === 2 ||(await getNewPreoderByMember(1)) === undefined) {
       let res1 = await CreatePreorder(values);
       if (!res1.status) {
         messageApi.open({
           type: "error",
           content: "เกิดข้อผิดพลาด1",
         });
-        return; // Early return if creating preorder fails
+        return;
       }
     }
 
     values.PreorderID = await getNewPreoderByMember(1);
-    console.log(values);
+    
     let res2 = await CreatePreorderMenu(values);
     if (res2.status) {
       messageApi.open({
@@ -154,12 +153,17 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       setPreorder_status_approver(res);
     }
   };
-  const getNewPreoderByMember = async (id: number) => {
+  const getNewPreoderByMember = async (
+    id: number
+  ): Promise<number | undefined> => {
     let res = await GetNewPreorderByMemberID(id);
+
     if (res) {
-      return(res.ID);
+      return res.ID;
     }
+    return undefined;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
@@ -173,18 +177,33 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     fetchData();
   }, [addMenu?.ID]);
 
-  const quantity = watch("Quantity");
-  const handleDecrease = () => {
-    if (quantity !== undefined && quantity > 1) {
-      setValue("Quantity", quantity - 1);
-    }
-  };
+const quantity = watch("Quantity");
 
-  const handleIncrease = () => {
-    if (quantity !== undefined && quantity >= 1) {
-      setValue("Quantity", quantity + 1);
-    }
-  };
+const handleDecrease = () => {
+  if (
+    quantity !== undefined &&
+    quantity > 1 &&
+    addMenu?.MenuCost !== undefined
+  ) {
+    const newQuantity = quantity - 1;
+    setValue("Quantity", newQuantity);
+    setValue("TotalCost", newQuantity * addMenu.MenuCost);
+  }
+};
+
+const handleIncrease = () => {
+  if (
+    quantity !== undefined &&
+    quantity >= 1 &&
+    addMenu?.MenuCost !== undefined
+  ) {
+    const newQuantity = quantity + 1;
+    setValue("Quantity", newQuantity);
+    setValue("TotalCost", newQuantity * addMenu.MenuCost);
+  }
+};
+
+
   
   console.log("preorder");
   console.log(preorder_status_approver);

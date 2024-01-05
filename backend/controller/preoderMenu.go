@@ -104,6 +104,16 @@ func ListSweetnesses(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": sweetnesses})
 }
+// GET /menuPreorders
+func ListGetMenuPreordersByPreoderID(c *gin.Context) {
+	var menuPreorders []entity.PreorderMenu
+	id := c.Param("id")
+	if err := entity.DB().Preload("Preorder").Raw("SELECT * FROM preorder_menus WHERE preorder_id = ?", id).Find(&menuPreorders).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": menuPreorders})
+}
 // // GET /preorder/:id
 // func GetPreorderByID(c *gin.Context) {
 // 	var preorder entity.Preorder
@@ -115,24 +125,62 @@ func ListSweetnesses(c *gin.Context) {
 // 	c.JSON(http.StatusOK, gin.H{"data": preorder})
 // }
 
-// // PATCH /preorders
-// func UpdatePreorder(c *gin.Context) {
-// 	var menu entity.Menu
-// 	var result entity.Menu
+// PATCH /preorders
+func UpdatePreorderMenu(c *gin.Context) {
+	var preorderMenu entity.PreorderMenu
+	var existingPreorderMenu entity.PreorderMenu
+	if err := c.ShouldBindJSON(&preorderMenu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// ค้นหา preorder ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.ID).First(&existingPreorderMenu); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
+		return
+	}
+	var preorder entity.Preorder
+	var menu entity.Menu
+	var menuSize entity.MenuSize
+	var sweetness entity.Sweetness
+	var drinkOption entity.DrinkOption
 
-// 	if err := c.ShouldBindJSON(&menu); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	// ค้นหา menu ด้วย id
-// 	if tx := entity.DB().Where("id = ?", menu.ID).First(&result); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
-// 		return
-// 	}
+	// ค้นหา menu ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.MenuID).First(&menu); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
+		return
+	}
+	// ค้นหา menu ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.PreorderID).First(&preorder); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
+		return
+	}
+	// ค้นหา menuSize ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.MenuSizeID).First(&menuSize); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menuSize not found"})
+		return
+	}
+	// ค้นหา sweetness ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.SweetnessID).First(&sweetness); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "sweetness not found"})
+		return
+	}
+	// ค้นหา drinkOption ด้วย id
+	if tx := entity.DB().Where("id = ?", preorderMenu.DrinkOptionID).First(&drinkOption); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "drinkOption not found"})
+		return
+	}
 
-// 	if err := entity.DB().Save(&menu).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, gin.H{"data": menu})
-// }
+	existingPreorderMenu.Quantity = preorderMenu.Quantity 
+	existingPreorderMenu.TotalCost = preorderMenu.TotalCost
+	existingPreorderMenu.Sweetness = sweetness
+	existingPreorderMenu.MenuSize = menuSize
+	existingPreorderMenu.DrinkOption = drinkOption
+	existingPreorderMenu.Preorder = preorder
+	existingPreorderMenu.Menu = menu
+
+	if err := entity.DB().Save(&existingPreorderMenu).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": existingPreorderMenu})
+}

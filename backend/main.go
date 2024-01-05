@@ -102,18 +102,19 @@ func main() {
 	r.GET("/preorderMember/:id", controller.GetPreorderStatusPaymentByMemberID)
 	r.GET("/newPreorderMember/:id", controller.GetNewPreorderByMemberID)
 	r.POST("/preorders", controller.CreatePreorder)
+	r.PATCH("/preorders", controller.UpdatePreorder)
 
 	// PreoderMenu Routes
 	r.POST("/preorderMenus", controller.CreatePreorderMenu)
 	r.GET("/sweetnesses", controller.ListSweetnesses)
 	r.GET("/menuSizes", controller.ListMenuSizes)
 	r.GET("/drinkOptions", controller.ListDrinkOptions)
-
-	
+	r.GET("/preorderMenus/:id", controller.ListGetMenuPreordersByPreoderID)
+	r.PATCH("/preorderMenus", controller.UpdatePreorderMenu)
 
 	router := r.Group("")
 	{
-		router.Use(middlewares.Authorizes()) //wtf "s"
+		router.Use(middlewares.Authorizes()) 
 		{
 
 			// // Employee Routes

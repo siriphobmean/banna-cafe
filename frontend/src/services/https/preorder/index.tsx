@@ -93,6 +93,24 @@ async function GetMenusBYMenuTypeID(id: Number | undefined) {
     });
   return res;
 }
+// use by Preoder
+async function GetMenuPreordersByPreoderID(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET",
+  };
+
+  let res = await fetch(`${apiUrl}/preorderMenus/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res && res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+    return res;
+}
 async function GetMenusByName(name: string | undefined) {
   const requestOptions = {
     method: "GET",
@@ -120,4 +138,5 @@ export {
   GetMenusBYMenuTypeID,
   GetPreorderStatusPaymentByMemberID,
   GetMenusByName,
+  GetMenuPreordersByPreoderID,
 };

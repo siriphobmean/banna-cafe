@@ -2,6 +2,8 @@
 export interface PreordersInterface {
   ID?: number; 
   TotalAmount?: number;
+  // PickupTime?: Date; 
+  // PickupDate?: Date; 
   PickupTime?: string; 
   PickupDate?: string; 
   Note?: string;

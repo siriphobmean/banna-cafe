@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
@@ -162,28 +163,38 @@ func GetNewPreorderByMemberID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": preorder})
 }
 
-// // PATCH /preorders
-// func UpdatePreorder(c *gin.Context) {
-// 	var menu entity.Menu
-// 	var result entity.Menu
+// PATCH /preorders
+func UpdatePreorder(c *gin.Context) {
+	var preorder entity.Preorder
+	var existingPreorder entity.Preorder
+	if err := c.ShouldBindJSON(&preorder); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// ค้นหา preorder ด้วย id
+	if tx := entity.DB().Where("id = ?", preorder.ID).First(&existingPreorder); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
+		return
+	}
 
-// 	if err := c.ShouldBindJSON(&menu); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	// ค้นหา menu ด้วย id
-// 	if tx := entity.DB().Where("id = ?", menu.ID).First(&result); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
-// 		return
-// 	}
+	existingPreorder.PickUpTime = preorder.PickUpTime .Local()
+	existingPreorder.PickUpDate = preorder.PickUpDate.Local()
+	existingPreorder.Note = preorder.Note
+	existingPreorder.Respound = preorder.Respound
+	existingPreorder.Member = preorder.Member
+	existingPreorder.TotalAmount = preorder.TotalAmount
 
-// 	if err := entity.DB().Save(&menu).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, gin.H{"data": menu})
+	if err := entity.DB().Save(&existingPreorder).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": existingPreorder})
+}
+
+// func (t *LocalTime) MarshalJSON() ([]byte, error) {
+//     tTime := time.Time(*t)
+//     return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02 15:04:05"))), nil
 // }
-
 // POST //preorders
 // func CreatePreorderStatusApprove(c *gin.Context) {
 // 	var StatusApprove entity.PreorderStatusApprove

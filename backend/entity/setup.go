@@ -219,7 +219,7 @@ func SetupDatabase() {
 	for _, drinkOption := range drinkOption {
 		db.Create(&drinkOption) // Assuming 'db' is your GORM database instance
 	}
-	// Sweetness Data (ex)
+		// menuSize Data (ex)
 	menuSize := []MenuSize{
 		{
 			Name:           "s",
@@ -242,6 +242,38 @@ func SetupDatabase() {
 	}
 
 	for _, menuSize := range menuSize {
-		db.Create(&menuSize) // Assuming 'db' is your GORM database instance
+		db.Create(&menuSize) 
+	}
+	// StatusApprovePreorder Data (ex)
+	statusApprovePreorder := []StatusApprovePreorder{
+		{
+			Name:           "รออนุมัติการสั่งจอง",
+		},
+		{
+			Name:           "อนุมัติการสั่งจอง",
+		},
+		{
+			Name:           "ไม่อนุมัติการสั่งจอง",
+		},
+	}
+
+	for _, statusApprovePreorder := range statusApprovePreorder {
+		db.Create(&statusApprovePreorder) 
+	}
+	// StatusRecivePreorder Data (ex)
+	statusRecivePreorder := []StatusRecivePreorder{
+		{
+			Name:           "รออนุมัติการสั่งจอง",
+		},
+		{
+			Name:           "ยังไม่ได้รับสินค้า",
+		},
+		{
+			Name:           "รับสินค้าแล้วเรียบร้อย",
+		},
+	}
+
+	for _, statusRecivePreorder := range statusRecivePreorder {
+		db.Create(&statusRecivePreorder) 
 	}
 }
