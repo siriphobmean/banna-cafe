@@ -81,7 +81,9 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     },
   });
 
-  const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface & PreordersInterface) => {
+  const onSubmitAddMenuPreorder = async (
+    values: PreorderMenusInterface & PreordersInterface
+  ) => {
     if (preorder_status_approver?.ID === 2 || preorder === undefined) {
       const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
       values.TotalAmount = parseFloat(TotalAmount);
@@ -95,11 +97,9 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       }
     } else {
       values.ID = preorder?.ID;
-      const TotalAmount =
-      preorder?.TotalAmount ?? 0 + (watch("TotalCost") ?? 0);
-      const RoundedTotalAmount = TotalAmount.toFixed(2);
-
-      values.TotalAmount = parseFloat(RoundedTotalAmount);
+      const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
+      values.TotalAmount = parseFloat(TotalAmount);
+      values.TotalAmount = values.TotalAmount + (preorder.TotalAmount ?? 0);
       let res1 = await UpdatePreorder(values);
       if (!res1.status) {
         messageApi.open({
@@ -109,24 +109,24 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         return;
       }
     }
-      values.PreorderID = (await getIDPreoderByMember(1)) ?? 0;
-      console.log("preorder");
-      console.log(values.PreorderID);
-      let res2 = await CreatePreorderMenu(values);
-      if (res2.status) {
-        messageApi.open({
-          type: "success",
-          content: "บันทึกเมนูสำเร็จ",
-        });
-        setTimeout(function () {
-          onCloseAddmenupop();
-        }, 1000);
-      } else {
-        messageApi.open({
-          type: "error",
-          content: "เกิดข้อผิดพลาด",
-        });
-      }
+    values.PreorderID = (await getIDPreoderByMember(1)) ?? 0;
+    console.log("preorder");
+    console.log(values.PreorderID);
+    let res2 = await CreatePreorderMenu(values);
+    if (res2.status) {
+      messageApi.open({
+        type: "success",
+        content: "บันทึกเมนูสำเร็จ",
+      });
+      setTimeout(function () {
+        onCloseAddmenupop();
+      }, 1000);
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "เกิดข้อผิดพลาด",
+      });
+    }
   };
   const getMenusRating = async () => {
     let res = await GetRatingsByMenuID(addMenu?.ID);
@@ -203,34 +203,32 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     fetchData();
   }, [addMenu?.ID]);
 
-const quantity = watch("Quantity");
+  const quantity = watch("Quantity");
 
-const handleDecrease = () => {
-  if (
-    quantity !== undefined &&
-    quantity > 1 &&
-    addMenu?.MenuCost !== undefined
-  ) {
-    const newQuantity = quantity - 1;
-    setValue("Quantity", newQuantity);
-    setValue("TotalCost", newQuantity * addMenu.MenuCost);
-  }
-};
+  const handleDecrease = () => {
+    if (
+      quantity !== undefined &&
+      quantity > 1 &&
+      addMenu?.MenuCost !== undefined
+    ) {
+      const newQuantity = quantity - 1;
+      setValue("Quantity", newQuantity);
+      setValue("TotalCost", newQuantity * addMenu.MenuCost);
+    }
+  };
 
-const handleIncrease = () => {
-  if (
-    quantity !== undefined &&
-    quantity >= 1 &&
-    addMenu?.MenuCost !== undefined
-  ) {
-    const newQuantity = quantity + 1;
-    setValue("Quantity", newQuantity);
-    setValue("TotalCost", (newQuantity * addMenu.MenuCost));
-  }
-};
+  const handleIncrease = () => {
+    if (
+      quantity !== undefined &&
+      quantity >= 1 &&
+      addMenu?.MenuCost !== undefined
+    ) {
+      const newQuantity = quantity + 1;
+      setValue("Quantity", newQuantity);
+      setValue("TotalCost", newQuantity * addMenu.MenuCost);
+    }
+  };
 
-
-  
   // console.log("preorder");
   // console.log(preorder_status_approver);
   return (
@@ -337,7 +335,7 @@ const handleIncrease = () => {
         </h5>
         <div className="menu-total">
           <span>ราคา</span>
-          <p>{ watch("TotalCost")?.toFixed(2) ?? "N/A"}-.</p>
+          <p>{watch("TotalCost")?.toFixed(2) ?? "N/A"}-.</p>
         </div>
       </div>
       <button className="btn-addmenu" type="submit">

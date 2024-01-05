@@ -20,16 +20,19 @@ import { RatingsInterface } from "../../../../interfaces/IRating";
 import { MenuSizesInterface } from "../../../../interfaces/IMenuSize";
 import { SweetnessesInterface } from "../../../../interfaces/ISweetness";
 import { OptionDrinksInterface } from "../../../../interfaces/IOptionDrink";
+import { UpdatePreorder } from "../../../../services/https/preorder";
 
 interface EditMenuPreorderProps {
   onCloseAddmenupop: () => void;
   editMenu: MenusInterface | undefined;
   preordermenus: PreorderMenusInterface | undefined;
+  preorder: PreordersInterface | undefined;
 }
 const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
   onCloseAddmenupop,
   editMenu,
   preordermenus,
+  preorder,
 }) => {
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
@@ -43,7 +46,7 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     watch,
     setValue,
     formState: { errors },
-  } = useForm<PreorderMenusInterface>({
+  } = useForm<PreorderMenusInterface & PreordersInterface>({
     defaultValues: {
       Quantity: preordermenus?.Quantity,
       TotalCost: editMenu?.MenuCost,
@@ -55,13 +58,15 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
       DrinkOptionStatus: 1,
       SweetnessStatus: 1,
       MenuSizeStatus: 1,
+
+      TotalAmount: 0,
     },
   });
 
   const onSubmitEditMenuPreorder = async (values: PreorderMenusInterface) => {
     values.ID = preordermenus?.ID;
     values.PreorderID = preordermenus?.PreorderID;
-
+    const oldTotolcost = preordermenus?.TotalCost;
     let res1 = await UpdatePreorderMenu(values);
     if (res1.status) {
       messageApi.open({
@@ -71,11 +76,30 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
       setTimeout(function () {
         onCloseAddmenupop();
       }, 1000);
+      onSubmitUpDatePreorder(values, oldTotolcost ?? 0);
     } else {
       messageApi.open({
         type: "error",
         content: "เกิดข้อผิดพลาด",
       });
+    }
+  };
+  const onSubmitUpDatePreorder = async (
+    values: PreordersInterface,
+    oldTotolcost: number
+  ) => {
+    values.ID = preorder?.ID;
+    const TotalCost = (watch("TotalCost") ?? 0).toFixed(2);
+    values.TotalAmount = parseFloat(TotalCost);
+    values.TotalAmount = values.TotalAmount - oldTotolcost;
+    values.TotalAmount = values.TotalAmount + (preorder?.TotalAmount ?? 0);
+    let res1 = await UpdatePreorder(values);
+    if (!res1.status) {
+      messageApi.open({
+        type: "error",
+        content: "เกิดข้อผิดพลาด2",
+      });
+      return;
     }
   };
   const getMenusRating = async () => {
