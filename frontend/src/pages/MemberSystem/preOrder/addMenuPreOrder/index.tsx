@@ -23,6 +23,7 @@ import {
   CreatePreorder,
   GetNewPreorderByMemberID,
   GetPreorderStatusPaymentByMemberID,
+  UpdatePreorder,
 } from "../../../../services/https/preorder";
 import { StatusApprovePreordersInterface } from "../../../../interfaces/IStatusApprovePreorder";
 import { PreorderStatusApprovesInterface } from "../../../../interfaces/IPreorderStatusApprove";
@@ -41,6 +42,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   const [menuSize, setMenuSize] = useState<MenuSizesInterface[]>([]);
   const [sweetness, setSweetness] = useState<SweetnessesInterface[]>([]);
   const [drinkOption, setDrinkOption] = useState<OptionDrinksInterface[]>([]);
+  const [preorder, setPreorder] = useState<PreordersInterface>();
   const [preorder_status_approver, setPreorder_status_approver] =
     useState<StatusApprovePreordersInterface>();
   const {
@@ -80,8 +82,9 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
   });
 
   const onSubmitAddMenuPreorder = async (values: PreorderMenusInterface & PreordersInterface) => {
-
-    if (preorder_status_approver?.ID === 2 ||(await getNewPreoderByMember(1)) === undefined) {
+    if (preorder_status_approver?.ID === 2 || preorder === null) {
+      const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
+      values.TotalAmount = parseFloat(TotalAmount);
       let res1 = await CreatePreorder(values);
       if (!res1.status) {
         messageApi.open({
@@ -90,25 +93,42 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         });
         return;
       }
-    }
-
-    values.PreorderID = await getNewPreoderByMember(1);
-    
-    let res2 = await CreatePreorderMenu(values);
-    if (res2.status) {
-      messageApi.open({
-        type: "success",
-        content: "บันทึกเมนูสำเร็จ",
-      });
-      setTimeout(function () {
-        onCloseAddmenupop();
-      }, 1000);
     } else {
-      messageApi.open({
-        type: "error",
-        content: "เกิดข้อผิดพลาด",
-      });
+      values.ID = preorder?.ID;
+      const TotalAmount =
+      preorder?.TotalAmount ?? 0 + (watch("TotalCost") ?? 0);
+      const RoundedTotalAmount = TotalAmount.toFixed(2);
+
+      values.TotalAmount = parseFloat(RoundedTotalAmount);
+      let res1 = await UpdatePreorder(values);
+      if (!res1.status) {
+        messageApi.open({
+          type: "error",
+          content: "เกิดข้อผิดพลาด2",
+        });
+        return;
+      }
     }
+      getNewPreoderByMember(1);
+      console.log("preorder");
+      console.log(preorder);
+      values.PreorderID = preorder?.ID;
+      console.log(values.PreorderID);
+      let res2 = await CreatePreorderMenu(values);
+      if (res2.status) {
+        messageApi.open({
+          type: "success",
+          content: "บันทึกเมนูสำเร็จ",
+        });
+        setTimeout(function () {
+          onCloseAddmenupop();
+        }, 1000);
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "เกิดข้อผิดพลาด",
+        });
+      }
   };
   const getMenusRating = async () => {
     let res = await GetRatingsByMenuID(addMenu?.ID);
@@ -153,15 +173,12 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       setPreorder_status_approver(res);
     }
   };
-  const getNewPreoderByMember = async (
-    id: number
-  ): Promise<number | undefined> => {
+  const getNewPreoderByMember = async (id: Number) => {
     let res = await GetNewPreorderByMemberID(id);
-
     if (res) {
-      return res.ID;
+      setPreorder(res);
+      setValue("TotalAmount", res.TotalAmount);
     }
-    return undefined;
   };
 
   useEffect(() => {
@@ -171,6 +188,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
         getMenuSizes(),
         getDrinkOptions(),
         getSweetnesses(),
+        getNewPreoderByMember(1),
         getPreoderStatusPaymentByMember(1),
       ]);
     };
@@ -199,14 +217,14 @@ const handleIncrease = () => {
   ) {
     const newQuantity = quantity + 1;
     setValue("Quantity", newQuantity);
-    setValue("TotalCost", newQuantity * addMenu.MenuCost);
+    setValue("TotalCost", (newQuantity * addMenu.MenuCost));
   }
 };
 
 
   
-  console.log("preorder");
-  console.log(preorder_status_approver);
+  // console.log("preorder");
+  // console.log(preorder_status_approver);
   return (
     <form
       className="add-crad"
@@ -311,7 +329,7 @@ const handleIncrease = () => {
         </h5>
         <div className="menu-total">
           <span>ราคา</span>
-          <p>{addMenu?.MenuCost ?? 1}-.</p>
+          <p>{ watch("TotalCost")?.toFixed(2) ?? "N/A"}-.</p>
         </div>
       </div>
       <button className="btn-addmenu" type="submit">

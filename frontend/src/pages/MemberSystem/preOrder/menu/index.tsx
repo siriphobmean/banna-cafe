@@ -70,7 +70,7 @@ function MenuAll({
   }, [menusSearch, selectedMenuType]);
   return (
     <div className="menu-all">
-      {menus.map((menu,index) => (
+      {menus.map((menu, index) => (
         <div className="menu-crad" key={menu.ID}>
           <div className="menu-crad menu-rating">
             <FaStar />
@@ -85,7 +85,9 @@ function MenuAll({
               <span>{menu.MenuNameEng}</span>
             </div>
             <div className="cost-btn">
-              <div className="menu-cost">{menu.MenuCost}-.</div>
+              <div className="menu-cost">
+                {menu.MenuCost?.toFixed(2) ?? "N/A"}-.
+              </div>
               <button
                 className="btn-add"
                 onClick={() => {

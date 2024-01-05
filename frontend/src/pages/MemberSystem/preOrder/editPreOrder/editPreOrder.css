@@ -84,6 +84,7 @@
     background-color: #ffffff;
     display: flex;
     flex-direction: row;
+    cursor: pointer;
 }
 
 .btn-quantity {
@@ -92,12 +93,14 @@
     align-items: center;
     justify-content: center;
     color: #E48F44;
+    cursor: pointer;
 }
 
 .btn-quantity.add {
     background-color: #678983;
     border-radius: 5px;
     color: #000;
+    cursor: pointer;
 }
 
 .btn-description {
@@ -108,6 +111,7 @@
     justify-content: center;
     background-color: #E48F44;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 .data-preOrder {

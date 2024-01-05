@@ -1,5 +1,7 @@
 import  {useEffect,useState} from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 import "../addMenuPreorder/addMenuPreorder.css";
 import "./editPreorder.css";
 import { useForm } from "react-hook-form";
@@ -7,10 +9,9 @@ import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import { PreordersInterface } from "../../../../interfaces/IPreorder";
 import { MenusInterface } from "../../../../interfaces/IMenu";
 import { GetMenuPreordersByPreoderID, GetNewPreorderByMemberID, UpdatePreorder } from "../../../../services/https/preorder";
-import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 import { GetMenuById } from "../../../../services/https/menu";
 import { UpdatePreorderMenu } from "../../../../services/https/preoederMenu";
+import EditMenuPreorder from "../editMenuPreorder";
 interface EditPreorderProps {
   onClosebasketMenupop: () => void;
 }
@@ -20,8 +21,12 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [preordermenus, setrPeorderMenus] = useState<PreorderMenusInterface[]>([]);
+  const [preordermenu, setrPeorderMenu] = useState<PreorderMenusInterface>();
   const [preorder, setPreorder] = useState<PreordersInterface>();
   const [menus, setMenus] = useState<MenusInterface[]>([]);
+  const [menu, setMenu] = useState<MenusInterface>();
+  const [editMenupop, setEditmenupop] = useState(false);
+  // console.log(editMenupop);
   const {
      register,
      handleSubmit,
@@ -101,8 +106,8 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
     values.ID = preorder?.ID;
     values.PickupTime = "0021-01-01T00:00:00Z";
     values.PickupDate = "0021-01-01T00:00:00Z"; // datatype input not match in data base 05/01/2024
-    console.log("values");
-    console.log(values);
+    // console.log("values");
+    // console.log(values);
      let res = await UpdatePreorder(values);
      if (res.status) {
        messageApi.open({
@@ -157,6 +162,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   };
 
   return (
+    <>
     <form
       className="edit-crad"
       name="basic"
@@ -216,7 +222,13 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
                       +
                     </div>
                   </div>
-                  <div className="btn-description">
+                  <div className="btn-description"
+                    onClick={() => {
+                      setMenu(menus[index]);
+                      setEditmenupop(true);
+                      setrPeorderMenu(preordermenu);
+                    }}
+                  >
                     <h6>รายละเอียด</h6>
                   </div>
                 </div>
@@ -260,7 +272,21 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
       <button className="btn-addmenu" type="submit">
         ชำระเงิน
       </button>
+      
     </form>
+    {editMenupop && (
+        <div className="add-menu">
+          <EditMenuPreorder
+            onCloseAddmenupop={() => {
+              setEditmenupop(false);
+            }}
+            editMenu={menu}
+            preordermenus={preordermenu}
+          />
+        </div>
+  )
+  }
+  </>
   );
 };
 export default EditPreorder;

@@ -24,7 +24,7 @@ import (
 type Preorder struct {
     gorm.Model
     PreoderID   string
-    TotalAmount int64
+    TotalAmount float32 `gorm:"type:decimal(7,2)"`
     PickUpTime  time.Time
     PickUpDate time.Time
     Note        string

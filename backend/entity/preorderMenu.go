@@ -5,7 +5,7 @@ import (
 type PreorderMenu struct {
 	gorm.Model
 	Quantity  int
-	TotalCost float32 `gorm:"type:decimal(7,6);"`
+	TotalCost float32 `gorm:"type:decimal(7,2)"`
 
 	// FK
 	PreorderID *uint
