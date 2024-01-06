@@ -7,7 +7,6 @@ import { message } from "antd";
 import "../addMenuPreorder/addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import {
-  CreatePreorderMenu,
   GetDrinkOptions,
   GetMenuSize,
   GetSweetnesses,

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import "../addMenuPreorder/addMenuPreorder.css";
 import "./editPreorder.css";
@@ -22,7 +21,6 @@ interface EditPreorderProps {
 const EditPreorder: React.FC<EditPreorderProps> = ({
   onClosebasketMenupop,
 }) => {
-  const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const [preordermenus, setrPeorderMenus] = useState<PreorderMenusInterface[]>(
     []

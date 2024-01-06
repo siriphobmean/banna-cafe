@@ -42,37 +42,46 @@ import MenuPreorder from "./pages/MemberSystem/preorder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
+import EditProfileMember from "./pages/MemberSystem/profile/edit";
 // in now test...
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-      <><Route index element={<Home/>}/>
-          <Route path="" element={<MemberLayout/>}>
-            <Route path="/menuPreorder" element={<MenuPreorder/>}/>
-            <Route path="/profileMember" element={<ProfileMember />} />
-          </Route>
-          <Route path="" element={<EmployeeLayout />}>
-              <Route path="/mainEmployee" element={<Mains />}/>
-              <Route path="/menu" element={<Menus />}/>
-              <Route path="/menu/create" element={<MenuCreate />}/>
-              <Route path="/menu/edit/:id" element={<MenuEdit />}/>
-              <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />}/>
-              <Route path="/menu/ingredientMenu/create/:id" element={<IngredientMenuCreate />}/>
-              <Route path="/member" element={<Members />}/>
-              <Route path="/member/edit/:id" element={<MemberEdit />}/>
-              <Route path="/ingredient" element={<Ingredient />} />
-              <Route path="/ingredient/create" element={<IngredientCreate />} />
-              <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
-              <Route path="/history" element={<History />} />
-          </Route>
+    <>
+      <Route index element={<Home />} />
+      <Route path="" element={<MemberLayout />}>
+        <Route path="/menuPreorder" element={<MenuPreorder />} />
+        <Route path="/profileMember" element={<ProfileMember />} />
+        <Route
+          path="/profileMember/edit/:id"
+          element={<EditProfileMember />}
+        />
+      </Route>
+      <Route path="" element={<EmployeeLayout />}>
+        <Route path="/mainEmployee" element={<Mains />} />
+        <Route path="/menu" element={<Menus />} />
+        <Route path="/menu/create" element={<MenuCreate />} />
+        <Route path="/menu/edit/:id" element={<MenuEdit />} />
+        <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
+        <Route
+          path="/menu/ingredientMenu/create/:id"
+          element={<IngredientMenuCreate />}
+        />
+        <Route path="/member" element={<Members />} />
+        <Route path="/member/edit/:id" element={<MemberEdit />} />
+        <Route path="/ingredient" element={<Ingredient />} />
+        <Route path="/ingredient/create" element={<IngredientCreate />} />
+        <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
+        <Route path="/history" element={<History />} />
+      </Route>
 
-          <Route path="" element={<OwnerLayout/>}>
-              <Route path="/mainOwner" element={<Mains/>}/>
-              <Route path="/employee" element={<Employees />}/>
-              <Route path="/employee/create" element={<EmployeeCreate />}/>
-              <Route path="/employee/edit/:id" element={<EmployeeEdit />}/>
-          </Route>
-      </>
+      <Route path="" element={<OwnerLayout />}>
+        <Route path="/mainOwner" element={<Mains />} />
+        <Route path="/employee" element={<Employees />} />
+        <Route path="/employee/create" element={<EmployeeCreate />} />
+        <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+      </Route>
+    </>
   )
 );
 

@@ -1,18 +1,12 @@
 import { useState, useEffect } from "react";
-import SidebarMemu from "../../../components/sidebarMember";
+import SidebarProflie from "../../../components/sidebarProfile";
 import Footer from "../../../components/footer";
 import "./profileMember.css";
-import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import { GetMemberById } from "../../../services/https/member";
 import { MembersInterface } from "../../../interfaces/IMember";
 import { BiHide } from "react-icons/bi";
+import { NavLink } from "react-router-dom";
 export default function ProfileMember() {
-  const [selectedMenuType, setSelectedMenuType] =
-    useState<MenuTypesInterface | null>(null);
-
-  const handleSelectMenuType = (menuType: MenuTypesInterface) => {
-    setSelectedMenuType(menuType);
-  };
   const [member, setMember] = useState<MembersInterface | null>(null);
   const [passwordHide, setPasswordHide] = useState(false);
   console.log(member)
@@ -28,7 +22,7 @@ export default function ProfileMember() {
   return (
     <div className="ProfileMember">
       <div className="sidebarProflie">
-        <SidebarMemu onSelectMenuType={handleSelectMenuType} />
+        <SidebarProflie onSelect={"ข้อมูล"} member={member} />
       </div>
       <div className="contentprofile">
         <div className="dataProflie-member">
@@ -45,7 +39,7 @@ export default function ProfileMember() {
             </div>
             <h5>{member?.Email}</h5>
           </div>
-          <form className="data-profile">
+          <div className="data-profile">
             <div className="memberData name">
               <h4>name</h4>
               <h5>{member?.Username}</h5>
@@ -61,15 +55,33 @@ export default function ProfileMember() {
             <div className="memberData pass">
               <h4>Password</h4>
               <h5>
-                <span>{passwordHide ? (member?.Password ? member.Password : "########") : "########"}</span>
-                <p onClick={() => { setPasswordHide(!passwordHide); }}>
+                <span>
+                  {passwordHide
+                    ? member?.Password
+                      ? member.Password
+                      : "########"
+                    : "########"}
+                </span>
+                <p
+                  onClick={() => {
+                    setPasswordHide(!passwordHide);
+                  }}
+                >
                   <BiHide />
                 </p>
               </h5>
             </div>
-          </form>
+          </div>
+          <div className="btn-Profile">
+              <NavLink
+                to={`/profileMember/edit/${member?.ID}`}
+                className="btn-edotProfile"
+              >
+                แก้ไขข้อมูล
+              </NavLink>
+          </div>
         </div>
-        <div className="history-prOrder"></div>
+        <div className="history-prorder"></div>
         <footer>
           <Footer />
         </footer>

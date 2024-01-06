@@ -126,6 +126,11 @@
     color: #E48F44;
     transition: 0.25s;
 }
+.side-text.profile.bar:hover {
+    background-color: #ffffff;
+    color: #E48F44;
+    transition: 0.25s;
+}
 
 .side-text.point {
     margin: 0.75vw;
@@ -141,4 +146,11 @@
 
 .side-text.profile p {
     top: -0.5vw;
+}
+.sidebar-menu1 .top a {
+    color: #181D31;
+}
+
+.sidebar-menu1 .top a:hover {
+    color: #E48F44;
 }

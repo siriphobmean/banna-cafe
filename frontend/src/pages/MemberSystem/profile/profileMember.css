@@ -136,7 +136,7 @@
     justify-content: center;
 }
 
-.memberData h5 {
+.memberData h5,.ic{
     width: 75%;
     background-color: #ffffff;
     border-radius: 0 20px 20px 0;
@@ -144,7 +144,13 @@
     align-items: center;
     justify-content: center;
 }
-
+.ic{
+    border: none;
+    text-align: center;
+}
+.ic.ps{
+    padding-right: 5%;
+}
 .memberData.pass h5 {
     display: grid;
     grid-template-columns: 3fr 0.6fr;
@@ -156,4 +162,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.btn-Profile{
+    width: 100%;
+    height: 4%;
+    display: flex;
+    justify-content: flex-end;
+}
+.btn-Profile button{
+    border: none;
+    cursor: pointer;
+}
+.btn-Profile button:hover ,.btn-edotProfile:hover{
+    background-color: #181D31;
+}
+.btn-edotProfile{
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;
+    background-color: #678983;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: small;
+    font-weight: 400;
 }

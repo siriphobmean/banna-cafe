@@ -4,12 +4,14 @@ import "./sidebarMenu.css";
 import { NavLink } from "react-router-dom";
 import { MenuTypesInterface } from "../../interfaces/IMenuType";
 import { GetMenuTypes } from "../../services/https/menu";
+import { MembersInterface } from "../../interfaces/IMember";
 
 interface SidebarMemuProps {
   onSelectMenuType: (menuType: MenuTypesInterface) => void;
+  member: MembersInterface | null;
 }
 
-export default function SidebarMemu({ onSelectMenuType }: SidebarMemuProps) {
+export default function SidebarMemu({ onSelectMenuType, member }: SidebarMemuProps) {
   const [menuTypes, setmenuTypes] = useState<MenuTypesInterface[]>([]);
   const [selectedMenuType, setSelectedMenuType] =
     useState<MenuTypesInterface>();
@@ -34,7 +36,6 @@ export default function SidebarMemu({ onSelectMenuType }: SidebarMemuProps) {
     <div className="sidebar-menu1">
       <div className="top">
         <div className="side-text home">Menu</div>
-        {/* <NavLink to="../" className="logout"><CiLogout/>Logout</NavLink> */}
       </div>
       <div className="mid">
         <div className="side-menuType">
@@ -61,7 +62,7 @@ export default function SidebarMemu({ onSelectMenuType }: SidebarMemuProps) {
         <NavLink to="/profileMember">
           <div className="side-text profile">
             <div className="side-text point">
-              <span>120</span>
+              <span>{member?.Point}</span>
             </div>
             <p>Profile</p>
           </div>

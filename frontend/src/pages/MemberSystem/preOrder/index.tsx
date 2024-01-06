@@ -12,6 +12,7 @@ import { GetMenusByName } from "../../../services/https/preorder";
 import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import "./menuPreorder.css";
+
 export default function MenuPreorder() {
   const [addMenupop, setAddmenupop] = useState(false);
   const [basketMenupop, setBasketMenupop] = useState(false);
@@ -59,7 +60,7 @@ export default function MenuPreorder() {
   return (
     <div className="menuPreorder">
       <div className="sidebarMemu">
-        <SidebarMemu onSelectMenuType={handleSelectMenuType} />
+        <SidebarMemu onSelectMenuType={handleSelectMenuType} member={null}/>
       </div>
       <div className="contentMenu">
         <header>
