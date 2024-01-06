@@ -96,7 +96,7 @@
     height: 15vw;
     width: 15vw;
     border: 2vw solid #181D31;
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -140,6 +140,19 @@
     width: 75%;
     background-color: #ffffff;
     border-radius: 0 20px 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.memberData.pass h5 {
+    display: grid;
+    grid-template-columns: 3fr 0.6fr;
+}
+.memberData.pass h5 p{
+    font-size: 1.5em;
+}
+.memberData.pass h5 p,.memberData.pass h5 span{
     display: flex;
     align-items: center;
     justify-content: center;

@@ -53,7 +53,7 @@ func SetupDatabase() {
 		{TypeName: "กาแฟ"},
 		{TypeName: "ชา & นม"},
 		{TypeName: "ผลไม้"},
-		{TypeName: "เค้ก & เบเกอรี่"},
+		{TypeName: "เบเกอรี่"},
 		{TypeName: "สำเร็จรูป"},
 	}
 

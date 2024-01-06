@@ -10,7 +10,7 @@ type Member struct {
 	Username string `gorm:"not null;uniqueIndex"`
 	Email string `gorm:"not null;uniqueIndex"`
 	Password string `gorm:"not null"`
-	Phone string `gorm:"not null"`
+	Phone string 
 	MemberImage string `gorm:"type:longtext"`
 	Point int 
 

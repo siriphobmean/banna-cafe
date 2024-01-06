@@ -26,7 +26,6 @@ func CreateMember(c *gin.Context) {
 
 	// สร้าง Member
 	u := entity.Member{
-
 		Username: member.Username,
 		Email:     member.Email,
 		Password:  member.Password,
@@ -78,23 +77,28 @@ func DeleteMember(c *gin.Context) {
 // PATCH /members
 func UpdateMember(c *gin.Context) {
 	var member entity.Member
-	var result entity.Member
+	var existingMember entity.Member
 
 	if err := c.ShouldBindJSON(&member); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	// ค้นหา member ด้วย id
-	if tx := entity.DB().Where("id = ?", member.ID).First(&result); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", member.ID).First(&existingMember); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
 		return
 	}
-
-	if err := entity.DB().Save(&member).Error; err != nil {
+	existingMember.Email = member.Email
+	existingMember.MemberImage = member.MemberImage
+	existingMember.Password = member.Password
+	existingMember.Phone = member.Phone
+	existingMember.Point = member.Point
+	existingMember.Username = member.Username
+	if err := entity.DB().Save(&existingMember).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": member})
+	c.JSON(http.StatusOK, gin.H{"data": existingMember})
 }
 
 // POST /membersRegister
@@ -136,3 +140,13 @@ func CreateMemberRegister(c *gin.Context) {
 }
 
 
+// GET /member/:id
+func GetMemberByID(c *gin.Context) {
+	var member entity.Member
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT * FROM members WHERE id = ?", id).Find(&member).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": member})
+}
