@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
+	"github.com/asaskevich/govalidator"
 )
 
 // POST /employees
@@ -28,6 +29,11 @@ func CreateEmployee(c *gin.Context) {
 	// ค้นหา gender ด้วย id
 	if tx := entity.DB().Where("id = ?", employee.GenderID).First(&gender); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
+		return
+	}
+
+	if _, err := govalidator.ValidateStruct(employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -95,6 +101,11 @@ func UpdateEmployee(c *gin.Context) {
 	// ค้นหา employee ด้วย id
 	if tx := entity.DB().Where("id = ?", employee.ID).First(&result); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+		return
+	}
+
+	if _, err := govalidator.ValidateStruct(employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
