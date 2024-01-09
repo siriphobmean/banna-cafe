@@ -122,7 +122,7 @@ function Menus() {
       setOpen(false);
       messageApi.open({
         type: "success",
-        content: "ลบข้อมูลสำเร็จ",
+        content: "ลบเมนูสำเร็จ",
       });
       getMenus();
     } else {

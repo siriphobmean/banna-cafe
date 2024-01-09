@@ -97,7 +97,7 @@ function Mains() {
       <div style={{ marginTop: 20 }}>
         <Table rowKey="ID" columns={columns} dataSource={employees} />
       </div>
-      <div style={{textAlign: 'center'}}>ทีมผู้สร้าง กำลังพัฒนาระบบ ขออภัยในความไม่สะดวกครับ :D</div>
+      {/* <div style={{textAlign: 'center'}}>ทีมผู้สร้าง กำลังพัฒนาระบบ ขออภัยในความไม่สะดวกครับ :D</div> */}
     </>
   );
 }
