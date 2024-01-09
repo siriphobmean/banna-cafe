@@ -38,7 +38,7 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/MemberSystem/preorder";
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
