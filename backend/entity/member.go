@@ -11,9 +11,9 @@ import (
 type Member struct {
 	gorm.Model
 
-	Username    string `gorm:"uniqueIndex" valid:"required~กรุณากรากชื่อ,maxstringlength(50)~ความยาวต้องไม่เกิน 50 อักษร"`
-	Email       string `gorm:"uniqueIndex" valid:"required~Email is required, email~Email ผิดพลาด"`
-	Password    string `valid:"required~กรุณากรากรหัสผ่าน,matches(^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\\$]).*$)~should contain at least one uppercase letter, lowercase letter, digit, and special symbol"`
+	Username    string `gorm:"uniqueIndex" valid:"required~กรุณากรากชื่อ !,maxstringlength(50)~ความยาวต้องไม่เกิน 50 อักษร"`
+	Email       string `gorm:"uniqueIndex" valid:"required~กรุณากราก Email !, email~Email ผิดพลาด"`
+	Password    string `valid:"required~กรุณากรอกรหัสผ่าน !,matches(^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\\$]).*$)~should contain at least one uppercase letter, lowercase letter, digit, and special symbol"`
 	Phone       string `valid:"matches(^\\+[0-9]+$)~กรุณากรอกหมายเลขโทรศัพท์เป็นตัวเลข 0-9"`
 	MemberImage string `gorm:"type:longtext" valid:"image_valid~รูปภาพไม่ถูกต้อง กรุณาอัปโหลดรูปภาพใหม่"`
 	Point       int    

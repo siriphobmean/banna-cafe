@@ -12,10 +12,10 @@ type Preorder struct {
 	gorm.Model
 	// PickUpTime  time.Time
 	// PickUpDate time.Time
-	TotalAmount 		float32 	  `gorm:"type:decimal(9,2)" valid:"required~TotalAmount ต้องมีทศนิยม 2 ตำแหน่ง,ValidTotalAmount"`
+	TotalAmount 		float32 	  `gorm:"type:decimal(9,2)" valid:"required~กรุณาตรวจสอบ TotalAmount,ValidTotalAmount~TotalAmount ต้องมีทศนิยม 2 ตำแหน่ง"`
 	PickUpDateTime      *time.Time    `valid:"Upcoming~กรุณาสั่งจองล่วงหน้าอย่างน้อย 45 นาที"`
 	Note                string        `valid:"maxstringlength(100)~Note ความยาวไม่เกิน 100 ตัวอักษร"`
-	Respound            string        `valid:"maxstringlength(100)~Respound ความยาวไม่เกิน 100 ตัวอักษร"`
+	Respond            string        `valid:"maxstringlength(100)~Respound ความยาวไม่เกิน 100 ตัวอักษร"`
 	MemberID            *uint         `valid:"required~Member is required"`
 	// MemberID            *uint         
 	Member              Member        `gorm:"references:id" valid:"-"`

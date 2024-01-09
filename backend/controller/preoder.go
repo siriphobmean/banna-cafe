@@ -4,22 +4,24 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/asaskevich/govalidator"
+	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
+
 type preoderPayload struct {
-	PreoderID   string
-	TotalAmount float32 
-	PickUpDateTime  time.Time
+	PreoderID      string
+	TotalAmount    float32
+	PickUpDateTime time.Time
 	// PickUpTime  time.Time
 	// PickUpDate  time.Time
-	Note        string
-	Respound    string
-	MemberID 	*uint
+	Note                    string
+	Respound                string
+	MemberID                *uint
 	StatusApprovePreorderID *uint
-	StatusRecivePreorderID *uint
+	StatusRecivePreorderID  *uint
 }
+
 // GET /menus
 func ListMenusByMenuTypeID(c *gin.Context) {
 	var menus []entity.Menu
@@ -54,8 +56,8 @@ func CreatePreorder(c *gin.Context) {
 	}
 
 	if _, err := govalidator.ValidateStruct(data); err != nil {
-    c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-    return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	// ค้นหา member ด้วย id
@@ -66,21 +68,21 @@ func CreatePreorder(c *gin.Context) {
 
 	// สร้าง Preorder
 	u := entity.Preorder{
-		TotalAmount: 	data.TotalAmount,
+		TotalAmount:    data.TotalAmount,
 		PickUpDateTime: &data.PickUpDateTime,
 		// PickUpTime:  data.PickUpTime,
 		// PickUpDate:  data.PickUpDate,
-		Note:        	data.Note,
-		Respound:    	"",
-		Member:      	member,
-		MemberID: 		&member.ID,
+		Note:     data.Note,
+		Respond:  "",
+		Member:   member,
+		MemberID: &member.ID,
 	}
 
 	if err := entity.DB().Create(&u).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}	
-	
+	}
+
 	var statusApprovePreorder entity.StatusApprovePreorder
 	var preorder entity.Preorder
 	// ค้นหา statusApprovePreorder ด้วย id
@@ -88,7 +90,7 @@ func CreatePreorder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "statusApprovePreorder not found"})
 		return
 	}
-	
+
 	if tx := entity.DB().Where("id = ?", &u.ID).First(&preorder); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
 		return
@@ -96,15 +98,15 @@ func CreatePreorder(c *gin.Context) {
 
 	// สร้าง Menu
 	pa := entity.PreorderStatusApprove{
-		Preorder:              preorder,
-		PreorderID:            &preorder.ID,
-		StatusApprovePreorder: statusApprovePreorder,
+		Preorder:                preorder,
+		PreorderID:              &preorder.ID,
+		StatusApprovePreorder:   statusApprovePreorder,
 		StatusApprovePreorderID: &statusApprovePreorder.ID,
 	}
 	if _, err := govalidator.ValidateStruct(pa); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	} 
+	}
 	// บันทึก
 	if err := entity.DB().Create(&pa).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -119,22 +121,22 @@ func CreatePreorder(c *gin.Context) {
 
 	// สร้าง statusRecivePreorder
 	pr := entity.PreorderStatusRecive{
-		Preorder:              preorder,
-		PreorderID:            &preorder.ID,
-		StatusRecivePreorder: statusRecivePreorder,
+		Preorder:               preorder,
+		PreorderID:             &preorder.ID,
+		StatusRecivePreorder:   statusRecivePreorder,
 		StatusRecivePreorderID: &statusRecivePreorder.ID,
 	}
 	if _, err := govalidator.ValidateStruct(pr); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	} 
+	}
 	// บันทึก
 	if err := entity.DB().Create(&pr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": gin.H{"preoder": u, "preorderStatusApprove": pa , "preorderStatusRecive": pr}})
+	c.JSON(http.StatusOK, gin.H{"data": gin.H{"preoder": u, "preorderStatusApprove": pa, "preorderStatusRecive": pr}})
 }
 
 // GET /preorder/:id
@@ -194,7 +196,7 @@ func UpdatePreorder(c *gin.Context) {
 	if _, err := govalidator.ValidateStruct(preorder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	} 
+	}
 
 	// ค้นหา preorder ด้วย id
 	if tx := entity.DB().Where("id = ?", preorder.ID).First(&existingPreorder); tx.RowsAffected == 0 {
@@ -206,7 +208,7 @@ func UpdatePreorder(c *gin.Context) {
 	// existingPreorder.PickUpDate = preorder.PickUpDate.Local()
 	existingPreorder.PickUpDateTime = preorder.PickUpDateTime
 	existingPreorder.Note = preorder.Note
-	existingPreorder.Respound = preorder.Respound
+	existingPreorder.Respond = preorder.Respond
 	existingPreorder.Member = preorder.Member
 	existingPreorder.MemberID = preorder.MemberID
 	existingPreorder.TotalAmount = preorder.TotalAmount
