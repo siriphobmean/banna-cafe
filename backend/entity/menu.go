@@ -10,7 +10,7 @@ type Menu struct {
 	MenuID int `gorm:"uniqueIndex" valid:"required~MenuID is required"` // ok!
 	MenuName string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(50)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว"` // ok!
 	MenuNameEng string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(50)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว"` // ok!
-	MenuCost float64 `valid:"required~กรุณากรอกเป็นเลขทศนิยม, float~กรุณากรอกเป็นเลขทศนิยม"` // ok!...
+	MenuCost float64 `valid:"required~กรุณากรอกเป็นเลขทศนิยม !, float~กรุณากรอกเป็นเลขทศนิยม"` // ok!...
 	MenuImage string `gorm:"type:longtext"` // ok!
 	MenuStatus int `valid:"required~กรุณากรอกสถานะเมนู !, range(1|2)~กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น"` // ok
 

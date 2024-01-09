@@ -91,7 +91,7 @@ func TestMenuCost(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม !")))
 	})
 
 	t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
