@@ -56,6 +56,8 @@ function Mains() {
     }
   };
 
+  const [userName, setUserName] = useState<string>("นายศิริภพ พูนประสิทธิ์ (for test)"); // กำหนดชื่อผู้ใช้งาน
+
   useEffect(() => {
     getEmployees();
   }, []);
@@ -66,15 +68,36 @@ function Mains() {
       <Row>
         <Col span={12}>
           <h2>ระบบจัดการหลังบ้าน Banna Café</h2>
-          <div className="exampleData"><b>รายชื่อพนักงาน</b></div>
+          {/* <div className="exampleData"><b>รายชื่อพนักงาน</b></div> */}
         </Col>
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
+        <Space>
+            {/* <Link to="/ingredient/create"> */}
+              <Button type="primary" style={{ background: "#E48F44" }}>
+                ผู้ใช้งาน : {userName}
+              </Button>
+            {/* </Link> */}
+            <Link to="/">
+              <Button
+                type="primary"
+                style={{
+                  background: "#ffff",
+                  color: "#E48F44",
+                  border: "1px solid #E48F44",
+                }}
+              >
+                ออกจากระบบ
+              </Button>
+            </Link>
+          </Space>
         </Col>
       </Row>
       <Divider />
+      <div style={{textAlign: 'center', fontSize: '24px'}}>รายชื่อพนักงาน</div>
       <div style={{ marginTop: 20 }}>
         <Table rowKey="ID" columns={columns} dataSource={employees} />
       </div>
+      <div style={{textAlign: 'center'}}>ทีมผู้สร้าง กำลังพัฒนาระบบ ขออภัยในความไม่สะดวกครับ :D</div>
     </>
   );
 }
