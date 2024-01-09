@@ -5,14 +5,15 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/asaskevich/govalidator"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
 type preoderPayload struct {
 	PreoderID   string
 	TotalAmount float32 
-	CreateTime  time.Time
-	PickUpTime  time.Time
-	PickUpDate  time.Time
+	PickUpDateTime  time.Time
+	// PickUpTime  time.Time
+	// PickUpDate  time.Time
 	Note        string
 	Respound    string
 	MemberID 	*uint
@@ -52,6 +53,11 @@ func CreatePreorder(c *gin.Context) {
 		return
 	}
 
+	if _, err := govalidator.ValidateStruct(data); err != nil {
+    c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+    return
+	}
+
 	// ค้นหา member ด้วย id
 	if tx := entity.DB().Where("id = ?", data.MemberID).First(&member); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
@@ -60,38 +66,45 @@ func CreatePreorder(c *gin.Context) {
 
 	// สร้าง Preorder
 	u := entity.Preorder{
-		TotalAmount: data.TotalAmount,
-		PickUpTime:  data.PickUpTime,
-		PickUpDate:  data.PickUpDate,
-		Note:        data.Note,
-		Respound:    "",
-		Member:      member,
+		TotalAmount: 	data.TotalAmount,
+		PickUpDateTime: &data.PickUpDateTime,
+		// PickUpTime:  data.PickUpTime,
+		// PickUpDate:  data.PickUpDate,
+		Note:        	data.Note,
+		Respound:    	"",
+		Member:      	member,
+		MemberID: 		&member.ID,
 	}
 
-	// บันทึก
 	if err := entity.DB().Create(&u).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
-	}
-
+	}	
+	
 	var statusApprovePreorder entity.StatusApprovePreorder
 	var preorder entity.Preorder
 	// ค้นหา statusApprovePreorder ด้วย id
 	if tx := entity.DB().Where("id = ?", data.StatusApprovePreorderID).First(&statusApprovePreorder); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "statusApprovePreorder not found"})
 		return
 	}
+	
 	if tx := entity.DB().Where("id = ?", &u.ID).First(&preorder); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
 		return
 	}
 
 	// สร้าง Menu
 	pa := entity.PreorderStatusApprove{
 		Preorder:              preorder,
+		PreorderID:            &preorder.ID,
 		StatusApprovePreorder: statusApprovePreorder,
+		StatusApprovePreorderID: &statusApprovePreorder.ID,
 	}
-
+	if _, err := govalidator.ValidateStruct(pa); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} 
 	// บันทึก
 	if err := entity.DB().Create(&pa).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -100,16 +113,21 @@ func CreatePreorder(c *gin.Context) {
 	var statusRecivePreorder entity.StatusRecivePreorder
 	// ค้นหา statusRecivePreorder ด้วย id
 	if tx := entity.DB().Where("id = ?", data.StatusRecivePreorderID).First(&statusRecivePreorder); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "statusRecivePreorder not found"})
 		return
 	}
 
 	// สร้าง statusRecivePreorder
 	pr := entity.PreorderStatusRecive{
 		Preorder:              preorder,
+		PreorderID:            &preorder.ID,
 		StatusRecivePreorder: statusRecivePreorder,
+		StatusRecivePreorderID: &statusRecivePreorder.ID,
 	}
-
+	if _, err := govalidator.ValidateStruct(pr); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} 
 	// บันทึก
 	if err := entity.DB().Create(&pr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -167,21 +185,30 @@ func GetNewPreorderByMemberID(c *gin.Context) {
 func UpdatePreorder(c *gin.Context) {
 	var preorder entity.Preorder
 	var existingPreorder entity.Preorder
+
 	if err := c.ShouldBindJSON(&preorder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	if _, err := govalidator.ValidateStruct(preorder); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} 
+
 	// ค้นหา preorder ด้วย id
 	if tx := entity.DB().Where("id = ?", preorder.ID).First(&existingPreorder); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
 		return
 	}
 
-	existingPreorder.PickUpTime = preorder.PickUpTime .Local()
-	existingPreorder.PickUpDate = preorder.PickUpDate.Local()
+	// existingPreorder.PickUpTime = preorder.PickUpTime .Local()
+	// existingPreorder.PickUpDate = preorder.PickUpDate.Local()
+	existingPreorder.PickUpDateTime = preorder.PickUpDateTime
 	existingPreorder.Note = preorder.Note
 	existingPreorder.Respound = preorder.Respound
 	existingPreorder.Member = preorder.Member
+	existingPreorder.MemberID = preorder.MemberID
 	existingPreorder.TotalAmount = preorder.TotalAmount
 
 	if err := entity.DB().Save(&existingPreorder).Error; err != nil {

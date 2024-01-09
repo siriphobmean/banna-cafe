@@ -71,6 +71,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       MemberID: 1,
       // PickupTime: "2006-01-02T15:04:05Z07:00",
       // PickupDate: "2006-01-02T15:04:05Z07:00",
+      PickUpDateTime: "2024-01-07T23:55:24.6862451+07:00",
       Note: "",
       Respond: "",
 
@@ -98,6 +99,8 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
       values.TotalAmount = parseFloat(TotalAmount);
       values.TotalAmount = values.TotalAmount + (preorder.TotalAmount ?? 0);
+      console.log("values");
+      console.log(values);
       let res1 = await UpdatePreorder(values);
       if (!res1.status) {
         messageApi.open({
@@ -108,7 +111,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       }
     }
     values.PreorderID = (await getIDPreoderByMember(1)) ?? 0;
-    
+
     let res2 = await CreatePreorderMenu(values);
     if (res2.status) {
       messageApi.open({
@@ -225,9 +228,6 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       setValue("TotalCost", newQuantity * addMenu.MenuCost);
     }
   };
-
-  // console.log("preorder");
-  // console.log(preorder_status_approver);
   return (
     <form
       className="add-crad"
@@ -293,7 +293,6 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
               <label>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("SweetnessStatus", {
                     required: { value: true, message: "this is require" },
                   })}
@@ -315,7 +314,6 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
               <label>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("DrinkOptionStatus", {
                     required: { value: true, message: "this is require" },
                   })}

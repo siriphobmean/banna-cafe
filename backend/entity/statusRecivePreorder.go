@@ -4,7 +4,7 @@ import (
 )
 type StatusRecivePreorder struct {
 	gorm.Model
-	Name string
+	Name string `gorm:"not null;uniqueIndex"`
 
 	PreorderStatusRecives []PreorderStatusRecive `gorm:"foreignKey:StatusRecivePreorderID"`
 }

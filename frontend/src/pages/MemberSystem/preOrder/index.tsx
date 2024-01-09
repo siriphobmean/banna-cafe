@@ -27,8 +27,7 @@ export default function MenuPreorder() {
   const [menus, setMenus] = useState<MenusInterface[]>([]);
   const [menuslide, setMenuSlide] = useState<MenusInterface>();
   const [menu, setMenu] = useState<MenusInterface>();
-  console.log("menu");
-  console.log(menu);
+
   const getMenusByMenuName = async (e: string) => {
     if (
       e.trim() &&

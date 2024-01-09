@@ -4,7 +4,7 @@ import (
 )
 type StatusApprovePreorder struct {
 	gorm.Model
-	Name string
+	Name string `gorm:"not null;uniqueIndex"`
 
 	PreorderStatusApproves []PreorderStatusApprove `gorm:"foreignKey:StatusApprovePreorderID"`
 }

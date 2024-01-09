@@ -62,7 +62,9 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     },
   });
 
-  const onSubmitEditMenuPreorder = async (values: PreorderMenusInterface) => {
+  const onSubmitEditMenuPreorder = async (
+    values: PreorderMenusInterface & PreordersInterface
+  ) => {
     values.ID = preordermenus?.ID;
     values.PreorderID = preordermenus?.PreorderID;
     const oldTotolcost = preordermenus?.TotalCost;
@@ -92,6 +94,12 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     values.TotalAmount = parseFloat(TotalCost);
     values.TotalAmount = values.TotalAmount - oldTotolcost;
     values.TotalAmount = values.TotalAmount + (preorder?.TotalAmount ?? 0);
+    values.TotalAmount = parseFloat(values.TotalAmount.toFixed(2));
+    values.PickUpDateTime = preorder?.PickUpDateTime;
+    values.Note = preorder?.Note;
+    values.Respond = preorder?.Respond;
+    console.log("values");
+    console.log(values);
     let res1 = await UpdatePreorder(values);
     if (!res1.status) {
       messageApi.open({

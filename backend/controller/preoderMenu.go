@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/asaskevich/govalidator"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
 
@@ -31,6 +32,10 @@ func CreatePreorderMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	if _, err := govalidator.ValidateStruct(preorderMenu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} 
 	// ค้นหา menu ด้วย id
 	if tx := entity.DB().Where("id = ?", preorderMenu.MenuID).First(&menu); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "menu not found"})
@@ -66,6 +71,11 @@ func CreatePreorderMenu(c *gin.Context) {
 		DrinkOption: drinkOption,
 		Preorder:    preorder,
 		Menu:        menu,
+		SweetnessID:   &sweetness.ID,
+		MenuSizeID:    &menuSize.ID,
+		DrinkOptionID: &drinkOption.ID,
+		PreorderID:    &preorder.ID,
+		MenuID:        &menu.ID,
 	}
 
 	// บันทึก
@@ -177,7 +187,16 @@ func UpdatePreorderMenu(c *gin.Context) {
 	existingPreorderMenu.DrinkOption = drinkOption
 	existingPreorderMenu.Preorder = preorder
 	existingPreorderMenu.Menu = menu
+	existingPreorderMenu.SweetnessID = &sweetness.ID
+	existingPreorderMenu.MenuSizeID = &menuSize.ID
+	existingPreorderMenu.DrinkOptionID= &drinkOption.ID
+	existingPreorderMenu.PreorderID = &preorder.ID
+	existingPreorderMenu.MenuID = &menu.ID
 
+	if _, err := govalidator.ValidateStruct(existingPreorderMenu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	if err := entity.DB().Save(&existingPreorderMenu).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

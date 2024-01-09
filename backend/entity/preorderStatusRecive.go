@@ -1,12 +1,14 @@
 package entity
+
 import (
 	"gorm.io/gorm"
 )
+
 type PreorderStatusRecive struct {
 	gorm.Model
 	// FK
-	PreorderID              *uint
-	Preorder                Preorder `gorm:"references:id"`
-	StatusRecivePreorderID *uint
-	StatusRecivePreorder   StatusRecivePreorder `gorm:"references:id"`
+	PreorderID             *uint                `valid:"required~Preorder is required"`
+	Preorder               Preorder             `gorm:"references:id" valid:"-"`
+	StatusRecivePreorderID *uint                `valid:"required~StatusRecivePreorder is required"`
+	StatusRecivePreorder   StatusRecivePreorder `gorm:"references:id" valid:"-"`
 }

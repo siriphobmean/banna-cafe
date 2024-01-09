@@ -1,40 +1,51 @@
 package entity
 
 import (
-	// "fmt"
+	"math"
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
-// type LocalTime time.Time
-
-// func (t *LocalTime) MarshalJSON() ([]byte, error) {
-//     tTime := time.Time(*t)
-//     return []byte(fmt.Sprintf("\"%v\"", tTime.Format("15:04"))), nil
-// }
-
-// type LocalDate time.Time
-
-// func (t *LocalDate) MarshalJSON() ([]byte, error) {
-//     tTime := time.Time(*t)
-//     return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02"))), nil
-// }
-
 type Preorder struct {
-    gorm.Model
-    PreoderID   string
-    TotalAmount float32 `gorm:"type:decimal(7,2)"`
-    PickUpTime  time.Time
-    PickUpDate time.Time
-    Note        string
-    Respound     string
+	gorm.Model
+	// PickUpTime  time.Time
+	// PickUpDate time.Time
+	TotalAmount 		float32 	  `gorm:"type:decimal(9,2)" valid:"required~TotalAmount ต้องมีทศนิยม 2 ตำแหน่ง,ValidTotalAmount"`
+	PickUpDateTime      *time.Time    `valid:"Upcoming~กรุณาสั่งจองล่วงหน้าอย่างน้อย 45 นาที"`
+	Note                string        `valid:"maxstringlength(100)~Note ความยาวไม่เกิน 100 ตัวอักษร"`
+	Respound            string        `valid:"maxstringlength(100)~Respound ความยาวไม่เกิน 100 ตัวอักษร"`
+	MemberID            *uint         `valid:"required~Member is required"`
+	// MemberID            *uint         
+	Member              Member        `gorm:"references:id" valid:"-"`
+	
+	PreorderStatusApproves []PreorderStatusApprove `gorm:"foreignKey:PreorderID"`
+	PreorderStatusRecives  []PreorderStatusRecive  `gorm:"foreignKey:PreorderID"`
+	PreorderMenus          []PreorderMenu          `gorm:"foreignKey:PreorderID"`
+}
 
-    // FK
-    MemberID *uint
-    Member   Member `gorm:"references:id"`
+func init() {
+	govalidator.CustomTypeTagMap.Set("Upcoming", govalidator.CustomTypeValidator(validateUpcoming))
+	govalidator.CustomTypeTagMap.Set("ValidTotalAmount", govalidator.CustomTypeValidator(validateTotalAmount))
+}
 
-    PreorderStatusApproves []PreorderStatusApprove `gorm:"foreignKey:PreorderID"`
-    PreorderStatusRecives  []PreorderStatusRecive  `gorm:"foreignKey:PreorderID"`
-    PreorderMenus          []PreorderMenu          `gorm:"foreignKey:PreorderID"`
+func validateUpcoming(i interface{}, context interface{}) bool {
+	pickUpDateTime, ok := i.(*time.Time)
+	if !ok || pickUpDateTime == nil {
+		return true
+	}
+
+	minimumPickUpTime := time.Now().Add(45 * time.Minute)
+	return pickUpDateTime.After(minimumPickUpTime)
+}
+
+func validateTotalAmount(i interface{}, context interface{}) bool {
+    value, ok := i.(float32)
+    if !ok {
+        return false
+    }
+
+    fractionalPart := float64(value*100) - math.Floor(float64(value*100))
+    return fractionalPart == 0.00
 }

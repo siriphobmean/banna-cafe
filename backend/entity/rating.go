@@ -6,12 +6,11 @@ import (
 
 type Rating struct {
 	gorm.Model
-
-	Score int
-
-	Menu []Menu `gorm:"foreignKey:RatingID"`
+	Score 		int 	`valid:"required~Score ไม่อยู่ในช่วง 0 ถึง 5, range(0|5)~กรุณาเลือกคะแนนใหม่"`
 
 	// FK
-	MemberID *uint
-	Member Member `gorm:"references:id"`
-} // Clear!
+	MemberID 	*uint  	`valid:"required~Member is required"`
+	Member   	Member 	`gorm:"references:id" valid:"-"`
+
+	Menu 		[]Menu 	`gorm:"foreignKey:RatingID"`
+}

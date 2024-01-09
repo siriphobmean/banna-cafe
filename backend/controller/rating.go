@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/asaskevich/govalidator"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
 
@@ -28,7 +29,13 @@ func CreateRating(c *gin.Context) {
 	u := entity.Rating{
 		Score: rating.Score,
 		Member: member,
+		MemberID: &member.ID,
 	}
+
+	if _, err := govalidator.ValidateStruct(u); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} 
 
 	// บันทึก
 	if err := entity.DB().Create(&u).Error; err != nil {
@@ -85,6 +92,11 @@ func UpdateRating(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "rating not found"})
 		return
 	}
+
+	// if _, err := govalidator.ValidateStruct(u); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
 
 	if err := entity.DB().Save(&rating).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
