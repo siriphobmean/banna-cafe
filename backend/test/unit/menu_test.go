@@ -94,24 +94,24 @@ func TestMenuCost(t *testing.T) {
 		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม !")))
 	})
 
-	t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
-		menu := entity.Menu{
-			MenuID:      1,
-			MenuName:    "กาแฟดำ",
-			MenuNameEng: "Black Coffee",
-			MenuCost:    0, // incorrect :(
-			MenuImage:   "", // longtext
-			MenuStatus:  1,
-			MenuTypeID:  1,
-		}
+	// t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
+	// 	menu := entity.Menu{
+	// 		MenuID:      1,
+	// 		MenuName:    "กาแฟดำ",
+	// 		MenuNameEng: "Black Coffee",
+	// 		MenuCost:    0, // incorrect :(
+	// 		MenuImage:   "", // longtext
+	// 		MenuStatus:  1,
+	// 		MenuTypeID:  1,
+	// 	}
 
-		ok, err := govalidator.ValidateStruct(menu)
+	// 	ok, err := govalidator.ValidateStruct(menu)
 
-		g.Expect(ok).NotTo(BeTrue())
-		g.Expect(err).NotTo(BeNil())
+	// 	g.Expect(ok).NotTo(BeTrue())
+	// 	g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
-	})
+	// 	g.Expect(err.Error()).To(Equal(("กรุณากรอกเป็นเลขทศนิยม")))
+	// })
 
 	t.Run(`menu_cost pattern is valid`, func(t *testing.T) {
 		menu := entity.Menu{

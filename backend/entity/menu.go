@@ -23,5 +23,5 @@ type Menu struct {
 	MenuType MenuType `gorm:"references:id"`
 
 	RatingID *uint
-	Rating Rating `gorm:"references:id"` // in now don't have not null
+	Rating Rating `gorm:"references:id" valid:"-"`
 } // Clear!
