@@ -113,7 +113,7 @@ function Employees() {
       setOpen(false);
       messageApi.open({
         type: "success",
-        content: "ลบข้อมูลสำเร็จ",
+        content: "ลบพนักงานสำเร็จ",
       });
       getEmployees();
     } else {
@@ -156,7 +156,7 @@ function Employees() {
         <Table rowKey="ID" columns={columns} dataSource={employees} />
       </div>
       <Modal
-        title="ลบข้อมูล ?"
+        title="ลบพนักงาน"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

@@ -41,7 +41,7 @@ function EmployeeCreate() {
     if (res.status) {
       messageApi.open({
         type: "success",
-        content: "บันทึกข้อมูลสำเร็จ", // res.message, เอา "" ออกด้วย
+        content: "เพิ่มพนักงานสำเร็จ", // res.message, เอา "" ออกด้วย
       });
       setTimeout(function () {
         navigate("/employee");
@@ -49,7 +49,7 @@ function EmployeeCreate() {
     } else {
       messageApi.open({
         type: "error",
-        content: "บันทึกข้อมูลไม่สำเร็จ",
+        content: res.message,
       });
     }
     console.log(values);

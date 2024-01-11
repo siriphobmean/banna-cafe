@@ -161,14 +161,14 @@ func SetupDatabase() {
 			Email:    "siriphob@gmail.com",
 			Password: "mean1234",
 			Phone:    "0981894780",
-			Point:    100,
+			Point:    50, // start point setting
 		},
 		{
 			Username: "MeanKung",
 			Email:    "siriphob1234@gmail.com",
 			Password: "1234eeee",
 			Phone:    "0626735910",
-			Point:    150,
+			Point:    50, // start point setting
 		},
 	}
 
