@@ -156,7 +156,7 @@ function Employees() {
         <Table rowKey="ID" columns={columns} dataSource={employees} />
       </div>
       <Modal
-        title="ลบข้อมูล ?"
+        title="ลบพนักงาน"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

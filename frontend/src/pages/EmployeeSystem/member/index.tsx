@@ -15,9 +15,9 @@ function Members() {
       key: "id",
     },
     {
-        title: "รูปโปรไฟล์", // รูปไฟล์
-        dataIndex: "MemberImage", // Profile
-        key: "memberimage", // profile
+        title: "รูปโปรไฟล์",
+        dataIndex: "MemberImage",
+        key: "memberimage",
         render: (text, record, index) => (
           <img src={record.MemberImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
         )
@@ -51,7 +51,7 @@ function Members() {
         )
       },
     {
-      title: "แก้ไข/ลบข้อมูล",
+      title: "แก้ไข/ลบสมาชิก",
       dataIndex: "Manage",
       key: "manage",
       render: (text, record, index) => (
@@ -91,7 +91,7 @@ function Members() {
 
   const showModal = (val: MembersInterface) => {
     setModalText(
-      `คุณต้องการลบข้อมูลสมาชิก "${val.Username}" หรือไม่ ?`
+      `คุณต้องการลบสมาชิก "${val.Username}" หรือไม่ ?`
     );
     setDeleteId(val.ID);
     setOpen(true);
@@ -104,7 +104,7 @@ function Members() {
       setOpen(false);
       messageApi.open({
         type: "success",
-        content: "ลบข้อมูลสำเร็จ",
+        content: "ลบสมาชิกสำเร็จ",
       });
       getMembers();
     } else {
@@ -138,7 +138,7 @@ function Members() {
         <Table rowKey="ID" columns={columns} dataSource={members} />
       </div>
       <Modal
-        title="ลบข้อมูล ?"
+        title="ลบสมาชิก"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
