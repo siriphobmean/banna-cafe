@@ -6,8 +6,8 @@ import (
 
 type PreorderMenu struct {
 	gorm.Model
-	Quantity  int     `valid:"required~Quantity ไม่อยู่ในช่วง 1 ถึง 20, range(1|20)~กรุณาเลือกจำนวนใหม่"`
-	TotalCost float32 `gorm:"type:decimal(9,2)" valid:"required~TotalAmount ต้องมีทศนิยม 2 ตำแหน่ง,ValidTotalAmount"`
+	Quantity  int     `valid:"required~กรุณากรอก Quantity !, range(1|20)~กรุณาเลือกจำนวนใหม่ที่อยู่ในช่วง 1 ถึง 20"`
+	TotalCost float32 `gorm:"type:decimal(9,2)" valid:"required~กรุณากรอก TotalCost !,ValidTotalAmount~TotalAmount ต้องมีทศนิยม 2 ตำแหน่ง"`
 
 	// FK
 	PreorderID    *uint       `valid:"required~Preorder is required"`
