@@ -67,7 +67,7 @@ function Menus() {
       ),
     },
     {
-      title: "แก้ไข/ลบข้อมูล",
+      title: "แก้ไข/ลบเมนู",
       dataIndex: "Manage",
       key: "manage",
       render: (text, record, index) => (
@@ -165,7 +165,7 @@ function Menus() {
         <Table rowKey="ID" columns={columns} dataSource={menus} />
       </div >
       <Modal
-        title="ลบเมนู ?"
+        title="ลบเมนู"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

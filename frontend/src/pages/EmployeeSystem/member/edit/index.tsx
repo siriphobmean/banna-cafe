@@ -54,7 +54,7 @@ function MemberEdit() {
     } else {
       messageApi.open({
         type: "error",
-        content: "แก้ไขข้อมูลไม่สำเร็จ",
+        content: res.message,
       });
     }
     console.log(values)
