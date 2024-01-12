@@ -4,9 +4,10 @@ import { FaStar } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import "../addMenuPreOrder/addMenuPreOrder.css";
+import "../addMenuPreorder/addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import {
+  CreatePreorderMenu,
   GetDrinkOptions,
   GetMenuSize,
   GetSweetnesses,
@@ -62,9 +63,7 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     },
   });
 
-  const onSubmitEditMenuPreorder = async (
-    values: PreorderMenusInterface & PreordersInterface
-  ) => {
+  const onSubmitEditMenuPreorder = async (values: PreorderMenusInterface) => {
     values.ID = preordermenus?.ID;
     values.PreorderID = preordermenus?.PreorderID;
     const oldTotolcost = preordermenus?.TotalCost;
@@ -81,7 +80,7 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     } else {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด",
+        content: res1.message,
       });
     }
   };
@@ -94,17 +93,11 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
     values.TotalAmount = parseFloat(TotalCost);
     values.TotalAmount = values.TotalAmount - oldTotolcost;
     values.TotalAmount = values.TotalAmount + (preorder?.TotalAmount ?? 0);
-    values.TotalAmount = parseFloat(values.TotalAmount.toFixed(2));
-    values.PickUpDateTime = preorder?.PickUpDateTime;
-    values.Note = preorder?.Note;
-    values.Respond = preorder?.Respond;
-    console.log("values");
-    console.log(values);
     let res1 = await UpdatePreorder(values);
     if (!res1.status) {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด2",
+        content: res1.message,
       });
       return;
     }

@@ -67,7 +67,7 @@ func TestUsername(t *testing.T) {
 
 }
 
-func TestEmail(t *testing.T) {
+func TestEmailMember(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	t.Run("Email is required", func(t *testing.T) {
@@ -121,7 +121,7 @@ func TestEmail(t *testing.T) {
 
 }
 
-func TestPassword(t *testing.T) {
+func TestPasswordMember(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	t.Run("Password is required", func(t *testing.T) {

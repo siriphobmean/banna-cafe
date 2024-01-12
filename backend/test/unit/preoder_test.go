@@ -9,6 +9,7 @@ import (
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
 
+
 func TestTotalAmount(t *testing.T) {
 
 	g := NewGomegaWithT(t)

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { message } from "antd";
-import "../addMenuPreOrder/addMenuPreOrder.css";
-import "./editPreOrder.css";
+import "../addMenuPreorder/addMenuPreorder.css";
+import "./editPreorder.css";
 import { useForm } from "react-hook-form";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import { PreordersInterface } from "../../../../interfaces/IPreorder";
@@ -111,7 +111,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   };
   const onSubmitUpDatePreorder = async (values: PreordersInterface) => {
     values.ID = preorder?.ID;
-    values.PickUpDateTime = "0021-01-01T00:00:00Z";
+    values.PickUpDateTime = "2024-10-07T23:55:24.6862451+07:00";
     // values.PickupTime = "0021-01-01T00:00:00Z";
     // values.PickupDate = "0021-01-01T00:00:00Z"; // datatype input not match in data base 05/01/2024
     // console.log("values");
@@ -123,13 +123,16 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
         content: "บันทึกเมนูสำเร็จ",
       });
       setTimeout(function () {
-        onClosebasketMenupop();
-      }, 1000);
+        // onClosebasketMenupop();
+      }, 30000);
     } else {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด",
+        content: res.message,
       });
+      setTimeout(function () {
+        // onClosebasketMenupop();
+      }, 30000);
     }
   };
 
@@ -245,7 +248,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
           </div>
           <hr />
           <div className="data-preOrder">
-            <h5>วัน-เวลาที่รับ</h5>
+            {/* <h5>วัน-เวลาที่รับ</h5>
             <label htmlFor="" className="datetime-recive">
               <input
                 type="datetime-local"
@@ -253,7 +256,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
                   required: { value: true, message: "this is required" },
                 })}
               />
-              {/* <input
+              <input
                 type="time"
                 {...register("PickupTime", {
                   required: { value: true, message: "this is required" },
@@ -264,8 +267,8 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
                 {...register("PickupDate", {
                   required: { value: true, message: "this is required" },
                 })}
-              /> */}
-            </label>
+              />
+            </label> */}
             <h5>หมายเหตุ</h5>
             <label htmlFor="" className="datetime-recive">
               <input
@@ -291,7 +294,6 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
             onCloseAddmenupop={() => {
               setEditmenupop(false);
             }}
-            
             editMenu={menu}
             preordermenus={preordermenu}
             preorder={preorder}

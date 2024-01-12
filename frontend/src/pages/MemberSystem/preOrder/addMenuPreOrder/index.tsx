@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaStar } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { message } from "antd";
-import "./addMenuPreOrder.css";
+import "./addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import {
   CreatePreorderMenu,
@@ -71,7 +71,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       MemberID: 1,
       // PickupTime: "2006-01-02T15:04:05Z07:00",
       // PickupDate: "2006-01-02T15:04:05Z07:00",
-      PickUpDateTime: "2024-01-07T23:55:24.6862451+07:00",
+      PickUpDateTime: "2024-10-07T23:55:24.6862451+07:00",
       Note: "",
       Respond: "",
 
@@ -90,7 +90,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       if (!res1.status) {
         messageApi.open({
           type: "error",
-          content: "เกิดข้อผิดพลาด1",
+          content: res1.message,
         });
         return;
       }
@@ -105,7 +105,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       if (!res1.status) {
         messageApi.open({
           type: "error",
-          content: "เกิดข้อผิดพลาด2",
+          content: res1.message,
         });
         return;
       }
@@ -124,7 +124,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
     } else {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด",
+        content: res2.message,
       });
     }
   };
