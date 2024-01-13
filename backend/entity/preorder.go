@@ -21,7 +21,7 @@ type Preorder struct {
 	Member              Member        `gorm:"references:id" valid:"-"`
 	
 	PreorderStatusApproves []PreorderStatusApprove `gorm:"foreignKey:PreorderID"`
-	PreorderStatusRecives  []PreorderStatusRecive  `gorm:"foreignKey:PreorderID"`
+	PreorderStatusReceives  []PreorderStatusReceive  `gorm:"foreignKey:PreorderID"`
 	PreorderMenus          []PreorderMenu          `gorm:"foreignKey:PreorderID"`
 }
 

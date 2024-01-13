@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -39,8 +41,8 @@ func SetupDatabase() {
 		&PreorderMenu{},
 		&PreorderStatusApprove{},
 		&StatusApprovePreorder{},
-		&PreorderStatusRecive{},
-		&StatusRecivePreorder{},
+		&PreorderStatusReceive{},
+		&StatusReceivePreorder{},
 		&DrinkOption{},
 		&Sweetness{},
 		&MenuSize{},
@@ -172,9 +174,7 @@ func SetupDatabase() {
 		},
 	}
 
-	for _, member := range member {
-		db.Create(&member) // Assuming 'db' is your GORM database instance
-	}
+	db.Create(&member) // Assuming 'db' is your GORM database instance
 	
 	// Sweetness Data (ex)
 	sweetness := []Sweetness{
@@ -250,11 +250,10 @@ func SetupDatabase() {
 		},
 	}
 
-	for _, statusApprovePreorder := range statusApprovePreorder {
-		db.Create(&statusApprovePreorder) 
-	}
+	db.Create(&statusApprovePreorder) 
+
 	// StatusRecivePreorder Data (ex)
-	statusRecivePreorder := []StatusRecivePreorder{
+	statusReceivePreorder := []StatusReceivePreorder{
 		{
 			Name:           "รออนุมัติการสั่งจอง",
 		},
@@ -266,7 +265,70 @@ func SetupDatabase() {
 		},
 	}
 
-	for _, statusRecivePreorder := range statusRecivePreorder {
-		db.Create(&statusRecivePreorder) 
+	db.Create(&statusReceivePreorder) 
+
+	time1:=time.Now().Add(3 * time.Hour)
+	time2:=time.Now().Add(50 * time.Minute)
+	preorder := []Preorder{
+		{
+			TotalAmount: 4000,
+			PickUpDateTime: &time1,
+			Note:        "",
+			Respond:     "",
+			Member:      member[0],
+		},
+		{
+			TotalAmount: 8670,
+			PickUpDateTime: &time2,
+			Note:        "",
+			Respond:     "",
+			Member:      member[1],
+		},
 	}
+	db.Create(&preorder)
+
+	preorderstatusapprove := []PreorderStatusApprove {
+		{
+			Preorder:      preorder[0],
+			StatusApprovePreorder: statusApprovePreorder[0],
+		},
+		{
+			Preorder:      preorder[1],
+			StatusApprovePreorder: statusApprovePreorder[1],
+		},
+	}
+	db.Create(&preorderstatusapprove)
+
+	preorderstatusrecive := []PreorderStatusReceive{
+		{
+			Preorder:      preorder[0],
+			StatusReceivePreorder: statusReceivePreorder[1],
+		},
+		{
+			Preorder:      preorder[1],
+			StatusReceivePreorder: statusReceivePreorder[0],
+		},
+	}
+	db.Create(&preorderstatusrecive)
+
+	payment := []Payment{
+		{
+			Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAMwAzAMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQIH/8QAIhABAQEAAwACAgMBAQAAAAAAAAERITFBAmFxkRJRgbED/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOH0gvOfQJnJipQRYEBpPBZ9AkNPeUkBd9/sMAT5IuAIACyF7DwBTxMoBOwAqFAFk1Fme6A15f0yQEUpICLAlBq9JOIH0BeiaeE0DxMWpaC3pNNQAABViUBeU1QKnPq/6lAuECAVFtQFgLQQ09QFIiwF0TDoFXUATTugC3plb1viAKgCy8IKBiLoC7+EvJgBEVAVBQXhFQEFQBekUDj09CAGigcL/wCfz/h858v4/H5Z58pwzACoAAACooAUAsRdABGuMBkAFKYTvvAQW/r6QBZEaAwLT0DE5VAC9gCAAAAGGLQCBAAnRAEPQAAF09D0Eot7QBZEXQKL2AaioASgCAAAAuiKAQgAABiNMgRqTfZPyizM5/4CQ9JwegXtFsQAgsBeoABeEw95UGVnReT6BAAAAAAUADj+N/KeLOVsyAniKgALN8A36OzQEFQBdEBo0nSegYi6AQ9ACxFqAGCgi+IvgCACwpFoJZwi28IAAC+rWVBAoAuIoL0epQFqGmAtn6/tDQEAAAA1c1F0FiabQCKhyBgJAAqy2dUD/DqoAt284TtFnYIqANTpAkAWVMAWpABKAAAAqALO1Q0A8XUnYGI0gCACoulA1A5AWotAVJ2oIFACIoJQACi0EVAFIGAsSrcTwEAANABUXwCZ6gQCcVfUAWXjFIAlCgAiggAAAAAKvaEAoWICoqAI1KgCmc4ZwCL0hoCkWTgElGpOLUvl/sEwU+M35YCWC3mJnIHiLekACLICKgC9o18Z3+NQAE9BUX5TLiAASg//2Q==",
+			Time: time.Now(),
+			Code: "gigachad",
+			TotalAmount: 444,
+			Preorder: preorder[0],
+		},
+		{
+			Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAMwAzAMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQIH/8QAIhABAQEAAwACAgMBAQAAAAAAAAERITFBAmFxkRJRgbED/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOH0gvOfQJnJipQRYEBpPBZ9AkNPeUkBd9/sMAT5IuAIACyF7DwBTxMoBOwAqFAFk1Fme6A15f0yQEUpICLAlBq9JOIH0BeiaeE0DxMWpaC3pNNQAABViUBeU1QKnPq/6lAuECAVFtQFgLQQ09QFIiwF0TDoFXUATTugC3plb1viAKgCy8IKBiLoC7+EvJgBEVAVBQXhFQEFQBekUDj09CAGigcL/wCfz/h858v4/H5Z58pwzACoAAACooAUAsRdABGuMBkAFKYTvvAQW/r6QBZEaAwLT0DE5VAC9gCAAAAGGLQCBAAnRAEPQAAF09D0Eot7QBZEXQKL2AaioASgCAAAAuiKAQgAABiNMgRqTfZPyizM5/4CQ9JwegXtFsQAgsBeoABeEw95UGVnReT6BAAAAAAUADj+N/KeLOVsyAniKgALN8A36OzQEFQBdEBo0nSegYi6AQ9ACxFqAGCgi+IvgCACwpFoJZwi28IAAC+rWVBAoAuIoL0epQFqGmAtn6/tDQEAAAA1c1F0FiabQCKhyBgJAAqy2dUD/DqoAt284TtFnYIqANTpAkAWVMAWpABKAAAAqALO1Q0A8XUnYGI0gCACoulA1A5AWotAVJ2oIFACIoJQACi0EVAFIGAsSrcTwEAANABUXwCZ6gQCcVfUAWXjFIAlCgAiggAAAAAKvaEAoWICoqAI1KgCmc4ZwCL0hoCkWTgElGpOLUvl/sEwU+M35YCWC3mJnIHiLekACLICKgC9o18Z3+NQAE9BUX5TLiAASg//2Q==",
+			Time: time.Now(),
+			Code: "gigachad",
+			TotalAmount: 444,
+			Preorder: preorder[1],
+		},
+	}
+	db.Create(&payment)
+
+
+	
 }

@@ -13,3 +13,4 @@ type PreorderStatusApprove struct {
 	StatusApprovePreorderID *uint                 `valid:"required~StatusApprovePreorder is required"`
 	StatusApprovePreorder   StatusApprovePreorder `gorm:"references:id" valid:"-"`
 }
+
