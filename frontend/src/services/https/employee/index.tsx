@@ -142,6 +142,90 @@ async function UpdateEmployee(data: EmployeesInterface) {
   return res;
 }
 
+async function GetLatestEmployeeID() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/latestEmployeeID`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetGenderMale() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/genderMale`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.length;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetGenderFemale() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/genderFemale`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.length;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetGenderOther() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/genderOther`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.length;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 export {
   GetEmployees,
   CreateEmployee,
@@ -149,5 +233,9 @@ export {
   GetGenders,
   DeleteEmployeeByID,
   GetEmployeeById,
-  UpdateEmployee
+  UpdateEmployee,
+  GetLatestEmployeeID,
+  GetGenderMale,
+  GetGenderFemale,
+  GetGenderOther
 };

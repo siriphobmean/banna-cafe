@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Space, Table, Button, Col, Row, Divider, Modal, message, Card, Statistic} from "antd";
-import { PlusOutlined, FallOutlined, RiseOutlined, StockOutlined, CheckCircleOutlined, CloseCircleOutlined, PushpinOutlined, CoffeeOutlined } from "@ant-design/icons";
+import { TeamOutlined, UserOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetEmployees, DeleteEmployeeByID } from "../../../services/https/employee";
 import { EmployeesInterface } from "../../../interfaces/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
-import { GetLatestMenuID, GetActiveMenu, GetNoActiveMenu } from "../../../services/https/menu";
+import { GetLatestEmployeeID, GetGenderMale, GetGenderFemale, GetGenderOther } from "../../../services/https/employee";
+import "./meanny.css"
 
-function Mains() {
+function MainsOwner() {
   const columns: ColumnsType<EmployeesInterface> = [
     {
       title: "ลำดับ",
@@ -48,9 +49,10 @@ function Mains() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState<String>();
   const [deleteId, setDeleteId] = useState<Number>();
-  const [latestMenuID, setLatestMenuID] = useState<number | undefined>(undefined);
-  const [activeMenu, setActiveMenu] = useState<number | undefined>(0);
-  const [noActiveMenu, setNoActiveMenu] = useState<number | undefined>(0);
+  const [latestEmployeeID, setLatestEmployeeID] = useState<number | undefined>(0);
+  const [genderMale, setGenderMale] = useState<number | undefined>(0);
+  const [genderFemale, setGenderFemale] = useState<number | undefined>(0);
+  const [genderOther, setGenderOther] = useState<number | undefined>(0);
 
   const getEmployees = async () => {
     let res = await GetEmployees();
@@ -59,32 +61,39 @@ function Mains() {
     }
   };
 
-  const getActiveMenu = async () => {
-    let res = await GetActiveMenu();
+  const getGenderMale = async () => {
+    let res = await GetGenderMale();
     if (res) {
-      setActiveMenu(res);
+      setGenderMale(res);
     }
   };
 
-  const getNoActiveMenu = async () => {
-    let res = await GetNoActiveMenu();
+  const getGenderFemale = async () => {
+    let res = await GetGenderFemale();
     if (res) {
-      setNoActiveMenu(res);
+      setGenderFemale(res);
     }
   };
 
-  const [userName, setUserName] = useState<string>("Employee"); // กำหนดชื่อผู้ใช้งาน
+  const getGenderOther = async () => {
+    let res = await GetGenderOther();
+    if (res) {
+      setGenderOther(res);
+    }
+  };
+
+  const [userName, setUserName] = useState<string>("Owner"); // กำหนดชื่อผู้ใช้งาน
 
   useEffect(() => {
     getEmployees();
     const fetchLatestMenuID = async () => {
-      const latestID = await GetLatestMenuID();
-      setLatestMenuID(latestID || 0); // Set the latest menu ID retrieved from the backend
+      const latestID = await GetLatestEmployeeID();
+      setLatestEmployeeID(latestID || 0); // Set the latest menu ID retrieved from the backend
     };
     fetchLatestMenuID();
-
-    getActiveMenu();
-    getNoActiveMenu();
+    getGenderMale();
+    getGenderFemale();
+    getGenderOther();
   }, []);
 
   return (
@@ -119,7 +128,7 @@ function Mains() {
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card style={{ backgroundColor: "#F5F5F5" }}>
             <Row gutter={[16, 16]}>
-              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card
                   bordered={false}
                   style={{
@@ -127,13 +136,13 @@ function Mains() {
                   }}
                 >
                   <Statistic
-                    title="จำนวนเมนู (ทั้งหมด)"
-                    value={`${latestMenuID} เมนู`}
-                    prefix={<StockOutlined />}
+                    title="จำนวนพนักงาน (ทั้งหมด)"
+                    value={`${latestEmployeeID} คน`}
+                    prefix={<TeamOutlined />}
                   />
                 </Card>
               </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
                 <Card
                   bordered={false}
                   style={{
@@ -141,43 +150,44 @@ function Mains() {
                   }}
                 >
                   <Statistic
-                    title="จำนวนเมนู (พร้อมขาย)"
-                    value={`${activeMenu} เมนู`}
-                    valueStyle={{ color: "#50C878" }}
-                    prefix={<RiseOutlined />}
-                  />
-                </Card>
-              </Col>
-              <Col xs={24} sm={24} md={12} lg={12} xl={8}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวนเมนู (ไม่พร้อมขาย)"
-                    value={`${noActiveMenu} เมนู`}
-                    valueStyle={{ color: "red" }}
-                    prefix={<FallOutlined />}
-                  />
-                </Card>
-              </Col>
-              {/* <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-                <Card
-                  bordered={false}
-                  style={{
-                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  }}
-                >
-                  <Statistic
-                    title="จำนวนสมาชิก"
-                    value={10}
-                    valueStyle={{ color: "black" }}
+                    title="จำนวนพนักงาน (เพศชาย)"
+                    value={`${genderMale} คน`}
+                    valueStyle={{ color: "#00BFFF" }}
                     prefix={<UserOutlined />}
                   />
                 </Card>
-              </Col> */}
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
+                <Card
+                  bordered={false}
+                  style={{
+                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  }}
+                >
+                  <Statistic
+                    title="จำนวนพนักงาน (เพศหญิง)"
+                    value={`${genderFemale} คน`}
+                    valueStyle={{ color: "#FF00FF" }}
+                    prefix={<UserOutlined />}
+                  />
+                </Card>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6}>
+                <Card
+                  bordered={false}
+                  style={{
+                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  }}
+                >
+                  <Statistic
+                    title="จำนวนพนักงาน (เพศอื่น ๆ)"
+                    value={`${genderOther} คน`}
+                    valueStyle={{ color: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red)', animation: 'rainbowAnimation 4s linear infinite'}}
+                    prefix={<UserOutlined className="rainbow-icon"/>}
+                    className="rainbow-text"
+                  />
+                </Card>
+              </Col>
             </Row>
           </Card>
         </Col>
@@ -194,4 +204,4 @@ function Mains() {
   );
 }
 
-export default Mains;
+export default MainsOwner;
