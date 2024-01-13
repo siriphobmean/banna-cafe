@@ -60,7 +60,7 @@ function Employees() {
         )
       },
     {
-      title: "แก้ไข/ลบข้อมูล",
+      title: "แก้ไข/ลบพนักงาน",
       dataIndex: "Manage",
       key: "manage",
       render: (text, record, index) => (

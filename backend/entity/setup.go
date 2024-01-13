@@ -77,7 +77,6 @@ func SetupDatabase() {
 	// Role Data
 	role := []Role{
 		{RoleName: "Owner"},
-		{RoleName: "Manager"},
 		{RoleName: "Employee"},
 	}
 
@@ -149,6 +148,12 @@ func SetupDatabase() {
             MenuID:          1,
             IngredientUnitID: 1,
         },
+		{
+            Amount:          10,
+            IngredientID:    2,
+            MenuID:          2,
+            IngredientUnitID: 1,
+        },
     }
 
     for _, ingredientMenu := range ingredientMenu {
@@ -163,14 +168,14 @@ func SetupDatabase() {
 			Email:    "siriphob@gmail.com",
 			Password: "mean1234",
 			Phone:    "0981894780",
-			Point:    50, // start point setting
+			Point:    0, // start point setting
 		},
 		{
 			Username: "MeanKung",
 			Email:    "siriphob1234@gmail.com",
 			Password: "1234eeee",
 			Phone:    "0626735910",
-			Point:    50, // start point setting
+			Point:    0, // start point setting
 		},
 	}
 

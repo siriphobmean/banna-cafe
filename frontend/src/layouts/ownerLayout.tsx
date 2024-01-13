@@ -20,6 +20,7 @@ import Mains from "../pages/EmployeeSystem/main";
 import Employees from "../pages/OwnerSystem/employee";
 import EmployeeCreate from "../pages/OwnerSystem/employee/create";
 import EmployeeEdit from "../pages/OwnerSystem/employee/edit";
+import MainsOwner from "../pages/OwnerSystem/main";
 import "./mean.css"
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -123,7 +124,7 @@ export default function OwnerLayout() {
                 }}
               >
                 <Routes>
-                  <Route path="/mainOwner" element={<Mains />} />
+                  <Route path="/mainOwner" element={<MainsOwner />} />
                   <Route path="/employee" element={<Employees />} />
                   <Route path="/employee/create" element={<EmployeeCreate />} />
                   <Route path="/employee/edit/:id" element={<EmployeeEdit />} />

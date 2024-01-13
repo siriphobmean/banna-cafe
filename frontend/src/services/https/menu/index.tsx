@@ -141,6 +141,48 @@ async function GetLatestMenuID() {
   return res;
 } // new 20/12/66
 
+async function GetActiveMenu() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/listActiveMenu`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.length;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetNoActiveMenu() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/listNoActiveMenu`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data.length;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 export {
   GetMenus,
   CreateMenu,
@@ -149,4 +191,6 @@ export {
   GetMenuById,
   UpdateMenu,
   GetLatestMenuID, // new 20/12/66
+  GetActiveMenu,
+  GetNoActiveMenu
 };

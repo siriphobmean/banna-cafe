@@ -21,6 +21,8 @@ func main() {
 	r.PATCH("/menus", controller.UpdateMenu)
 	r.DELETE("/menus/:id", controller.DeleteMenu)
 	r.GET("/latestMenuID", controller.GetLatestMenuID) // new 20/12/66
+	r.GET("/listActiveMenu", controller.ListActiveMenus)
+	r.GET("/listNoActiveMenu", controller.ListNoActiveMenus)
 	// MenuType Routes
 	r.GET("/menuTypes", controller.ListMenuTypes)
 	// IngredientUnit Routes
@@ -37,7 +39,12 @@ func main() {
 	r.DELETE("/employees/:id", controller.DeleteEmployee)
 	// Role Routes
 	r.GET("/roles", controller.ListRoles)
+	// Gender Routes
 	r.GET("/genders", controller.ListGenders)
+	r.GET("/latestEmployeeID", controller.GetLatestEmployeeID)
+	r.GET("/genderMale", controller.GenderMale)
+	r.GET("/genderFemale", controller.GenderFemale)
+	r.GET("/genderOther", controller.GenderOther)
 
 	// Member Routes
 	r.GET("/members", controller.ListMembers)
