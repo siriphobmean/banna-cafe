@@ -114,6 +114,15 @@ func main() {
 	r.GET("/preorderMenus/:id", controller.ListGetMenuPreordersByPreoderID)
 	r.PATCH("/preorderMenus", controller.UpdatePreorderMenu)
 
+	// Ball Routes 
+	r.GET("/getpreorder/:id", controller.GetPreOrderByID)
+	r.GET("/listmanagepreorder",controller.ListMP)
+	r.GET("/getmanagepreorder/:id",controller.ListMPByID)
+	r.GET("/getstatusreceivepreorder/:id", controller.GetStatusReveivesPreorderByPreorderID)
+	r.PATCH("/managepreorder", controller.UpdatePreOrder)
+	r.PATCH("/updatepreorderstatusreceive", controller.UpdateStatusReceivePreorder)
+	
+
 	router := r.Group("")
 	{
 		router.Use(middlewares.Authorizes()) 

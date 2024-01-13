@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -112,19 +113,19 @@ func CreatePreorder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	var statusRecivePreorder entity.StatusRecivePreorder
+	var statusReceivePreorder entity.StatusReceivePreorder
 	// ค้นหา statusRecivePreorder ด้วย id
-	if tx := entity.DB().Where("id = ?", data.StatusRecivePreorderID).First(&statusRecivePreorder); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", data.StatusRecivePreorderID).First(&statusReceivePreorder); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "statusRecivePreorder not found"})
 		return
 	}
 
 	// สร้าง statusRecivePreorder
-	pr := entity.PreorderStatusRecive{
-		Preorder:               preorder,
-		PreorderID:             &preorder.ID,
-		StatusRecivePreorder:   statusRecivePreorder,
-		StatusRecivePreorderID: &statusRecivePreorder.ID,
+	pr := entity.PreorderStatusReceive{
+		Preorder:                preorder,
+		PreorderID:              &preorder.ID,
+		StatusReceivePreorder:   statusReceivePreorder,
+		StatusReceivePreorderID: &statusReceivePreorder.ID,
 	}
 	if _, err := govalidator.ValidateStruct(pr); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -260,3 +261,143 @@ func UpdatePreorder(c *gin.Context) {
 
 // 	c.JSON(http.StatusOK, gin.H{"data": u})
 // }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////Ball//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+func ListMP(c *gin.Context) {
+	var mp []struct {
+		PreorderID    int    `json:"PreorderID"`
+		//CreateTime    string `json:"CreateTime"`
+		PickupTime    string `json:"PickupTime"`
+		ApproveStatus string `json:"ApproveStatus"`
+		ReceiveStatus string `json:"ReceiveStatus"`
+		Price         int    `json:"Price"`
+		MemberID      string `json:"MemberID"`
+		MemberName    string `json:"MemberName"`
+		Slipt         string `json:"Slipt"`
+		Respond       string `json:"Respond"`
+		Note          string `json:"Note"`
+	}
+	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,preorders.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
+		"FROM preorders ",
+		"JOIN members ON preorders.member_id = members.id ",
+		"JOIN preorder_status_approves ON preorder_status_approves.preorder_id = preorders.id ",
+		"JOIN status_approve_preorders ON status_approve_preorders.id = preorder_status_approves.status_approve_preorder_id ",
+		"JOIN preorder_status_receives ON preorder_status_receives.preorder_id = preorders.id ",
+		"JOIN status_receive_preorders ON status_receive_preorders.id = preorder_status_receives.status_receive_preorder_id ",
+		"JOIN payments ON payments.preorder_id = preorders.id ",
+	)
+
+	if err := entity.DB().Raw(query).Scan(&mp).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": mp})
+}
+
+func ListMPByID(c *gin.Context) {
+	i := c.Param("id")
+	var mp struct {
+		PreorderID    int    `json:"PreorderID"`
+		//CreateTime    string `json:"CreateTime"`
+		PickupTime    string `json:"PickupTime"`
+		ApproveStatus string `json:"ApproveStatus"`
+		ReceiveStatus string `json:"ReceiveStatus"`
+		Price         int    `json:"Price"`
+		MemberID      string `json:"MemberID"`
+		MemberName    string `json:"MemberName"`
+		Slipt         string `json:"Slipt"`
+		Respond       string `json:"Respond"`
+		Note 		  string `json:"Note"`
+	}
+	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,preorders.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
+	"FROM preorders ",
+	"JOIN members ON preorders.member_id = members.id ",
+	"JOIN preorder_status_approves ON preorder_status_approves.preorder_id = preorders.id ",
+	"JOIN status_approve_preorders ON status_approve_preorders.id = preorder_status_approves.status_approve_preorder_id ",
+	"JOIN preorder_status_receives ON preorder_status_receives.preorder_id = preorders.id ",
+	"JOIN status_receive_preorders ON status_receive_preorders.id = preorder_status_receives.status_receive_preorder_id ",
+	"JOIN payments ON payments.preorder_id = preorders.id ",
+	"WHERE preorders.id = ", i)
+	if err := entity.DB().Raw(query).Scan(&mp).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": mp})
+}
+
+func GetPreOrderByID(c *gin.Context) {
+	i := c.Param("id")
+	var p entity.Preorder
+	if err := entity.DB().Preload("Member").Preload("PreorderStatusApproves").Preload("PreorderStatusReceives").Raw("SELECT * FROM preorders WHERE id = ?", i).Find(&p).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": p})
+}
+func GetStatusReveivesPreorderByPreorderID(c *gin.Context) {
+	i := c.Param("id")
+	var p entity.PreorderStatusReceive
+	if err := entity.DB().Preload("Preorder").Preload("StatusReceivePreorder").Raw("SELECT * FROM preorder_status_receives WHERE preorder_id = ?", i).Find(&p).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": p})
+}
+
+func UpdatePreOrder(c *gin.Context) {
+	var preorder entity.Preorder
+	var result entity.Preorder
+
+	if err := c.ShouldBindJSON(&preorder); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Raw("Select * FROM preorders WHERE id = ?", preorder.ID).First(&result); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
+		return
+	}
+	preorder.PickUpDateTime = result.PickUpDateTime
+	preorder.CreatedAt = result.CreatedAt
+
+	if err := entity.DB().Table("preorders").Save(&preorder).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": preorder})
+}
+
+func UpdateStatusReceivePreorder(c *gin.Context) {
+	var s entity.PreorderStatusReceive
+	var result entity.PreorderStatusReceive
+
+	if err := c.ShouldBindJSON(&s); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Raw("Select * FROM preorders WHERE id = ?", s.ID).First(&result); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
+		return
+	}
+	s.CreatedAt = result.CreatedAt
+	s.Preorder = result.Preorder
+	s.PreorderID = result.PreorderID
+
+	if err := entity.DB().Table("preorders").Save(&s).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": s})
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////Ball//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
