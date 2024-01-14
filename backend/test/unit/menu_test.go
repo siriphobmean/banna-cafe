@@ -92,7 +92,7 @@ func TestMenuCost(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("ราคาต้องเป็นเลขทศนิยม 2 ตำแหน่ง")))
+		g.Expect(err.Error()).To(Equal(("ราคามีทศนิยมไม่เกิน 2 ตำแหน่ง")))
 	})
 
 }
@@ -137,7 +137,7 @@ func TestMenuStatus(t *testing.T) {
 		g.Expect(err).NotTo(BeNil())
 
 		// g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuStatus: %d does not validate as range(1|2)", menu.MenuStatus)))
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะสถานะ 1 หรือ 2 เท่านั้น")))
 	})
 
 }

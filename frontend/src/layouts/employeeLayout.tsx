@@ -8,7 +8,7 @@ import {
   MenuOutlined,
   CoffeeOutlined,
   BookOutlined,
-  SolutionOutlined,
+  FileProtectOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -60,7 +60,7 @@ const items: MenuItem[] = [
   getItem("จัดการสมาชิก", "5", <UserOutlined />),
   getItem("จัดการวัตถุดิบ", "6", <CoffeeOutlined />),
   getItem("บันทึกรายรับรายจ่าย", "7", <BookOutlined />),
-  getItem("จัดการคำสั่งซื้อล่วงหน้า","8", <SolutionOutlined />)
+  getItem("จัดการคำสั่งซื้อล่วงหน้า","8", <FileProtectOutlined />)
 ];
 
 export default function EmployeeLayout() {
@@ -164,7 +164,7 @@ export default function EmployeeLayout() {
                 onClick={() => setCurrentPage("managepreorder")}
               >
                 <Link to="/managepreorder">
-                  <BookOutlined />
+                  <FileProtectOutlined />
                   <span>จัดการคำสั่งซื้อล่วงหน้า</span>
                 </Link>
               </Menu.Item>
