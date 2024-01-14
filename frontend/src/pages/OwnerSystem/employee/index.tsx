@@ -13,6 +13,7 @@ function Employees() {
       title: "ลำดับ",
       dataIndex: "ID",
       key: "id",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "ชื่อ",
@@ -100,7 +101,7 @@ function Employees() {
 
   const showModal = (val: EmployeesInterface) => {
     setModalText(
-      `คุณต้องการลบข้อมูลพนักงาน "${val.FirstName} ${val.LastName}" หรือไม่ ?`
+      `คุณต้องการลบพนักงาน "${val.FirstName} ${val.LastName}" หรือไม่ ?`
     );
     setDeleteId(val.ID);
     setOpen(true);

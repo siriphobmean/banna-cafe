@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Space, Table, Button, Col, Row, Divider, Modal, message } from "antd";
+import { Space, Table, Button, Col, Row, Divider, Modal, message, Popover, Image } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined} from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { GetMembers, DeleteMemberByID } from "../../../services/https/member";
@@ -13,13 +13,16 @@ function Members() {
       title: "ลำดับ",
       dataIndex: "ID",
       key: "id",
+      render: (text, record, index) => index + 1,
     },
     {
         title: "รูปโปรไฟล์",
         dataIndex: "MemberImage",
         key: "memberimage",
         render: (text, record, index) => (
-          <img src={record.MemberImage} className="w3-left w3-circle w3-margin-right" width="50%"/>
+          <Popover content={<Image src={record.MemberImage} />} title="รูปโปรไฟล์">
+            <img src={record.MemberImage} className="w3-left w3-circle w3-margin-right" width="50%" style={{ borderRadius: "25%" }}/>
+          </Popover>
         )
       },
     {
@@ -91,7 +94,7 @@ function Members() {
 
   const showModal = (val: MembersInterface) => {
     setModalText(
-      `คุณต้องการลบสมาชิก "${val.Username}" หรือไม่ ?`
+      `คุณต้องการลบข้อมูลสมาชิก "${val.Username}" หรือไม่ ?`
     );
     setDeleteId(val.ID);
     setOpen(true);
@@ -138,7 +141,7 @@ function Members() {
         <Table rowKey="ID" columns={columns} dataSource={members} />
       </div>
       <Modal
-        title="ลบสมาชิก"
+        title="ลบข้อมูล ?"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}

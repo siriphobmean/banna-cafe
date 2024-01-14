@@ -5,7 +5,7 @@ import type { ColumnsType } from "antd/es/table";
 import { GetEmployees, DeleteEmployeeByID } from "../../../services/https/employee";
 import { EmployeesInterface } from "../../../interfaces/IEmployee";
 import { Link, useNavigate } from "react-router-dom";
-import { GetLatestEmployeeID, GetGenderMale, GetGenderFemale, GetGenderOther } from "../../../services/https/employee";
+import { GetRowEmployee, GetGenderMale, GetGenderFemale, GetGenderOther } from "../../../services/https/employee";
 import "./meanny.css"
 
 function MainsOwner() {
@@ -14,6 +14,7 @@ function MainsOwner() {
       title: "ลำดับ",
       dataIndex: "ID",
       key: "id",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "ชื่อ",
@@ -38,6 +39,25 @@ function MainsOwner() {
     },
   ];
 
+  const handleLogout = () => {
+    Modal.confirm({
+      title: "Logout",
+      content: "คุณต้องการออกจากระบบหรือไม่ ?",
+      okText: "ยืนยัน",
+      cancelText: "ยกเลิก",
+      onOk: () => {
+        navigate("/");
+      },
+    });
+  };
+
+  const handleUserButtonClick = () => {
+    Modal.info({
+      title: "Message",
+      content: "คุณกำลังเข้าสู่ระบบ ในฐานะเจ้าของร้าน",
+    });
+  };
+
   const navigate = useNavigate();
 
   const [employees, setEmployees] = useState<EmployeesInterface[]>([]);
@@ -49,10 +69,10 @@ function MainsOwner() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [modalText, setModalText] = useState<String>();
   const [deleteId, setDeleteId] = useState<Number>();
-  const [latestEmployeeID, setLatestEmployeeID] = useState<number | undefined>(0);
   const [genderMale, setGenderMale] = useState<number | undefined>(0);
   const [genderFemale, setGenderFemale] = useState<number | undefined>(0);
   const [genderOther, setGenderOther] = useState<number | undefined>(0);
+  const [rowEmployee, setRowEmployee] = useState<number | undefined>(0);
 
   const getEmployees = async () => {
     let res = await GetEmployees();
@@ -82,18 +102,21 @@ function MainsOwner() {
     }
   };
 
+  const getRowEmployee = async () => {
+    let res = await GetRowEmployee();
+    if (res) {
+      setRowEmployee(res);
+    }
+  };
+
   const [userName, setUserName] = useState<string>("Owner"); // กำหนดชื่อผู้ใช้งาน
 
   useEffect(() => {
     getEmployees();
-    const fetchLatestMenuID = async () => {
-      const latestID = await GetLatestEmployeeID();
-      setLatestEmployeeID(latestID || 0); // Set the latest menu ID retrieved from the backend
-    };
-    fetchLatestMenuID();
     getGenderMale();
     getGenderFemale();
     getGenderOther();
+    getRowEmployee();
   }, []);
 
   return (
@@ -107,22 +130,21 @@ function MainsOwner() {
         <Col span={12} style={{ textAlign: "end", alignSelf: "center" }}>
           <Space>
             {/* <Link to="/ingredient/create"> */}
-              <Button type="primary" style={{ background: "#E48F44" }}>
+              <Button type="primary" style={{ background: "#E48F44" }} onClick={handleUserButtonClick}>
                 User : {userName}
               </Button>
             {/* </Link> */}
-            <Link to="/">
-              <Button
-                type="primary"
-                style={{
-                  background: "#ffff",
-                  color: "#E48F44",
-                  border: "1px solid #E48F44",
-                }}
-              >
-                ออกจากระบบ
-              </Button>
-            </Link>
+            <Button
+              type="primary"
+              style={{
+                background: "#ffff",
+                color: "#E48F44",
+                border: "1px solid #E48F44",
+              }}
+              onClick={handleLogout}
+            >
+              ออกจากระบบ
+            </Button>
           </Space>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
@@ -137,7 +159,7 @@ function MainsOwner() {
                 >
                   <Statistic
                     title="จำนวนพนักงาน (ทั้งหมด)"
-                    value={`${latestEmployeeID} คน`}
+                    value={`${rowEmployee} คน`}
                     prefix={<TeamOutlined />}
                   />
                 </Card>

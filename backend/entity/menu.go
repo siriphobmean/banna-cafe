@@ -13,9 +13,9 @@ type Menu struct {
 	MenuName string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(30)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 30 ตัว"` // ok!
 	MenuNameEng string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(30)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 30 ตัว"` // ok!
 	// MenuCost float64 `valid:"required~กรุณากรอกเป็นเลขทศนิยม !, float~กรุณากรอกเป็นเลขทศนิยม 2 ตำแหน่ง"` // ok!...
-	MenuCost float64 `gorm:"type:decimal(9,2)" valid:"required~กรุณากรอกเป็นเลขทศนิยม !, ValidCost~ราคาต้องเป็นเลขทศนิยม 2 ตำแหน่ง"`
+	MenuCost float64 `gorm:"type:decimal(9,2)" valid:"required~กรุณากรอกเป็นเลขทศนิยม !, ValidCost~ราคามีทศนิยมไม่เกิน 2 ตำแหน่ง"`
 	MenuImage string `gorm:"type:longtext"` // ok!
-	MenuStatus int `valid:"required~กรุณากรอกสถานะเมนู !, range(1|2)~กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น"` // ok
+	MenuStatus int `valid:"required~กรุณากรอกสถานะเมนู !, range(1|2)~กรุณากรอกเฉพาะสถานะ 1 หรือ 2 เท่านั้น"` // ok
 
 	// OrderMenu []OrderMenu `gorm:"foreignKey:MenuID"`
 	IngredientMenu []IngredientMenu `gorm:"foreignKey:MenuID"`

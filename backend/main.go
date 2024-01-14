@@ -41,7 +41,6 @@ func main() {
 	r.GET("/roles", controller.ListRoles)
 	// Gender Routes
 	r.GET("/genders", controller.ListGenders)
-	r.GET("/latestEmployeeID", controller.GetLatestEmployeeID)
 	r.GET("/genderMale", controller.GenderMale)
 	r.GET("/genderFemale", controller.GenderFemale)
 	r.GET("/genderOther", controller.GenderOther)
@@ -128,6 +127,14 @@ func main() {
 	r.GET("/getstatusreceivepreorder/:id", controller.GetStatusReveivesPreorderByPreorderID)
 	r.PATCH("/managepreorder", controller.UpdatePreOrder)
 	r.PATCH("/updatepreorderstatusreceive", controller.UpdateStatusReceivePreorder)
+
+	// Statistics Routes
+
+	r.GET("/countMenu", controller.CountRows)
+	r.GET("/countEmployee", controller.CountRowsEm)
+	r.GET("/countMember", controller.CountRowMembers)
+	r.GET("/countIngredient", controller.CountRowIngredients)
+	// r.GET("/countPromotion", controller.CountRowPromotions)
 	
 
 	router := r.Group("")

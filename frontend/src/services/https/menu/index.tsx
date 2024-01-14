@@ -183,6 +183,27 @@ async function GetNoActiveMenu() {
   return res;
 }
 
+async function GetRowMenu() {
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(`${apiUrl}/countMenu`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 export {
   GetMenus,
   CreateMenu,
@@ -192,5 +213,6 @@ export {
   UpdateMenu,
   GetLatestMenuID, // new 20/12/66
   GetActiveMenu,
-  GetNoActiveMenu
+  GetNoActiveMenu,
+  GetRowMenu
 };

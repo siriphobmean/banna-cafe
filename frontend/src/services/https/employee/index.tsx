@@ -142,7 +142,7 @@ async function UpdateEmployee(data: EmployeesInterface) {
   return res;
 }
 
-async function GetLatestEmployeeID() {
+async function GetRowEmployee() {
   const requestOptions = {
     method: "GET",
     headers: {
@@ -150,7 +150,7 @@ async function GetLatestEmployeeID() {
     },
   };
 
-  let res = await fetch(`${apiUrl}/latestEmployeeID`, requestOptions)
+  let res = await fetch(`${apiUrl}/countEmployee`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -234,7 +234,7 @@ export {
   DeleteEmployeeByID,
   GetEmployeeById,
   UpdateEmployee,
-  GetLatestEmployeeID,
+  GetRowEmployee,
   GetGenderMale,
   GetGenderFemale,
   GetGenderOther
