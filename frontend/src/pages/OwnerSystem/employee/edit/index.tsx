@@ -15,7 +15,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import { EmployeesInterface } from "../../../../interfaces/IEmployee";
 import { RolesInterface } from "../../../../interfaces/IRole";
-import { GendersInterface } from "../../../../interfaces/IGender"; // more
+import { GendersInterface } from "../../../../interfaces/IGender";
 import { CreateEmployee, GetRoles, GetEmployeeById, UpdateEmployee, GetGenders } from "../../../../services/https/employee";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -118,7 +118,7 @@ function EmployeeEdit() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อ !",
+                    message: "กรุณากรอกชื่อ ! (ยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -132,7 +132,7 @@ function EmployeeEdit() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกนามสกุล !",
+                    message: "กรุณากรอกนามสกุล ! (ยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -179,7 +179,7 @@ function EmployeeEdit() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกรหัสผ่าน !",
+                    message: "กรุณากรอกรหัสผ่าน ! (รหัสผ่าน 5 ตัวขึ้นไป)",
                   },
                 ]}
               >
@@ -216,7 +216,7 @@ function EmployeeEdit() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกเงินเดือน !",
+                    message: "กรุณากรอกเงินเดือน ! (เลขทศนิยมไม่เกิน 2 ตำแหน่ง)",
                   },
                 ]}
               >

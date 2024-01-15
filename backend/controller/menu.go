@@ -141,3 +141,27 @@ func GetLatestMenuID(c *gin.Context) {
     }
     c.JSON(http.StatusOK, gin.H{"data": menu.ID})
 } // new 20/12/66
+
+// GET /menus/active
+func ListActiveMenus(c *gin.Context) {
+    var menus []struct {
+        ID int `json:"id"`
+    }
+    if err := entity.DB().Table("menus").Select("id").Where("menu_status = ?", 2).Scan(&menus).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": menus})
+}
+
+// GET /menus/inactive
+func ListNoActiveMenus(c *gin.Context) {
+    var menus []struct {
+        ID int `json:"id"`
+    }
+    if err := entity.DB().Table("menus").Select("id").Where("menu_status = ?", 1).Scan(&menus).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": menus})
+}

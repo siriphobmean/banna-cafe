@@ -15,7 +15,7 @@ import {
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import { EmployeesInterface } from "../../../../interfaces/IEmployee";
 import { RolesInterface } from "../../../../interfaces/IRole";
-import { GendersInterface } from "../../../../interfaces/IGender"; // more
+import { GendersInterface } from "../../../../interfaces/IGender";
 // import { ImageUpload } from "../../../interfaces/IUpload";
 import { CreateEmployee, GetRoles, GetGenders} from "../../../../services/https/employee";
 import { useNavigate } from "react-router-dom";
@@ -41,7 +41,7 @@ function EmployeeCreate() {
     if (res.status) {
       messageApi.open({
         type: "success",
-        content: "เพิ่มพนักงานสำเร็จ", // res.message, เอา "" ออกด้วย
+        content: "เพิ่มพนักงานสำเร็จ",
       });
       setTimeout(function () {
         navigate("/employee");
@@ -102,7 +102,7 @@ function EmployeeCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อ !",
+                    message: "กรุณากรอกชื่อ ! (ยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -116,7 +116,7 @@ function EmployeeCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกนามสกุล !",
+                    message: "กรุณากรอกนามสกุล ! (ยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -157,7 +157,7 @@ function EmployeeCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกรหัสผ่าน !",
+                    message: "กรุณากรอกรหัสผ่าน ! (รหัสผ่าน 5 ตัวขึ้นไป)",
                   },
                 ]}
               >
@@ -194,7 +194,7 @@ function EmployeeCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกเงินเดือน !",
+                    message: "กรุณากรอกเงินเดือน ! (เลขทศนิยมไม่เกิน 2 ตำแหน่ง)",
                   },
                 ]}
               >

@@ -19,7 +19,7 @@ import { IngredientMenusInterface } from "../../../../interfaces/IIngredientMenu
 import { IngredientsInterface } from "../../../../interfaces/IIngredient"; // new
 import { ImageUpload } from "../../../../interfaces/IUpload";
 import { CreateMenu, GetMenuTypes } from "../../../../services/https/menu";
-import { CreateIngredientMenu, GetIngredients, GetIngredientUnits } from "../../../../services/https/ingredientMenu"; // new +more 13/12/66
+import { CreateIngredientMenu, DeleteIngredientMenuByID, GetIngredients, GetIngredientUnits } from "../../../../services/https/ingredientMenu"; // new +more 13/12/66
 import { useNavigate } from "react-router-dom";
 import { IngredientUnitsInterface } from "../../../../interfaces/IIngredientUnit"; // more 13/12/66
 import { GetLatestMenuID } from "../../../../services/https/menu"; // new 20/12/66
@@ -90,20 +90,41 @@ function MenuCreate() {
     // CreateIngredientMenu
     let resIngredientMenu = await CreateIngredientMenu(values); // new
     
-    if (resMenu.status && resIngredientMenu.status) { // new
+    // if (resMenu.status && resIngredientMenu.status) {
 
-    // if (res.status) {
-      messageApi.open({
-        type: "success",
-        content: "เพิ่มเมนูสำเร็จ",
-      });
-      setTimeout(function () {
-        navigate("/menu");
-      }, 2000);
+    //   messageApi.open({
+    //     type: "success",
+    //     content: "เพิ่มเมนูสำเร็จ",
+    //   });
+    //   setTimeout(function () {
+    //     navigate("/menu");
+    //   }, 2000);
+    // } else {
+    //   messageApi.open({
+    //     type: "error",
+    //     content: resMenu.message,
+    //   });
+    // }
+    if (resMenu.status) {
+      if (resIngredientMenu.status) {
+        messageApi.open({
+          type: "success",
+          content: "เพิ่มเมนูสำเร็จ",
+        });
+        setTimeout(function () {
+          navigate("/menu");
+        }, 2000);
+      } else {
+        messageApi.open({
+          type: "error",
+          content: resIngredientMenu.message,
+        });
+      }
     } else {
-      messageApi.open({
-        type: "error",
-        content: resMenu.message,
+      await DeleteIngredientMenuByID(values.MenuID);
+        messageApi.open({
+          type: "error",
+          content: resMenu.message,
       });
     }
     console.log(values);
@@ -183,7 +204,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 50 ตัวอักษร)",
+                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -197,7 +218,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 50 ตัวอักษร)",
+                    message: "กรุณากรอกชื่อเมนู ! (ชื่อต้องยาวไม่เกิน 30 ตัวอักษร)",
                   },
                 ]}
               >
@@ -211,7 +232,7 @@ function MenuCreate() {
                 rules={[
                   {
                     required: true,
-                    message: "กรุณากรอกราคาเมนู ! (เลขทศนิยม 2 ตำแหน่ง)",
+                    message: "กรุณากรอกราคาเมนู ! (เลขทศนิยมไม่เกิน 2 ตำแหน่ง)",
                   },
                 ]}
               >

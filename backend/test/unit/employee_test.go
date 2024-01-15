@@ -29,12 +29,12 @@ func TestFirstName(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("FirstName is required")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกชื่อ !")))
 	})
 
 	t.Run(`FirstName pattern is not true`, func(t *testing.T) {
 		employee := entity.Employee{
-			FirstName: "นายศิริภพนายศิริภพนายศิริภพนายศิริภพนายศิริภพนายศิริภพนายศิริภพ",
+			FirstName: "นายศิริภพ ศักดิ์ศรี ณ มหานครราชสีมา",
 			LastName: "พูนประสิทธิ์",
 			Email: "mean@gmail.com",
 			Password: "123456",
@@ -49,7 +49,7 @@ func TestFirstName(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("ชื่อจริงต้องมีตัวอักษรไม่เกิน 30 ตัว")))
+		g.Expect(err.Error()).To(Equal(("ชื่อต้องมีตัวอักษรไม่เกิน 30 ตัว")))
 	})
 }
 
@@ -73,7 +73,7 @@ func TestEmail(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("Email is required")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกอีเมล !")))
 	})
 
 	t.Run(`Email pattern is not true`, func(t *testing.T) {
@@ -117,7 +117,7 @@ func TestPassword(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("Password is required")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกรหัสผ่าน !")))
 	})
 
 	t.Run(`Password pattern is not true`, func(t *testing.T) {

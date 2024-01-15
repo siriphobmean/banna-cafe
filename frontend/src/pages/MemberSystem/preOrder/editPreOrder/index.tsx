@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { message } from "antd";
-import "../addMenuPreorder/addMenuPreorder.css";
-import "./editPreorder.css";
+import "../addMenuPreOrder/addMenuPreOrder.css";
+import "./editPreOrder.css";
 import { useForm } from "react-hook-form";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import { PreordersInterface } from "../../../../interfaces/IPreorder";

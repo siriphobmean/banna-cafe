@@ -29,8 +29,9 @@ function MemberEdit() {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [member, setMember] = useState<MembersInterface>();
-//   const [roles, setRoles] = useState<RolesInterface[]>([]);
+  // const [roles, setRoles] = useState<RolesInterface[]>([]);
   const [memberImage, setMemberImage] = useState<ImageUpload>();
+  const [prevMemberImage, setPrevMemberImage] = useState<string | undefined>();
 
   // รับข้อมูลจาก params
   let { id } = useParams();
@@ -41,7 +42,11 @@ function MemberEdit() {
     values.ID = member?.ID;
     values.Point = parseInt(values.Point! .toString(), 10);
     values.MemberImage = memberImage?.thumbUrl;
-    // values.Salary = parseFloat(values.Salary!.toString());
+
+    if(!values.MemberImage) {
+      values.MemberImage = prevMemberImage;
+    }
+
     let res = await UpdateMember(values);
     if (res.status) {
       messageApi.open({
@@ -71,6 +76,7 @@ function MemberEdit() {
     let res = await GetMemberById(Number(id));
     if (res) {
       setMember(res);
+      setPrevMemberImage(res.MemberImage);
       // set form ข้อมูลเริ่มของผู้ใช้ที่เราแก้ไข
       form.setFieldsValue({ 
         Username: res.Username,
@@ -161,7 +167,6 @@ function MemberEdit() {
                 name="MemberImage" // -> ใส่มาก่อน เพราะ setup data มาไม่มี Image
                 valuePropName="fileList"
                 getValueFromEvent={normFile}
-                // rules={[{ required: true,  message: "กรุณาเพิ่มรูปภาพ !", }]}
               >
                 <Upload maxCount={1} multiple={false} listType="picture-card">
                   <div>

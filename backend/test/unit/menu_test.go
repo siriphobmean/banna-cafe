@@ -19,7 +19,7 @@ func TestMenuName(t *testing.T) {
 			MenuName:    "", // incorrect :( -> null
 			MenuNameEng: "Black Coffee",
 			MenuCost:    55.55,
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  1,
 			MenuTypeID:  1,
 		}
@@ -35,10 +35,10 @@ func TestMenuName(t *testing.T) {
 	t.Run(`menu_name pattern is not true`, func(t *testing.T) {
 		menu := entity.Menu{
 			MenuID:      1,
-			MenuName:    "กาแฟดำที่อร่อยที่สุดในสามโลก กินแล้วสุขภาพดีร่ำรวยทุกวันวันปีตลอดกาล", // incorrect :( -> longest > 50
+			MenuName:    "กาแฟดำที่อร่อยที่สุดในสามโลก กินแล้วสุขภาพดี", // incorrect :( -> longest > 50
 			MenuNameEng: "Black Coffee",
 			MenuCost:    55.55,
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  1,
 			MenuTypeID:  1,
 		}
@@ -49,7 +49,7 @@ func TestMenuName(t *testing.T) {
 		g.Expect(err).NotTo(BeNil())
 
 		// g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuName: %s does not validate as maxstringlength(50)", menu.MenuName)))
-		g.Expect(err.Error()).To(Equal(("ชื่อเมนูต้องมีตัวอักษรไม่เกิน 50 ตัว")))
+		g.Expect(err.Error()).To(Equal(("ชื่อเมนูต้องมีตัวอักษรไม่เกิน 30 ตัว")))
 	})
 }
 
@@ -63,7 +63,7 @@ func TestMenuCost(t *testing.T) {
 			MenuName:    "โกโก้",
 			MenuNameEng: "CoCoa",
 			MenuCost:    0, // incorrect :( -> null
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  1,
 			MenuTypeID:  1,
 		}
@@ -82,7 +82,7 @@ func TestMenuCost(t *testing.T) {
 			MenuName:    "โกโก้",
 			MenuNameEng: "CoCoa",
 			MenuCost:    55.123, // incorrect :( -> decimal > .xx (2)
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  1,
 			MenuTypeID:  1,
 		}
@@ -92,7 +92,7 @@ func TestMenuCost(t *testing.T) {
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
 
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเลขทศนิยม 2 ตำแหน่ง")))
+		g.Expect(err.Error()).To(Equal(("ราคามีทศนิยมไม่เกิน 2 ตำแหน่ง")))
 	})
 
 }
@@ -107,7 +107,7 @@ func TestMenuStatus(t *testing.T) {
 			MenuName:    "ชาไทย",
 			MenuNameEng: "Thai Tea",
 			MenuCost:    55.55,
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  0, // incorrect :( -> range 1|2 don't have 0
 			MenuTypeID:  1,
 		}
@@ -126,7 +126,7 @@ func TestMenuStatus(t *testing.T) {
 			MenuName:    "ชาไทย",
 			MenuNameEng: "Thai Tea",
 			MenuCost:    55.55,
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  3, // incorrect :( -> range 1|2 don't have 3
 			MenuTypeID:  1,
 		}
@@ -137,7 +137,7 @@ func TestMenuStatus(t *testing.T) {
 		g.Expect(err).NotTo(BeNil())
 
 		// g.Expect(err.Error()).To(Equal(fmt.Sprintf("MenuStatus: %d does not validate as range(1|2)", menu.MenuStatus)))
-		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะเลข 1 หรือ 2 เท่านั้น")))
+		g.Expect(err.Error()).To(Equal(("กรุณากรอกเฉพาะสถานะ 1 หรือ 2 เท่านั้น")))
 	})
 
 }
@@ -152,7 +152,7 @@ func TestMenuValidAll(t *testing.T) {
 			MenuName:    "ชาเขียว",
 			MenuNameEng: "Green Tea",
 			MenuCost:    55.05,
-			MenuImage:   "", // longtext
+			MenuImage:   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaUAAAGmCAYAAADcRps...", // longtext
 			MenuStatus:  1,
 			MenuTypeID:  1,
 		}

@@ -8,6 +8,7 @@ import {
   MenuOutlined,
   CoffeeOutlined,
   BookOutlined,
+  FileProtectOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -30,6 +31,8 @@ import IngredientMenus from "../pages/EmployeeSystem/menu/ingredientMenu";
 import IngredientMenuCreate from "../pages/EmployeeSystem/menu/ingredientMenuCreate";
 import Members from "../pages/EmployeeSystem/member";
 import MemberEdit from "../pages/EmployeeSystem/member/edit";
+import ManagePreorder from "../pages/EmployeeSystem/managepreorder";
+import ManagePreorderEdit from "../pages/EmployeeSystem/managepreorder/edit";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -57,6 +60,7 @@ const items: MenuItem[] = [
   getItem("จัดการสมาชิก", "5", <UserOutlined />),
   getItem("จัดการวัตถุดิบ", "6", <CoffeeOutlined />),
   getItem("บันทึกรายรับรายจ่าย", "7", <BookOutlined />),
+  getItem("จัดการคำสั่งซื้อล่วงหน้า","8", <FileProtectOutlined />)
 ];
 
 export default function EmployeeLayout() {
@@ -155,6 +159,15 @@ export default function EmployeeLayout() {
                   <span>บันทึกรายรับรายจ่าย</span>
                 </Link>
               </Menu.Item>
+              <Menu.Item
+                key="managepreorder"
+                onClick={() => setCurrentPage("managepreorder")}
+              >
+                <Link to="/managepreorder">
+                  <FileProtectOutlined />
+                  <span>จัดการคำสั่งซื้อล่วงหน้า</span>
+                </Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout>
@@ -182,6 +195,8 @@ export default function EmployeeLayout() {
                   <Route path="/ingredient/create" element={<IngredientCreate />} />
                   <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
                   <Route path="/history" element={<History />} />
+                  <Route path="/managepreorder" element={<ManagePreorder />} />
+                  <Route path="/managepreorder/edit/:id" element={<ManagePreorderEdit />} />
                 </Routes>
               </div>
             </Content>

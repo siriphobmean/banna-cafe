@@ -115,3 +115,39 @@ func UpdateEmployee(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": employee})
 }
+
+// GET /genderMale
+func GenderMale(c *gin.Context) {
+    var employees []struct {
+        ID int `json:"id"`
+    }
+    if err := entity.DB().Table("employees").Select("id").Where("gender_id = ?", 1).Scan(&employees).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": employees})
+}
+
+// GET /genderFemale
+func GenderFemale(c *gin.Context) {
+    var employees []struct {
+        ID int `json:"id"`
+    }
+    if err := entity.DB().Table("employees").Select("id").Where("gender_id = ?", 2).Scan(&employees).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": employees})
+}
+
+// GET /genderOther
+func GenderOther(c *gin.Context) {
+    var employees []struct {
+        ID int `json:"id"`
+    }
+    if err := entity.DB().Table("employees").Select("id").Where("gender_id = ?", 3).Scan(&employees).Error; err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, gin.H{"data": employees})
+}

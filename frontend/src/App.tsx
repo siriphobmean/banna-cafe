@@ -38,11 +38,14 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/MemberSystem/preorder";
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
 import EditProfileMember from "./pages/MemberSystem/profile/edit";
+import ManagePreorder from "./pages/EmployeeSystem/managepreorder";
+import ManagePreorderEdit from "./pages/EmployeeSystem/managepreorder/edit";
+import Payment from "./pages/MemberSystem/payment/payment";
 // in now test...
 
 const router = createBrowserRouter(
@@ -63,17 +66,17 @@ const router = createBrowserRouter(
         <Route path="/menu/create" element={<MenuCreate />} />
         <Route path="/menu/edit/:id" element={<MenuEdit />} />
         <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
-        <Route
-          path="/menu/ingredientMenu/create/:id"
-          element={<IngredientMenuCreate />}
-        />
+        <Route path="/menu/ingredientMenu/create/:id" element={<IngredientMenuCreate />} />
         <Route path="/member" element={<Members />} />
         <Route path="/member/edit/:id" element={<MemberEdit />} />
         <Route path="/ingredient" element={<Ingredient />} />
         <Route path="/ingredient/create" element={<IngredientCreate />} />
         <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
         <Route path="/history" element={<History />} />
+        <Route path="/managepreorder" element={<ManagePreorder />} />
+        <Route path="/managepreorder/edit/:id" element={<ManagePreorderEdit />} />
       </Route>
+        <Route path="/payment" element={<Payment />} />
 
       <Route path="" element={<OwnerLayout />}>
         <Route path="/mainOwner" element={<Mains />} />
