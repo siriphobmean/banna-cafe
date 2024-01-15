@@ -147,3 +147,14 @@
 .total-amout-allMenu p {
     color: #E48F44;
 }
+
+.edit-menu{
+    position: absolute;
+    transition: transform 5s ease;
+    transform: scale(0);
+}
+
+.edit-menuactive {
+    position: absolute;
+    transform: scale(1);
+}

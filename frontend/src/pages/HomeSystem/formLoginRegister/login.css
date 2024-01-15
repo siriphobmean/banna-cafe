@@ -12,7 +12,7 @@
 .card-login {
     position: relative;
     width: 55vw;
-    height: 500px auto;
+    height: 600px auto;
     background: rgba(240, 233, 210, 0.25);
     box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     border-radius: 20px;
@@ -210,7 +210,7 @@
     font-size: 0.8em;
     color: #E6DDC4;
     font-weight: 500;
-    margin: 25px 0 10px;
+    margin: 25px 0 20px;
     text-align: center;
 }
 

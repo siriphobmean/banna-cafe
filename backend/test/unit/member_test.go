@@ -7,12 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/siriphobmean/sa-66-mean/entity"
 )
-//  Username    string `gorm:"uniqueIndex" valid:"required~กรุณากรากชื่อ !,maxstringlength(50)~ความยาวต้องไม่เกิน 50 อักษร"`
-// 	Email       string `gorm:"uniqueIndex" valid:"required~กรุณากราก Email !, email~Email ผิดพลาด"`
-// 	Password    string `valid:"required~กรุณากรอกรหัสผ่าน !,matches(^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\\$]).*$)~password should contain at least one uppercase letter, lowercase letter, digit, and special symbol"`
-// 	Phone       string `valid:"matches(^\\+[0-9]+$)~กรุณากรอกหมายเลขโทรศัพท์เป็นตัวเลข 0-9"`
-// 	MemberImage string `gorm:"type:longtext" valid:"image_valid~รูปภาพไม่ถูกต้อง กรุณาอัปโหลดรูปภาพใหม่"`
-// 	Point       int    
+
 func TestUsername(t *testing.T) {
 	g := NewGomegaWithT(t)
 
@@ -144,7 +139,7 @@ func TestPasswordMember(t *testing.T) {
 		Member := entity.Member{
 			Username: 	  "Bhuwadol Sriton",
 			Email:        "b6419455@g.sut.ac.th",
-			Password:     "bcd12355",
+			Password:     "*12888",
 			Phone:        "0987654321",
 			MemberImage:  "data:image/jpeg;base64,/9j/4AAQ/AndSoOn",
 			Point:        100,
@@ -154,7 +149,7 @@ func TestPasswordMember(t *testing.T) {
 
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("password should contain at least one uppercase letter, lowercase letter, digit, and special symbol"))	
+		g.Expect(err.Error()).To(Equal("รหัสผ่านต้องประกอบด้วยอย่างน้อย 8 ตัว"))	
 	})
 
 	t.Run(`Password pattern is valid`, func(t *testing.T) {
@@ -193,39 +188,22 @@ func TestPhone(t *testing.T) {
 
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("กรุณากรอกหมายเลขโทรศัพท์เป็นตัวเลข 0-9"))	
+		g.Expect(err.Error()).To(Equal("เบอร์โทรศัพท์ไม่ถูกต้อง กรุณากรอกเฉพาะตัวเลข 10 ตัว"))	
 	})
-	t.Run(`Phone should not exceed 9-10 digit`, func(t *testing.T) {
+	t.Run(`Phone is valid`, func(t *testing.T) {
 		Member := entity.Member{
 			Username: 	  "Bhuwadol Sriton",
 			Email:        "b6419455@g.sut.ac.th",
-			Password:     "Abcd123!@",
-			Phone:        "098765123456",
+			Password:     "Abcd12345",
+			Phone:        "0987654321",
 			MemberImage:  "data:image/jpeg;base64,/9j/4AAQ/AndSoOn",
 			Point:        100,
 		}
 
 		ok, err := govalidator.ValidateStruct(Member)
 
-		g.Expect(ok).NotTo(BeTrue())
-		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("กรุณากรอกหมายเลขโทรศัพท์อยู่ในช่วง 10 ตัว"))	
+		g.Expect(ok).To(BeTrue())
+		g.Expect(err).To(BeNil())
 	})
-
-	// t.Run(`Phone pattern is valid`, func(t *testing.T) {
-	// 	Member := entity.Member{
-	// 		Username: 	  "Bhuwadol Sriton",
-	// 		Email:        "b6419455@g.sut.ac.th",
-	// 		Password:     "Abcd123!@",
-	// 		Phone:        "0987654321",
-	// 		MemberImage:  "data:image/jpeg;base64,/9j/4AAQ/AndSoOn",
-	// 		Point:        100,
-	// 	}
-
-	// 	ok, err := govalidator.ValidateStruct(Member)
-
-	// 	g.Expect(ok).To(BeTrue())
-	// 	g.Expect(err).To(BeNil())
-	// })
 
 }

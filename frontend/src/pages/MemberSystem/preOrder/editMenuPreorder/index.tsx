@@ -49,7 +49,7 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
   } = useForm<PreorderMenusInterface & PreordersInterface>({
     defaultValues: {
       Quantity: preordermenus?.Quantity,
-      TotalCost: editMenu?.MenuCost,
+      TotalCost: preordermenus?.TotalCost,
       MenuID: editMenu?.ID,
       PreorderID: preordermenus?.PreorderID,
       MenuSizeID: preordermenus?.MenuSizeID,
@@ -58,7 +58,6 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
       DrinkOptionStatus: 1,
       SweetnessStatus: 1,
       MenuSizeStatus: 1,
-
       TotalAmount: 0,
     },
   });
@@ -66,7 +65,7 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
   const onSubmitEditMenuPreorder = async (values: PreorderMenusInterface) => {
     values.ID = preordermenus?.ID;
     values.PreorderID = preordermenus?.PreorderID;
-    const oldTotolcost = preordermenus?.TotalCost;
+    const newTotalCost = values.TotalCost;
     let res1 = await UpdatePreorderMenu(values);
     if (res1.status) {
       messageApi.open({
@@ -75,8 +74,8 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
       });
       setTimeout(function () {
         onCloseAddmenupop();
-      }, 1000);
-      onSubmitUpDatePreorder(values, oldTotolcost ?? 0);
+      }, 2000);
+      onSubmitUpDatePreorder(values, newTotalCost ?? 0);
     } else {
       messageApi.open({
         type: "error",
@@ -86,13 +85,15 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
   };
   const onSubmitUpDatePreorder = async (
     values: PreordersInterface,
-    oldTotolcost: number
+    newTotalCost: number,
   ) => {
     values.ID = preorder?.ID;
-    const TotalCost = (watch("TotalCost") ?? 0).toFixed(2);
-    values.TotalAmount = parseFloat(TotalCost);
-    values.TotalAmount = values.TotalAmount - oldTotolcost;
-    values.TotalAmount = values.TotalAmount + (preorder?.TotalAmount ?? 0);
+    values.MemberID = preorder?.MemberID;
+    const oldTotolCost = preordermenus?.TotalCost;
+    const addTotalCost = newTotalCost - (oldTotolCost ?? 0);
+    values.TotalAmount = addTotalCost + (preorder?.TotalAmount ?? 0);
+    const localtime = new Date();
+    values.PickUpDateTime = new Date(localtime.getTime() + 50 * 60000);
     let res1 = await UpdatePreorder(values);
     if (!res1.status) {
       messageApi.open({
@@ -215,10 +216,9 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
           ขนาด
           <div className="menu-size">
             {menuSize.map((menuSize: MenuSizesInterface, index: number) => (
-              <label className="lc" key={index}>
+              <label key={index}>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("MenuSizeStatus", {
                     required: { value: true, message: "this is required" },
                   })}
@@ -243,7 +243,6 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
               <label>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("SweetnessStatus", {
                     required: { value: true, message: "this is require" },
                   })}
@@ -265,7 +264,6 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
               <label>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("DrinkOptionStatus", {
                     required: { value: true, message: "this is require" },
                   })}

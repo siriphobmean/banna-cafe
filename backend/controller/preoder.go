@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -185,14 +186,16 @@ func GetNewPreorderByMemberID(c *gin.Context) {
 
 // PATCH /preorders
 func UpdatePreorder(c *gin.Context) {
+	fmt.Print(c)
 	var preorder entity.Preorder
 	var existingPreorder entity.Preorder
 
+	
 	if err := c.ShouldBindJSON(&preorder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	fmt.Print(preorder.PickUpDateTime)
 	if _, err := govalidator.ValidateStruct(preorder); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -203,7 +206,8 @@ func UpdatePreorder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
 		return
 	}
-
+	
+	fmt.Print(preorder.PickUpDateTime)
 	// existingPreorder.PickUpTime = preorder.PickUpTime .Local()
 	// existingPreorder.PickUpDate = preorder.PickUpDate.Local()
 	existingPreorder.PickUpDateTime = preorder.PickUpDateTime

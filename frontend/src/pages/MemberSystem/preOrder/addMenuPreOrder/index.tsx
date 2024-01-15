@@ -60,18 +60,15 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       TotalCost: addMenu?.MenuCost,
       MenuID: addMenu?.ID,
       PreorderID: 1,
-      MenuSizeID: 1, // Assuming it's an array for multiple selections
-      SweetnessID: 1,
-      DrinkOptionID: 1,
+      MenuSizeID: undefined,
+      SweetnessID: undefined,
+      DrinkOptionID: undefined,
       DrinkOptionStatus: 1,
       SweetnessStatus: 1,
       MenuSizeStatus: 1,
-
       TotalAmount: 0,
       MemberID: 1,
-      // PickupTime: "2006-01-02T15:04:05Z07:00",
-      // PickupDate: "2006-01-02T15:04:05Z07:00",
-      PickUpDateTime: "2024-10-07T23:55:24.6862451+07:00",
+      PickUpDateTime: new Date(),
       Note: "",
       Respond: "",
 
@@ -99,6 +96,8 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       const TotalAmount = (watch("TotalCost") ?? 0).toFixed(2);
       values.TotalAmount = parseFloat(TotalAmount);
       values.TotalAmount = values.TotalAmount + (preorder.TotalAmount ?? 0);
+      const localtime = new Date();
+      values.PickUpDateTime = new Date(localtime.getTime() + 50 * 60000);
       console.log("values");
       console.log(values);
       let res1 = await UpdatePreorder(values);
@@ -120,7 +119,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       });
       setTimeout(function () {
         onCloseAddmenupop();
-      }, 1000);
+      }, 100000);
     } else {
       messageApi.open({
         type: "error",

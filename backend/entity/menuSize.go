@@ -13,4 +13,4 @@ type MenuSize struct {
 	UnitOfQuantity string
 
 	PreorderMenus []PreorderMenu `gorm:"foreignKey:MenuSizeID"`
-} // Clear!
+}

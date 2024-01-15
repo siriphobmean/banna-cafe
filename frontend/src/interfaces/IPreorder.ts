@@ -6,7 +6,7 @@ export interface PreordersInterface {
   // PickupDate?: Date; 
   // PickupTime?: string; 
   // PickupDate?: string; 
-  PickUpDateTime?: string; 
+  PickUpDateTime?: Date; 
   Note?: string;
   Respond?: string;
   MemberID?: number;

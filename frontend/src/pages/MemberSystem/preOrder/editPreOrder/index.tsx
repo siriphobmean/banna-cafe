@@ -10,11 +10,13 @@ import { MenusInterface } from "../../../../interfaces/IMenu";
 import {
   GetMenuPreordersByPreoderID,
   GetNewPreorderByMemberID,
+  GetPreorderStatusPaymentByMemberID,
   UpdatePreorder,
 } from "../../../../services/https/preorder";
 import { GetMenuById } from "../../../../services/https/menu";
 import { UpdatePreorderMenu } from "../../../../services/https/preoederMenu";
 import EditMenuPreorder from "../editMenuPreorder";
+import { StatusApprovePreordersInterface } from "../../../../interfaces/IStatusApprovePreorder";
 interface EditPreorderProps {
   onClosebasketMenupop: () => void;
 }
@@ -30,7 +32,8 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   const [menus, setMenus] = useState<MenusInterface[]>([]);
   const [menu, setMenu] = useState<MenusInterface>();
   const [editMenupop, setEditmenupop] = useState(false);
-  // console.log(editMenupop);
+  const [preorder_status_approver, setPreorder_status_approver] =
+    useState<StatusApprovePreordersInterface>();
   const {
     register,
     handleSubmit,
@@ -41,11 +44,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
     defaultValues: {
       TotalAmount: preorder?.TotalAmount || 0,
       MemberID: 1,
-      PickUpDateTime: "",
-      // PickupTime: "",
-      // PickupDate: "",
-      //  PickupTime: new Date(),
-      //  PickupDate: new Date(),
+      PickUpDateTime: new Date(),
       Note: "",
       Respond: "",
     },
@@ -59,9 +58,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
       setPreorder(res);
       setValue("TotalAmount", res.TotalAmount || 0);
       setValue("MemberID", res.MemberID || 1);
-      setValue("PickUpDateTime", res.PickUpDateTime || "");
-      // setValue("PickupTime", res.PickupTime || "");
-      // setValue("PickupDate", res.PickupDate || "");
+      setValue("PickUpDateTime", new Date(res.PickUpDateTime) || "");
       setValue("Note", res.Note || "");
       setValue("Respond", res.Respond || "");
       getPreordersMenusByPreoderID(res.ID);
@@ -87,7 +84,14 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
     }
     setMenus(getMenus);
   };
+  const getPreoderStatusPaymentByMember = async (id: number) => {
+    let res = await GetPreorderStatusPaymentByMemberID(id);
+    if (res) {
+      setPreorder_status_approver(res);
+    }
+  };
   useEffect(() => {
+    getPreoderStatusPaymentByMember(1);
     getNewPreoderByMember(1);
   }, []);
   const onSubmitUpDatePreorderMenu = async (
@@ -95,8 +99,6 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   ) => {
     let res1 = await UpdatePreorderMenu(values);
     values.ID = preorder?.ID;
-    // values.PickupTime = preorder?.PickupTime;
-    // values.PickupDate = preorder?.PickupDate;
     values.PickUpDateTime = preorder?.PickUpDateTime;
     values.Note = preorder?.Note;
     values.Respond = preorder?.Respond;
@@ -111,11 +113,12 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
   };
   const onSubmitUpDatePreorder = async (values: PreordersInterface) => {
     values.ID = preorder?.ID;
-    values.PickUpDateTime = "2024-10-07T23:55:24.6862451+07:00";
-    // values.PickupTime = "0021-01-01T00:00:00Z";
-    // values.PickupDate = "0021-01-01T00:00:00Z"; // datatype input not match in data base 05/01/2024
-    // console.log("values");
-    // console.log(values);
+    values.PickUpDateTime = new Date(values?.PickUpDateTime ?? 0);
+    // const h = values.PickUpDateTime.getHours;
+    // values.PickUpDateTime.setHours(h);
+    console.log(values.PickUpDateTime);
+    console.log("values");
+    console.log(values);
     let res = await UpdatePreorder(values);
     if (res.status) {
       messageApi.open({
@@ -123,16 +126,13 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
         content: "บันทึกเมนูสำเร็จ",
       });
       setTimeout(function () {
-        // onClosebasketMenupop();
-      }, 30000);
+        onClosebasketMenupop();
+      }, 20000);
     } else {
       messageApi.open({
         type: "error",
         content: res.message,
       });
-      setTimeout(function () {
-        // onClosebasketMenupop();
-      }, 30000);
     }
   };
 
@@ -168,7 +168,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
       setValue("TotalAmount", (watch("TotalAmount") ?? 0) + menuCost);
     }
   };
-
+  const pickUpDateTime = watch("PickUpDateTime");
   return (
     <>
       <form
@@ -186,7 +186,7 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
         <div className="form-edit">
           <h4>ตะกร้าสินค้า</h4>
           <div className="basket-menu">
-            {preordermenus.map(
+            {(preorder_status_approver?.ID == 1) && preordermenus.map(
               (preordermenu: PreorderMenusInterface, index: number) => (
                 <>
                   <div className="menu-data" key={index}>
@@ -248,27 +248,20 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
           </div>
           <hr />
           <div className="data-preOrder">
-            {/* <h5>วัน-เวลาที่รับ</h5>
+            <h5>วัน-เวลาที่รับ</h5>
             <label htmlFor="" className="datetime-recive">
               <input
                 type="datetime-local"
+                defaultValue={
+                  pickUpDateTime instanceof Date
+                    ? pickUpDateTime.toISOString().slice(0, 16)
+                    : ""
+                }
                 {...register("PickUpDateTime", {
-                  required: { value: true, message: "this is required" },
+                  // required: { value: true, message: "This is required" },
                 })}
               />
-              <input
-                type="time"
-                {...register("PickupTime", {
-                  required: { value: true, message: "this is required" },
-                })}
-              />
-              <input
-                type="date"
-                {...register("PickupDate", {
-                  required: { value: true, message: "this is required" },
-                })}
-              />
-            </label> */}
+            </label>
             <h5>หมายเหตุ</h5>
             <label htmlFor="" className="datetime-recive">
               <input
@@ -280,19 +273,20 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
             </label>
             <h5 className="total-amout-allMenu">
               <span>รวมราคา</span>
-              <p>{watch("TotalAmount")?.toFixed(2) ?? "N/A"}.-</p>
+              { preorder_status_approver?.ID == 1 && <p>{watch("TotalAmount")?.toFixed(2) ?? "N/A"}.-</p>}
             </h5>
-          </div>
+          </div> 
         </div>
         <button className="btn-addmenu" type="submit">
           ชำระเงิน
         </button>
       </form>
       {editMenupop && (
-        <div className="add-menu">
+        <div className={`${editMenupop ? "edit-menuactive" : "edit-menu"}`}>
           <EditMenuPreorder
             onCloseAddmenupop={() => {
               setEditmenupop(false);
+              getNewPreoderByMember(1);
             }}
             editMenu={menu}
             preordermenus={preordermenu}
