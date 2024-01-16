@@ -128,6 +128,13 @@ func main() {
 	r.PATCH("/managepreorder", controller.UpdatePreOrder)
 	r.PATCH("/updatepreorderstatusreceive", controller.UpdateStatusReceivePreorder)
 
+	r.GET("/promotions", controller.ListPromotion)
+	r.GET("/promotion/:id", controller.GetPromotion)
+	r.GET("/lastpromotions", controller.GetLastPromotion)
+	r.POST("/promotions", controller.CreatePromotion)
+	r.PATCH("/promotions", controller.UpdatePromotion)
+	r.DELETE("/promotions/:id", controller.DeletePromotion)
+
 	// Statistics Routes
 
 	r.GET("/countMenu", controller.CountRows)
