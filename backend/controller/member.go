@@ -115,13 +115,9 @@ func CreateMemberRegister(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	hashUsername, err := bcrypt.GenerateFromPassword([]byte(member.Username), 14)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error hash username"})
-	}
-	hashEmail, err := bcrypt.GenerateFromPassword([]byte(member.Email), 14)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error hash email"})
+	if _, err := govalidator.ValidateStruct(member); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(member.Password), 14)
 	if err != nil {
@@ -130,16 +126,13 @@ func CreateMemberRegister(c *gin.Context) {
 
 	// สร้าง member
 	members := entity.Member{
-		Username: string(hashUsername),
-		Email:    string(hashEmail),
+		Username: member.Username,
+		Email:    member.Email,
 		Password: string(hashPassword),
 	}
-	if _, err := govalidator.ValidateStruct(members); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	
 	// บันทึก
-	if err := entity.DB().Create(&member).Error; err != nil {
+	if err := entity.DB().Create(&members).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

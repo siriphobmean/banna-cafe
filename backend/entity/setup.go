@@ -118,7 +118,7 @@ func SetupDatabase() {
 			MenuName: "กาแฟดำ",
 			MenuNameEng: "Black Coffee",
 			MenuCost: 65.50,
-			MenuStatus: 1,
+			MenuStatus: 2,
 			MenuTypeID: 1,
         },
         {
@@ -126,7 +126,7 @@ func SetupDatabase() {
 			MenuName: "กาแฟดำ2",
 			MenuNameEng: "Black Coffee2",
 			MenuCost: 65.50,
-			MenuStatus: 1,
+			MenuStatus: 2,
 			MenuTypeID: 1,
         },
     }

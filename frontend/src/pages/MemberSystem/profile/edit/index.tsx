@@ -43,7 +43,7 @@ export default function EditProfileMember() {
     } else {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด",
+        content: res.message,
       });
     }
   };

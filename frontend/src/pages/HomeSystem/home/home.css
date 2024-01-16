@@ -81,7 +81,7 @@
 }
 
 .slide.s3 {
-    height: 50vh;
+    height: 60vh;
     background-image: url(../../../assets/homeBK3.png);
     display: flex;
 }
@@ -97,7 +97,7 @@
 .content.s3.left span {
     color: #E6DDC4;
     font-weight: 700;
-    font-size: 2em;
+    font-size: 2.2em;
 }
 
 .btn-menu {
@@ -123,7 +123,7 @@
 
 .content.s3.right {
     width: 65%;
-    height: 50vh;
+    height: 60vh;
     display: flex;
     flex-direction: column;
 }
@@ -148,7 +148,7 @@
 
 .slide.s4 {
     width: 84vw;
-    height: 50vh;
+    height: 60vh;
     background-color: #181D31;
     display: flex;
     justify-content: space-between;
@@ -264,7 +264,7 @@
 }
 
 .slide.s5 {
-    height: 50vh;
+    height: 60vh;
     background-color: #678983;
     display: flex;
     flex-direction: row;

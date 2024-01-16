@@ -53,22 +53,25 @@ export default function MenuPreorder() {
   };
 
   const getMenusByMenuName = async (e: string) => {
+    
     if (
-      e.trim() &&
-      e != "/" &&
-      e !== "#" &&
-      e !== "%" &&
-      e !== "." &&
-      e !== "." &&
-      e !== "\\"
+      !(
+        e.includes("/") ||
+        e.includes("\\") ||
+        e.includes("#") ||
+        e.includes(".") ||
+        e.includes("?") ||
+        e.includes("%") ||
+        !e.trim() 
+      )
     ) {
       let res = await GetMenusByName(e);
       if (res) {
         setMenusSearch(res);
       }
     } else {
-      setMenusSearch([]);
-      setSearchText("");
+      // setMenusSearch([]);
+      setSearchText(searchText.length != 1 ? searchText : "");
     }
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

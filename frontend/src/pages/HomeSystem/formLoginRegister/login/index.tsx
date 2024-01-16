@@ -79,9 +79,8 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
                 checkLength: (value) => value && value.length >= 6,
                 matchPattern: (value) =>
                   value
-                    ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
-                        value
-                      )
+                    ? // ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)/.test(value)
                     : false,
               },
             })}
@@ -94,12 +93,12 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
         {errors.Password?.type === "checkLength" && (
           <p className="errorMsg">Password should be at-least 6 characters.</p>
         )}
-        {errors.Password?.type === "matchPattern" && (
+        {/* {errors.Password?.type === "matchPattern" && (
           <p className="errorMsg">
             Password should contain at least one uppercase letter, lowercase
             letter, digit, and special symbol.
           </p>
-        )}
+        )} */}
         <div className="remember-forgot">
           <label>
             <input type="checkbox" /> ReMember me

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fmt"
+	// "fmt"
 	"net/http"
 
 	"github.com/siriphobmean/sa-66-mean/entity"
@@ -19,6 +19,7 @@ type LoginPayload struct {
 type LoginResponse struct {
 	Token string `json:"token"`
 	ID    uint   `json:"id"`
+	Position string `json:"position"`
 }
 
 // get info from user email and password
@@ -26,44 +27,71 @@ func Login(c *gin.Context) {
 	var payload LoginPayload
 	var member entity.Member
 
-	if error := c.ShouldBindJSON(&payload); error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": error})
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	// if err := entity.DB().Raw("SELECT * FROM members WHERE email = ?", payload.Email).Scan(&member).Error; err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error() + "email is incorrect"})
+	// 	return
+	// }
+	if err := entity.DB().Raw("SELECT * FROM members WHERE email = ?", payload.Email).Scan(&member).Error; err == nil {
+		// ตรวจสอบรหัสผ่าน
+		err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(payload.Password))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": map[string]string{"message": "Invalid password", "memberPassword": member.Password, "payloadPassword": payload.Password}})
+			return
+		}
 
-	// find user from email
-	if error := entity.DB().Raw("SELECT * FROM members WHERE email = ?", payload.Email).Scan(&member).Error; error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": error})
+		jwtWrapper := service.JwtWrapper{
+			SecretKey:       "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
+			Issuer:          "AuthService",
+			ExpirationHours: 24,
+		}
+
+		signedToken, err := jwtWrapper.GenerateToken(member.Email)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error signing token"})
+			return
+		}
+
+		tokenResponse := LoginResponse{
+			Token:    signedToken,
+			ID:       member.ID,
+			Position: "Member",
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
+	} else if err := entity.DB().Raw("SELECT * FROM employees WHERE email = ?", payload.Email).Scan(&member).Error; err == nil {
+		// ตรวจสอบรหัสผ่าน
+		err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(payload.Password))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": map[string]string{"message": "Invalid password", "memberPassword": member.Password, "payloadPassword": payload.Password}})
+			return
+		}
+
+		jwtWrapper := service.JwtWrapper{
+			SecretKey:       "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
+			Issuer:          "AuthService",
+			ExpirationHours: 24,
+		}
+
+		signedToken, err := jwtWrapper.GenerateToken(member.Email)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error signing token"})
+			return
+		}
+
+		tokenResponse := LoginResponse{
+			Token:    signedToken,
+			ID:       member.ID,
+			Position: "Employee",
+		}
+
+		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error() + "email is incorrect"})
 		return
 	}
-	fmt.Print(member.Password)
-	fmt.Print(payload.Password)
-	
-	// Check password
-	err := bcrypt.CompareHashAndPassword([]byte(payload.Password), []byte(member.Password))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "password incorrect"})
-		return
-	}
-
-	//format token
-	jwtWrapper := service.JwtWrapper{
-		SecretKey:       "SvNQpBN8y3qlVrsGAYYWoJJk56LtzFHx",
-		Issuer:          "AuthService",
-		ExpirationHours: 24,
-	}
-
-	signedToken, err := jwtWrapper.GenerateToken(member.Email)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "error generating token"})
-		return
-	}
-
-	tokenResponse := LoginResponse{
-		Token: signedToken,
-		ID:    member.ID,
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
 
 }

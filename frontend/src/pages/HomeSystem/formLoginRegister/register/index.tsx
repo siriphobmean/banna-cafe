@@ -32,7 +32,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
     if (res.status) {
       messageApi.open({
         type: "success",
-        content: "สมัครสามชิกสำเร็จ",
+        content: "สมัครสมาชิกสำเร็จ",
       });
       setTimeout(function () {
         window.location.reload();
@@ -40,7 +40,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
     } else {
       messageApi.open({
         type: "error",
-        content: "เกิดข้อผิดพลาด",
+        content: res.message,
       });
     }
   };
@@ -97,7 +97,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
                 checkLength: (value) => value && value.length >= 6,
                 matchPattern: (value) =>
                   value
-                    ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                    ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)/.test(
                         value
                       )
                     : false,
@@ -112,12 +112,12 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
         {errors.Password?.type === "checkLength" && (
           <p className="errorMsg">Password should be at-least 6 characters.</p>
         )}
-        {errors.Password?.type === "matchPattern" && (
+        {/* {errors.Password?.type === "matchPattern" && (
           <p className="errorMsg">
             Password should contain at least one uppercase letter, lowercase
             letter, digit, and special symbol.
           </p>
-        )}
+        )} */}
         <div className="remember-forgot">
           <label>
             <input type="checkbox" /> I agree to the terms & conditions

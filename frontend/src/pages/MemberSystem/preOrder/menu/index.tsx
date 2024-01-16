@@ -68,9 +68,12 @@ function MenuAll({
       getMenusMenuType();
     }
   }, [menusSearch, selectedMenuType]);
+
+  const menusReady = menus.filter((menu) => menu.MenuStatus === 2);
+
   return (
     <div className="menu-all">
-      {menus.map((menu, index) => (
+      {menusReady.map((menu, index) => (
         <div className="menu-crad" key={menu.ID}>
           <div className="menu-crad menu-rating">
             <FaStar />
