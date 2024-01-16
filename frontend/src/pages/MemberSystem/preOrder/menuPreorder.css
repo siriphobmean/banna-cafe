@@ -213,13 +213,14 @@
   padding: 10px 15px;
   color: #181D31;
 }
-
-.imge-information {
+.munu-slide-information img{
   width: auto;
-  height: 50%;
-  background-image: url(../../../assets/Matcha.png);
-  background-size: cover;
-  /* border: 1px solid black; */
+  height: 130px;
+}
+.information-img{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .name-information,

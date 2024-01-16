@@ -12,5 +12,6 @@ type Rating struct {
 	MemberID 	*uint  	`valid:"required~Member is required"`
 	Member   	Member 	`gorm:"references:id" valid:"-"`
 
-	Menu 		[]Menu 	`gorm:"foreignKey:RatingID"`
+	MenuID        *uint       `valid:"required~Menu is required"`
+	Menu          Menu        `gorm:"references:id" valid:"-"`
 }

@@ -12,6 +12,8 @@ import { GetMenusByName } from "../../../services/https/preorder";
 import { MenusInterface } from "../../../interfaces/IMenu";
 import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import "./menuPreorder.css";
+import { RatingsInterface } from "../../../interfaces/IRating";
+import { GetRatings } from "../../../services/https/rating";
 
 export default function MenuPreorder() {
   const [addMenupop, setAddmenupop] = useState(false);
@@ -27,6 +29,28 @@ export default function MenuPreorder() {
   const [menus, setMenus] = useState<MenusInterface[]>([]);
   const [menuslide, setMenuSlide] = useState<MenusInterface>();
   const [menu, setMenu] = useState<MenusInterface>();
+  const [ratings, setRatings] = useState<RatingsInterface[]>([]);
+
+  const getMenusRating = async () => {
+    let res = await GetRatings();
+    if (res) {
+      setRatings(res);
+    }
+  };
+  const getMenusRatingByMenuId = (id: number | undefined): number  => {
+    if (id === undefined) {
+      return 0;
+    }
+    const menuRatings = ratings.filter((r) => r.MenuID === id);
+    if (menuRatings.length === 0) {
+      return 0;
+    }
+    let sumRating = 0;
+    for (let i = 0; i < menuRatings.length; i++) {
+      sumRating += menuRatings[i].Score || 0;
+    }
+    return sumRating / menuRatings.length;
+  };
 
   const getMenusByMenuName = async (e: string) => {
     if (
@@ -56,10 +80,13 @@ export default function MenuPreorder() {
     e.preventDefault();
     getMenusByMenuName(searchText);
   };
+  useEffect(() => {
+    getMenusRating();
+  }, []);
   return (
     <div className="menuPreorder">
       <div className="sidebarMemu">
-        <SidebarMemu onSelectMenuType={handleSelectMenuType} member={null}/>
+        <SidebarMemu onSelectMenuType={handleSelectMenuType} member={null} />
       </div>
       <div className="contentMenu">
         <header>
@@ -94,19 +121,25 @@ export default function MenuPreorder() {
             </div>
             <div className="munu-slide-information">
               <div className="information-text">Information</div>
-              <div className="imge-information"></div>
+              <div className="information-img">
+                <img
+                  src={menuslide?.MenuImage}
+                  alt={`Menu Image ${menuslide?.MenuName}`}
+                />
+              </div>
               <div className="name-information">
-                Matchalatte & Orang <span>ส้มส้ม</span>
+                {menuslide?.MenuNameEng} <span>{menuslide?.MenuName}</span>
               </div>
               <div className="cost-information">
-                ราคา <span>129 bath.</span>
+                ราคา <span>{menuslide?.MenuCost} bath.</span>
               </div>
               <div className="rating-information">
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
+                {Array.from(
+                  { length: getMenusRatingByMenuId(menuslide?.ID) },
+                  (_, index) => (
+                    <FaStar key={index} />
+                  )
+                )}
               </div>
             </div>
             <div className="munu-promotion">
@@ -144,7 +177,8 @@ export default function MenuPreorder() {
       )}
       {basketMenupop && (
         <div className="edit-basketes">
-          <EditPreorder onClosebasketMenupop={() => {
+          <EditPreorder
+            onClosebasketMenupop={() => {
               setBasketMenupop(false);
             }}
           />
