@@ -33,11 +33,11 @@ function ManagePreorder() {
       dataIndex: "Respond",
       key: "respond",
     },
-    // {
-    //   title: "สถานะการรับสินค้า",
-    //   dataIndex: "ReceiveStatus",
-    //   key: "receuvestatus",
-    // },
+    {
+      title: "สถานะการรับสินค้า",
+      dataIndex: "ReceiveStatus",
+      key: "receuvestatus",
+    },
     {
       title: "หมายเหตุ",
       dataIndex: "Note",

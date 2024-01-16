@@ -24,16 +24,16 @@ export interface PreOrderInterface {
   PickupTime?: Date;
   Note?: string;
   Respond?: string;
-  StatusApprovePreOrderInterface?:StatusApprovePreOrderInterface;
-  StatusReceivePreOrderInterface?:StatusReceivePreOrderInterface;
+  StatusApprovePreOrderInterface?: StatusApproveInterface;
+  StatusReceivePreOrderInterface?: StatusReceiveInterface;
 }
 
-export interface StatusApprovePreOrderInterface {
+export interface StatusApproveInterface {
   ID?: number;
   Name?: string;
 }
 
-export interface StatusReceivePreOrderInterface {
+export interface StatusReceiveInterface {
   ID?: number;
   Name?: string;
 }
@@ -43,7 +43,7 @@ export interface StatusApprovesPreOrderInterface {
   PreOrderID?: number;
   PreOrder?: PreOrderInterface;
   StatusApprovePreOrderID?: number;
-  StatusApprovePreOrder?: StatusApprovePreOrderInterface;
+  StatusApprovePreOrder?: StatusApproveInterface;
 }
 
 export interface StatusReceivesPreOrderInterface {
@@ -51,5 +51,5 @@ export interface StatusReceivesPreOrderInterface {
   PreOrderID?: number;
   PreOrder?: PreOrderInterface;
   StatusReceivePreOrderID?: number;
-  StatusReceivePreOrder?: StatusReceivePreOrderInterface;
+  StatusReceivePreOrder?: StatusReceiveInterface;
 }

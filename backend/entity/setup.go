@@ -287,7 +287,7 @@ func SetupDatabase() {
 			PickUpDateTime: &time2,
 			Note:        "",
 			Respond:     "",
-			Member:      member[1],
+			Member:      member[0],
 		},
 	}
 	db.Create(&preorder)

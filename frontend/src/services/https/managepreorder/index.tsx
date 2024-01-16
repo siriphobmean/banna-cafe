@@ -100,7 +100,7 @@ async function UpdatePreOrder(data: PreOrderInterface) {
     return res;
 }
 
-async function UpdatePreorderStatusReceive(data: StatusReceivesPreOrderInterface) {
+async function UpdateStatusReceivePreorder(data: StatusReceivesPreOrderInterface) {
   const requestOptions = {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
@@ -137,6 +137,28 @@ async function GetStatusReceivePreorderByPreorderID(id: Number | undefined) {
 
   return res;
 }
+
+async function ListStatusReceive() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/liststatusreceive`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
 export{
     GetPreOrder,
     GetPreOrderByID,
@@ -144,5 +166,7 @@ export{
     GetManagePreOrders,
     GetManagePreOrdersByID,
     GetStatusReceivePreorderByPreorderID,
-    UpdatePreorderStatusReceive,
+    UpdateStatusReceivePreorder,
+    ListStatusReceive,
+
 }

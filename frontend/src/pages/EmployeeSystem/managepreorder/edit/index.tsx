@@ -1,14 +1,37 @@
-import { Button,Col,Row,Divider,Form,Input,Card,message,Radio } from "antd";
+import {
+  Button,
+  Col,
+  Row,
+  Divider,
+  Form,
+  Input,
+  Card,
+  message,
+  Radio,
+} from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { ManagePreOrderInterface,PreOrderInterface } from "../../../../interfaces/IManagepreorder";
-import { GetManagePreOrdersByID,UpdatePreOrder,GetPreOrderByID } from "../../../../services/https/managepreorder";
+import { useState, useEffect, ChangeEventHandler } from "react";
+import {
+  ManagePreOrderInterface,
+  PreOrderInterface,
+  StatusReceivesPreOrderInterface,
+  StatusReceiveInterface,
+} from "../../../../interfaces/IManagepreorder";
+import {
+  GetManagePreOrdersByID,
+  UpdatePreOrder,
+  GetPreOrderByID,
+  UpdateStatusReceivePreorder,
+  GetStatusReceivePreorderByPreorderID,
+  ListStatusReceive,
+} from "../../../../services/https/managepreorder";
 
 function ManagePreorderEdit() {
   const navigate = useNavigate();
   const [data, SetData] = useState<ManagePreOrderInterface>();
   const [preorder, SetPreorder] = useState<PreOrderInterface>();
-  // const [srp, SetSRP] = useState<StatusReceivesPreOrderInterface>();
+  const [srp, SetSRP] = useState<StatusReceivesPreOrderInterface>();
+  const [sr, SetSr] = useState<StatusReceiveInterface[]>([]);
   let { id } = useParams();
 
   const getMP = async () => {
@@ -18,34 +41,42 @@ function ManagePreorderEdit() {
     }
   };
   const getPreorder = async () => {
-    let res = await GetPreOrderByID(Number(id));
-    if (res) {
-      SetPreorder(res);
+    let res1 = await GetPreOrderByID(Number(id));
+    if (res1) {
+      SetPreorder(res1);
+      console.clear()
+      console.log(preorder)
     }
-    // let r = await GetStatusReceivePreorderByPreorderID(Number(id))
-    // if (r){
-    //   SetSRP(r);
-    // }
+    let res2 = await GetStatusReceivePreorderByPreorderID(Number(id))
+    if (res2){
+      SetSRP(res2);
+    }
+    let res3 = await ListStatusReceive()
+    if(res3){
+      SetSr(res3)
+    }
   };
 
   useEffect(() => {
     getMP();
     getPreorder();
-    console.log(data?.Note);
-  },[]);
+       
+  }, []);
 
   function cancel_button() {
     setTimeout(function () {
       navigate(`/managepreorder`);
     }, 250);
   }
-  
 
   const onFinish = async (values: PreOrderInterface) => {
-    values.ID = preorder?.ID;
-    values.Member = preorder?.Member;
-    values.TotalAmount = preorder?.TotalAmount;
-    console.log(values)
+    // alert(preorder?.Note)
+    values.ID = preorder?.ID
+    values.Member = preorder?.Member
+    values.PickupTime = preorder?.PickupTime
+    values.StatusApprovePreOrderInterface = preorder?.StatusApprovePreOrderInterface
+    values.StatusReceivePreOrderInterface = preorder?.StatusReceivePreOrderInterface
+    values.TotalAmount = preorder?.TotalAmount
     let res = await UpdatePreOrder(values);
     if (res.status) {
       message.open({
@@ -61,9 +92,41 @@ function ManagePreorderEdit() {
         content: "แก้ไขข้อมูลไม่สำเร็จ",
       });
     }
+    if (preorder?.Respond=="อนุมัติสั่งจอง"){
+      let data: StatusReceivesPreOrderInterface = srp||{}
+      data.StatusReceivePreOrder = sr[1]
+      data.StatusReceivePreOrderID = sr[1].ID
+      let res = await UpdateStatusReceivePreorder(data||{})
+      if(!res.status){
+        message.open({
+          type: "error",
+          content: res.message,
+        });
+      }
+    }
+    else if(preorder?.Respond=="ไม่อนุมัติสั่งจอง"){
+      let data: StatusReceivesPreOrderInterface = srp||{}
+      data.StatusReceivePreOrder = sr[0]
+      data.StatusReceivePreOrderID = sr[0].ID
+      let res = await UpdateStatusReceivePreorder(data||{})
+      if(!res.status){
+        message.open({
+          type: "error",
+          content: res.message,
+        });
+      }
+    }
   };
- 
-  
+  const onInput = (e:any) => {
+    let c: PreOrderInterface = preorder ||{};
+    c.Note = e.target.value;
+    SetPreorder(c);
+  };
+  const onChange = (e:any) => {
+    let c: PreOrderInterface = preorder ||{};
+    c.Respond = e.target.value;
+    SetPreorder(c);
+  };
 
   return (
     <div>
@@ -89,13 +152,18 @@ function ManagePreorderEdit() {
               <br />
               เวลาที่จะมารับ :{" "}
               <span style={{ fontWeight: "normal" }}>
-                {(data?.PickupTime)?.toString().slice(0,10).concat(" ",(data?.PickupTime)?.toString().slice(11,16))}
+                {data?.PickupTime?.toString()
+                  .slice(0, 10)
+                  .concat(" ", data?.PickupTime?.toString().slice(11, 16))}
               </span>
             </p>
             <p style={{ fontSize: "16px" }}>
               {" "}
               <br />
-              ราคา : <span style={{ fontWeight: "normal" }}>{preorder?.TotalAmount}</span>
+              ราคา :{" "}
+              <span style={{ fontWeight: "normal" }}>
+                {preorder?.TotalAmount}
+              </span>
             </p>
             <p style={{ fontSize: "16px" }}>
               {" "}
@@ -115,7 +183,6 @@ function ManagePreorderEdit() {
         </Row>
         <Divider />
         <Form
-          name="basic"
           layout="horizontal"
           autoComplete="off"
           onFinish={onFinish}
@@ -125,6 +192,7 @@ function ManagePreorderEdit() {
               <Form.Item
                 label="หมายเหตุ"
                 name="Note"
+                initialValue={preorder?.Note}
                 rules={[
                   {
                     required: false,
@@ -132,7 +200,7 @@ function ManagePreorderEdit() {
                   },
                 ]}
               >
-                <Input />
+                <Input onInput={onInput}/>
               </Form.Item>
             </Col>
             <Col xs={24} sm={24} md={24} lg={24} xl={12}>
@@ -146,7 +214,7 @@ function ManagePreorderEdit() {
                   },
                 ]}
               >
-                <Radio.Group >
+                <Radio.Group onChange={onChange}>
                   <Radio value={"อนุมัติสั่งจอง"}>อนุมัติ</Radio>
                   <Radio value={"ไม่อนุมัติสั่งจอง"}>ไม่อนุมัติ</Radio>
                 </Radio.Group>
@@ -176,4 +244,4 @@ function ManagePreorderEdit() {
     </div>
   );
 }
-export default ManagePreorderEdit; 
+export default ManagePreorderEdit;

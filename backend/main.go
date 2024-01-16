@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/controller"
 	"github.com/siriphobmean/sa-66-mean/entity"
-	"github.com/siriphobmean/sa-66-mean/middleware"
+	middlewares "github.com/siriphobmean/sa-66-mean/middleware"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 	r.Use(CORSMiddleware())
 	r.POST("/membersRegister", controller.CreateMemberRegister)
 	r.POST("/login", controller.Login)
-	
+
 	// Menu Routes
 	r.GET("/menus", controller.ListMenus)
 	r.GET("/menu/:id", controller.GetMenu)
@@ -28,7 +28,7 @@ func main() {
 	// IngredientUnit Routes
 	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
 	// MenuName Routes
-	r.GET("/menuNames", controller.ListMenuNames) // more 20/12/66
+	r.GET("/menuNames", controller.ListMenuNames)   // more 20/12/66
 	r.GET("/menuNames/:id", controller.GetMenuName) // more 4/1/2024
 
 	// Employee Routes
@@ -103,8 +103,8 @@ func main() {
 	r.DELETE("/menu/ingredientMenus/:id", controller.DeleteIngredientMenuSet) // more 20/12/2023
 
 	// Preoder Routes
-	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID) 
-	r.GET("/menus/:name", controller.ListMenusByName) 
+	r.GET("/menusByMenuType/:id", controller.ListMenusByMenuTypeID)
+	r.GET("/menus/:name", controller.ListMenusByName)
 	r.GET("/ratingsByMenuID/:id", controller.GetRatingsByMenuID)
 	r.GET("/preorder/:id", controller.GetPreorderByID)
 	r.GET("/preorderMember/:id", controller.GetPreorderStatusPaymentByMemberID)
@@ -120,11 +120,12 @@ func main() {
 	r.GET("/preorderMenus/:id", controller.ListGetMenuPreordersByPreoderID)
 	r.PATCH("/preorderMenus", controller.UpdatePreorderMenu)
 
-	// Ball Routes 
+	// Ball Routes
 	r.GET("/getpreorder/:id", controller.GetPreOrderByID)
-	r.GET("/listmanagepreorder",controller.ListMP)
-	r.GET("/getmanagepreorder/:id",controller.ListMPByID)
+	r.GET("/listmanagepreorder", controller.ListMP)
+	r.GET("/getmanagepreorder/:id", controller.ListMPByID)
 	r.GET("/getstatusreceivepreorder/:id", controller.GetStatusReveivesPreorderByPreorderID)
+	r.GET("/liststatusreceive", controller.ListStatusReceive)
 	r.PATCH("/managepreorder", controller.UpdatePreOrder)
 	r.PATCH("/updatepreorderstatusreceive", controller.UpdateStatusReceivePreorder)
 
@@ -146,7 +147,7 @@ func main() {
 
 	router := r.Group("")
 	{
-		router.Use(middlewares.Authorizes()) 
+		router.Use(middlewares.Authorizes())
 		{
 
 			// // Employee Routes
