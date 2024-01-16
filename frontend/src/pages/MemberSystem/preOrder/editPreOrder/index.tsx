@@ -186,65 +186,66 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
         <div className="form-edit">
           <h4>ตะกร้าสินค้า</h4>
           <div className="basket-menu">
-            {(preorder_status_approver?.ID == 1) && preordermenus.map(
-              (preordermenu: PreorderMenusInterface, index: number) => (
-                <>
-                  <div className="menu-data" key={index}>
-                    <img
-                      src={menus[index]?.MenuImage}
-                      alt=""
-                      className="imge-item"
-                    />
-                    <h5 className="name-item">
-                      {menus[index]?.MenuName}
-                      <br />
-                      <span>{menus[index]?.MenuNameEng}</span>
-                    </h5>
-                    <h5 className="size-item">
-                      {preordermenu.MenuSize?.UnitOfQuantity} ml
-                    </h5>
-                    <h5 className="total-amount">
-                      {preordermenu.TotalCost !== undefined
-                        ? preordermenu.TotalCost.toFixed(2)
-                        : "N/A"}
-                      .-
-                    </h5>
-                    <h5 className="quantity">{preordermenu.Quantity}</h5>
-                    <div className="add-minus">
-                      <div
-                        className="btn-quantity minus"
-                        onClick={() => {
-                          handleDecrease(preordermenu, index);
-                          onSubmitUpDatePreorderMenu(preordermenu);
-                        }}
-                      >
-                        -
+            {preorder_status_approver?.ID == 1 &&
+              preordermenus.map(
+                (preordermenu: PreorderMenusInterface, index: number) => (
+                  <>
+                    <div className="menu-data" key={index}>
+                      <img
+                        src={menus[index]?.MenuImage}
+                        alt=""
+                        className="imge-item"
+                      />
+                      <h5 className="name-item">
+                        {menus[index]?.MenuName}
+                        <br />
+                        <span>{menus[index]?.MenuNameEng}</span>
+                      </h5>
+                      <h5 className="size-item">
+                        {preordermenu.MenuSize?.Name}
+                      </h5>
+                      <h5 className="total-amount">
+                        {preordermenu.TotalCost !== undefined
+                          ? preordermenu.TotalCost.toFixed(2)
+                          : "N/A"}
+                        .-
+                      </h5>
+                      <h5 className="quantity">{preordermenu.Quantity}</h5>
+                      <div className="add-minus">
+                        <div
+                          className="btn-quantity minus"
+                          onClick={() => {
+                            handleDecrease(preordermenu, index);
+                            onSubmitUpDatePreorderMenu(preordermenu);
+                          }}
+                        >
+                          -
+                        </div>
+                        <div
+                          className="btn-quantity add"
+                          onClick={() => {
+                            handleIncrease(preordermenu, index);
+                            onSubmitUpDatePreorderMenu(preordermenu);
+                          }}
+                        >
+                          +
+                        </div>
                       </div>
                       <div
-                        className="btn-quantity add"
+                        className="btn-description"
                         onClick={() => {
-                          handleIncrease(preordermenu, index);
-                          onSubmitUpDatePreorderMenu(preordermenu);
+                          setMenu(menus[index]);
+                          setEditmenupop(true);
+                          setrPeorderMenu(preordermenu);
                         }}
                       >
-                        +
+                        <h6>รายละเอียด</h6>
                       </div>
                     </div>
-                    <div
-                      className="btn-description"
-                      onClick={() => {
-                        setMenu(menus[index]);
-                        setEditmenupop(true);
-                        setrPeorderMenu(preordermenu);
-                      }}
-                    >
-                      <h6>รายละเอียด</h6>
-                    </div>
-                  </div>
-                  <hr />
-                </>
-              )
-            )}
+                    <hr />
+                  </>
+                )
+              )}
           </div>
           <hr />
           <div className="data-preOrder">
@@ -273,9 +274,11 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
             </label>
             <h5 className="total-amout-allMenu">
               <span>รวมราคา</span>
-              { preorder_status_approver?.ID == 1 && <p>{watch("TotalAmount")?.toFixed(2) ?? "N/A"}.-</p>}
+              {preorder_status_approver?.ID == 1 && (
+                <p>{watch("TotalAmount")?.toFixed(2) ?? "N/A"}.-</p>
+              )}
             </h5>
-          </div> 
+          </div>
         </div>
         <button className="btn-addmenu" type="submit">
           ชำระเงิน

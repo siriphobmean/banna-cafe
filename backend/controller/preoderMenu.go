@@ -118,7 +118,7 @@ func ListSweetnesses(c *gin.Context) {
 func ListGetMenuPreordersByPreoderID(c *gin.Context) {
 	var menuPreorders []entity.PreorderMenu
 	id := c.Param("id")
-	if err := entity.DB().Preload("Preorder").Raw("SELECT * FROM preorder_menus WHERE preorder_id = ?", id).Find(&menuPreorders).Error; err != nil {
+	if err := entity.DB().Preload("Preorder").Preload("DrinkOption").Preload("MenuSize").Preload("Sweetness").Raw("SELECT * FROM preorder_menus WHERE preorder_id = ?", id).Find(&menuPreorders).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
