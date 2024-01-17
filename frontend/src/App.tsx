@@ -38,7 +38,7 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/MemberSystem/preorder";
+import MenuPreorder from "./pages/MemberSystem/preOrder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
@@ -76,7 +76,7 @@ const router = createBrowserRouter(
         <Route path="/managepreorder" element={<ManagePreorder />} />
         <Route path="/managepreorder/edit/:id" element={<ManagePreorderEdit />} />
       </Route>
-        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/:pid" element={<Payment />} />
 
       <Route path="" element={<OwnerLayout />}>
         <Route path="/mainOwner" element={<Mains />} />

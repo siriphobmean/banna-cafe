@@ -378,25 +378,43 @@ func UpdatePreOrder(c *gin.Context) {
 func UpdateStatusReceivePreorder(c *gin.Context) {
 	var s entity.PreorderStatusReceive
 	var result entity.PreorderStatusReceive
+	// var d entity.StatusReceivePreorder
 
 	if err := c.ShouldBindJSON(&s); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error1": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Raw("Select * FROM preorders WHERE id = ?", s.ID).First(&result); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "preorder not found"})
+	if er := entity.DB().Raw("Select * FROM preorder_status_receives WHERE id = ?", s.ID).First(&result).Error; er != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error2": er.Error()})
 		return
 	}
+
+	// if err := entity.DB().Raw("Select * FROM status_receive_preorders WHERE id = 2").Scan(&d).Error; err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error3": err.Error()})
+	// 	return
+	// }
+
 	s.CreatedAt = result.CreatedAt
 	s.Preorder = result.Preorder
 	s.PreorderID = result.PreorderID
+	// s.StatusReceivePreorder = d
+	// s.StatusReceivePreorderID = &d.ID
 
-	if err := entity.DB().Table("preorders").Save(&s).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := entity.DB().Table("preorder_status_receives").Save(&s).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error4": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": s})
+}
+
+func ListStatusReceive(c *gin.Context) {
+	var p []entity.StatusReceivePreorder
+	if err := entity.DB().Raw("SELECT * FROM status_receive_preorders ").Scan(&p).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": p})
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

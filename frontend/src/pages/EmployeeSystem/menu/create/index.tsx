@@ -86,26 +86,9 @@ function MenuCreate() {
 
     // CreateMenu
     let resMenu = await CreateMenu(values); // new
-
-    // CreateIngredientMenu
-    let resIngredientMenu = await CreateIngredientMenu(values); // new
-    
-    // if (resMenu.status && resIngredientMenu.status) {
-
-    //   messageApi.open({
-    //     type: "success",
-    //     content: "เพิ่มเมนูสำเร็จ",
-    //   });
-    //   setTimeout(function () {
-    //     navigate("/menu");
-    //   }, 2000);
-    // } else {
-    //   messageApi.open({
-    //     type: "error",
-    //     content: resMenu.message,
-    //   });
-    // }
     if (resMenu.status) {
+      // CreateIngredientMenu
+      let resIngredientMenu = await CreateIngredientMenu(values); // new
       if (resIngredientMenu.status) {
         messageApi.open({
           type: "success",
@@ -121,7 +104,7 @@ function MenuCreate() {
         });
       }
     } else {
-      await DeleteIngredientMenuByID(values.MenuID);
+      // await DeleteIngredientMenuByID(values.MenuID);
         messageApi.open({
           type: "error",
           content: resMenu.message,

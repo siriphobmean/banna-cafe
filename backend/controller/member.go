@@ -85,7 +85,7 @@ func UpdateMember(c *gin.Context) {
 	// ค้นหา email ใน Employee ด้วย email
 	var employee []entity.Employee
 	if err := entity.DB().Where("email = ?", member.Email).Find(&employee).Error; err == nil && len(employee) >= 1 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "email ถูกใช้งานแล้ว"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "อีเมลนี้ถูกใช้งานแล้ว"})
 		return
 	}
 	// ค้นหา member ด้วย id

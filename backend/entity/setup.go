@@ -47,6 +47,10 @@ func SetupDatabase() {
 		&Sweetness{},
 		&MenuSize{},
 		&Payment{}, // add by Ball 03/01/2567
+		&PaymentStatus{},
+		&StatusPayment{},
+		&Accounting{},
+		&AccountType{},
 	)
 	db = database
 
@@ -58,10 +62,8 @@ func SetupDatabase() {
 		{TypeName: "เบเกอรี่"},
 		{TypeName: "สำเร็จรูป"},
 	}
+	db.Create(&menuType) // Assuming 'db' is your GORM database instance
 
-	for _, menuType := range menuType {
-		db.Create(&menuType) // Assuming 'db' is your GORM database instance
-	}
 
 	// IngredientUnit Data
 	ingredientUnit := []IngredientUnit{
@@ -69,20 +71,16 @@ func SetupDatabase() {
 		{UnitName: "กิโลกรัม"},
 		{UnitName: "ซอง"},
 	}
+	db.Create(&ingredientUnit) // Assuming 'db' is your GORM database instance
 
-	for _, ingredientUnit := range ingredientUnit {
-		db.Create(&ingredientUnit) // Assuming 'db' is your GORM database instance
-	} // more 13/12/66 edit 15/12/66
 
 	// Role Data
 	role := []Role{
 		{RoleName: "Owner"},
 		{RoleName: "Employee"},
 	}
+	db.Create(&role) // Assuming 'db' is your GORM database instance
 
-	for _, role := range role {
-		db.Create(&role) // Assuming 'db' is your GORM database instance
-	}
 
 	// Gender Data
 	gender := []Gender{
@@ -90,10 +88,8 @@ func SetupDatabase() {
 		{GenderName: "หญิง"},
 		{GenderName: "เพศอื่น ๆ"},
 	}
+	db.Create(&gender) // Assuming 'db' is your GORM database instance
 
-	for _, gender := range gender {
-		db.Create(&gender) // Assuming 'db' is your GORM database instance
-	}
 
 	// IngredientType Data Update 2/12/2566 By nop
 	ingredientType := []IngredientType{
@@ -102,44 +98,27 @@ func SetupDatabase() {
 		{TypeName: "POWDER (ชนิดผง)"},
 		{TypeName: "FRESH (ชนิดของสด)"},
 	}
-
-	for _, ingredientType := range ingredientType {
-		db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
-	}
-
-	var count1 int64
-	db.Model(&IngredientMenu{}).Count(&count1)
-
-	if count1 == 0 {
+	db.Create(&ingredientType) // Assuming 'db' is your GORM database instance
     // Create Menu data
-    menu := []Menu{
-        {
-            MenuID: 1,
-			MenuName: "กาแฟดำ",
-			MenuNameEng: "Black Coffee",
-			MenuCost: 65.50,
-			MenuStatus: 2,
-			MenuTypeID: 1,
-        },
-        {
-            MenuID: 2,
-			MenuName: "กาแฟดำ2",
-			MenuNameEng: "Black Coffee2",
-			MenuCost: 65.50,
-			MenuStatus: 2,
-			MenuTypeID: 1,
-        },
-    }
-
-    for _, menu := range menu {
-        	db.Create(&menu)
-    	}
-	}
-
-	var count2 int64
-	db.Model(&IngredientMenu{}).Count(&count2)
-
-	if count2 == 0 {
+    // menu := []Menu{
+    //     {
+    //         MenuID: 1,
+	// 		MenuName: "กาแฟดำ",
+	// 		MenuNameEng: "Black Coffee",
+	// 		MenuCost: 65.50,
+	// 		MenuStatus: 1,
+	// 		MenuTypeID: 1,
+    //     },
+    //     {
+    //         MenuID: 2,
+	// 		MenuName: "กาแฟดำ2",
+	// 		MenuNameEng: "Black Coffee2",
+	// 		MenuCost: 65.50,
+	// 		MenuStatus: 1,
+	// 		MenuTypeID: 1,
+    //     },
+    // }
+	// db.Create(&menu)
     // Create IngredientMenu data
     ingredientMenu := []IngredientMenu{
         {
@@ -155,11 +134,8 @@ func SetupDatabase() {
             IngredientUnitID: 1,
         },
     }
+    db.Create(&ingredientMenu)
 
-    for _, ingredientMenu := range ingredientMenu {
-        	db.Create(&ingredientMenu)
-    	}
-	}
 
 	// Member Data (ex)
 	member := []Member{
@@ -196,10 +172,8 @@ func SetupDatabase() {
 			Value: 100,
 		},
 	}
+	db.Create(&sweetness) // Assuming 'db' is your GORM database instance
 
-	for _, sweetness := range sweetness {
-		db.Create(&sweetness) // Assuming 'db' is your GORM database instance
-	}
 
 	// DrinkOption Data (ex)
 	drinkOption := []DrinkOption{
@@ -213,10 +187,8 @@ func SetupDatabase() {
 			Name: "ปั่น",
 		},
 	}
+	db.Create(&drinkOption) // Assuming 'db' is your GORM database instance
 
-	for _, drinkOption := range drinkOption {
-		db.Create(&drinkOption) // Assuming 'db' is your GORM database instance
-	}
 		// menuSize Data (ex)
 	menuSize := []MenuSize{
 		{
@@ -238,10 +210,8 @@ func SetupDatabase() {
 			UnitOfQuantity: "ml",
 		},
 	}
+	db.Create(&menuSize) 
 
-	for _, menuSize := range menuSize {
-		db.Create(&menuSize) 
-	}
 	// StatusApprovePreorder Data (ex)
 	statusApprovePreorder := []StatusApprovePreorder{
 		{
@@ -299,7 +269,7 @@ func SetupDatabase() {
 		},
 		{
 			Preorder:      preorder[1],
-			StatusApprovePreorder: statusApprovePreorder[1],
+			StatusApprovePreorder: statusApprovePreorder[0],
 		},
 	}
 	db.Create(&preorderstatusapprove)
@@ -307,7 +277,7 @@ func SetupDatabase() {
 	preorderstatusrecive := []PreorderStatusReceive{
 		{
 			Preorder:      preorder[0],
-			StatusReceivePreorder: statusReceivePreorder[1],
+			StatusReceivePreorder: statusReceivePreorder[0],
 		},
 		{
 			Preorder:      preorder[1],
@@ -316,24 +286,192 @@ func SetupDatabase() {
 	}
 	db.Create(&preorderstatusrecive)
 
-	payment := []Payment{
+	employee := []Employee{
 		{
-			Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAMwAzAMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQIH/8QAIhABAQEAAwACAgMBAQAAAAAAAAERITFBAmFxkRJRgbED/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOH0gvOfQJnJipQRYEBpPBZ9AkNPeUkBd9/sMAT5IuAIACyF7DwBTxMoBOwAqFAFk1Fme6A15f0yQEUpICLAlBq9JOIH0BeiaeE0DxMWpaC3pNNQAABViUBeU1QKnPq/6lAuECAVFtQFgLQQ09QFIiwF0TDoFXUATTugC3plb1viAKgCy8IKBiLoC7+EvJgBEVAVBQXhFQEFQBekUDj09CAGigcL/wCfz/h858v4/H5Z58pwzACoAAACooAUAsRdABGuMBkAFKYTvvAQW/r6QBZEaAwLT0DE5VAC9gCAAAAGGLQCBAAnRAEPQAAF09D0Eot7QBZEXQKL2AaioASgCAAAAuiKAQgAABiNMgRqTfZPyizM5/4CQ9JwegXtFsQAgsBeoABeEw95UGVnReT6BAAAAAAUADj+N/KeLOVsyAniKgALN8A36OzQEFQBdEBo0nSegYi6AQ9ACxFqAGCgi+IvgCACwpFoJZwi28IAAC+rWVBAoAuIoL0epQFqGmAtn6/tDQEAAAA1c1F0FiabQCKhyBgJAAqy2dUD/DqoAt284TtFnYIqANTpAkAWVMAWpABKAAAAqALO1Q0A8XUnYGI0gCACoulA1A5AWotAVJ2oIFACIoJQACi0EVAFIGAsSrcTwEAANABUXwCZ6gQCcVfUAWXjFIAlCgAiggAAAAAKvaEAoWICoqAI1KgCmc4ZwCL0hoCkWTgElGpOLUvl/sEwU+M35YCWC3mJnIHiLekACLICKgC9o18Z3+NQAE9BUX5TLiAASg//2Q==",
-			Time: time.Now(),
-			Code: "gigachad",
-			TotalAmount: 444,
-			Preorder: preorder[0],
+			FirstName: "Ajinomoto",
+			LastName: "Umami",
+			Email:"ajino007@gmail.com",
+			Password: "yukikaze",
+			Age: 97,
+			Salary: 15000.00,
+			RoleID: role[1].ID,
+			Role: role[1],
+			GenderID: gender[1].ID,
+			Gender: gender[1],
 		},
 		{
-			Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAMwAzAMBIgACEQEDEQH/xAAXAAEBAQEAAAAAAAAAAAAAAAAAAQIH/8QAIhABAQEAAwACAgMBAQAAAAAAAAERITFBAmFxkRJRgbED/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOH0gvOfQJnJipQRYEBpPBZ9AkNPeUkBd9/sMAT5IuAIACyF7DwBTxMoBOwAqFAFk1Fme6A15f0yQEUpICLAlBq9JOIH0BeiaeE0DxMWpaC3pNNQAABViUBeU1QKnPq/6lAuECAVFtQFgLQQ09QFIiwF0TDoFXUATTugC3plb1viAKgCy8IKBiLoC7+EvJgBEVAVBQXhFQEFQBekUDj09CAGigcL/wCfz/h858v4/H5Z58pwzACoAAACooAUAsRdABGuMBkAFKYTvvAQW/r6QBZEaAwLT0DE5VAC9gCAAAAGGLQCBAAnRAEPQAAF09D0Eot7QBZEXQKL2AaioASgCAAAAuiKAQgAABiNMgRqTfZPyizM5/4CQ9JwegXtFsQAgsBeoABeEw95UGVnReT6BAAAAAAUADj+N/KeLOVsyAniKgALN8A36OzQEFQBdEBo0nSegYi6AQ9ACxFqAGCgi+IvgCACwpFoJZwi28IAAC+rWVBAoAuIoL0epQFqGmAtn6/tDQEAAAA1c1F0FiabQCKhyBgJAAqy2dUD/DqoAt284TtFnYIqANTpAkAWVMAWpABKAAAAqALO1Q0A8XUnYGI0gCACoulA1A5AWotAVJ2oIFACIoJQACi0EVAFIGAsSrcTwEAANABUXwCZ6gQCcVfUAWXjFIAlCgAiggAAAAAKvaEAoWICoqAI1KgCmc4ZwCL0hoCkWTgElGpOLUvl/sEwU+M35YCWC3mJnIHiLekACLICKgC9o18Z3+NQAE9BUX5TLiAASg//2Q==",
+			FirstName: "Honda",
+			LastName: "Yamaha",
+			Email:"Inwza007@gmail.com",
+			Password: "harekaze",
+			Age: 2,
+			Salary: 300.00,
+			RoleID: role[1].ID,
+			Role: role[1],
+			GenderID: gender[0].ID,
+			Gender: gender[0],
+		},
+	}
+	db.Create(&employee)
+
+	promotion := []Promotion{
+		{
+			Code: "Happy Newyear",
+			Name:"โปรโมชั่นปีใหม่",
+			Image: "https://i.imgur.com/GrOJ0hG.jpg",
+			TimeOfbegin: time.Date(2023,time.December, 20, 0, 0, 0, 0, time.Local),
+			TimeOfend: time.Date(2024,time.January, 15, 0, 0, 0, 0, time.Local),
+			Discount: 50.00,
+			EmployeeID: &employee[0].ID,
+			Employee: employee[0],
+		},
+		{
+			Code: "winter",
+			Name:"โปรโมชั่นฤดูหนาว",
+			Image: "https://i.imgur.com/YJTSJjO.jpg",
+			TimeOfbegin: time.Date(2023,time.November, 15, 0, 0, 0, 0, time.Local),
+			TimeOfend: time.Date(2024,time.February, 15, 0, 0, 0, 0, time.Local),
+			Discount: 30.00,
+			EmployeeID: &employee[1].ID,
+			Employee: employee[1],
+		},
+	}
+	db.Create(&promotion)
+
+	payment := []Payment{
+		{
+			Image: "https://i.imgur.com/IdNRrbK.jpg",
 			Time: time.Now(),
-			Code: "gigachad",
+			Code: "Happy Newyear",
+			TotalAmount: 444,
+			Preorder: preorder[0],
+			PromotionID: &promotion[0].ID,
+			Promotion: promotion[0],
+		},
+		{
+			Image: "https://i.imgur.com/G9JVbhU.jpg",
+			Time: time.Now(),
+			Code: "ome wa mou shinderu",
 			TotalAmount: 444,
 			Preorder: preorder[1],
 		},
 	}
 	db.Create(&payment)
 
+	accountType := []AccountType{
+		{
+			Name: "รายรับ",
+		},
+		{
+			Name: "รายจ่าย",
+		},
+	}
+	db.Create(&accountType)
+
+	menu := []Menu{
+		{
+			MenuID: 1,
+			MenuName: "ชาไทย",
+			MenuNameEng: "Thai tea",
+			MenuCost: 35.00,
+			MenuImage: "https://i.imgur.com/UqmTjKg.png",
+			MenuStatus: 1,
+			MenuTypeID: menuType[1].ID,
+			MenuType: menuType[1],
+		},
+		{
+			MenuID: 2,
+			MenuName: "ลาเต้",
+			MenuNameEng: "Late",
+			MenuCost: 25.00,
+			MenuImage: "https://i.imgur.com/99sl6xQ.jpg",
+			MenuStatus: 1,
+			MenuTypeID: menuType[0].ID,
+			MenuType: menuType[0],
+		},
+		{
+			MenuID: 3,
+			MenuName: "อเมริกาโน่",
+			MenuNameEng: "Americano",
+			MenuCost: 25.00,
+			MenuImage: "https://i.imgur.com/WFOd4Jq.png",
+			MenuStatus: 1,
+			MenuTypeID: menuType[0].ID,
+			MenuType: menuType[0],
+		},
+		{
+			MenuID: 4,
+			MenuName: "มัชฉะลาเต้",
+			MenuNameEng: "Macha Late",
+			MenuCost: 40.00,
+			MenuImage: "https://i.imgur.com/fP0w1P0.png",
+			MenuStatus: 1,
+			MenuTypeID: menuType[0].ID,
+			MenuType: menuType[0],
+		},
+	}
+	
+	db.Create(&menu)
+
+	preorderMenu := []PreorderMenu{
+		{
+			Quantity: 2,
+			TotalCost: 70,
+			PreorderID: &preorder[0].ID,
+			Preorder: preorder[0],
+			MenuSizeID: &menuSize[0].ID,
+			MenuSize: menuSize[0],
+			SweetnessID: &sweetness[0].ID,
+			Sweetness: sweetness[0],
+			DrinkOptionID: &drinkOption[0].ID,
+			DrinkOption: drinkOption[0],
+			MenuID: &menu[0].ID,
+			Menu: menu[0],
+		},
+		{
+			Quantity: 3,
+			TotalCost: 105,
+			PreorderID: &preorder[0].ID,
+			Preorder: preorder[0],
+			MenuSizeID: &menuSize[0].ID,
+			MenuSize: menuSize[0],
+			SweetnessID: &sweetness[0].ID,
+			Sweetness: sweetness[0],
+			DrinkOptionID: &drinkOption[0].ID,
+			DrinkOption: drinkOption[0],
+			MenuID: &menu[1].ID,
+			Menu: menu[1],
+		},
+		{
+			Quantity: 1,
+			TotalCost: 25,
+			PreorderID: &preorder[0].ID,
+			Preorder: preorder[0],
+			MenuSizeID: &menuSize[0].ID,
+			MenuSize: menuSize[0],
+			SweetnessID: &sweetness[0].ID,
+			Sweetness: sweetness[0],
+			DrinkOptionID: &drinkOption[0].ID,
+			DrinkOption: drinkOption[0],
+			MenuID: &menu[2].ID,
+			Menu: menu[2],
+		},
+		{
+			Quantity: 1,
+			TotalCost: 40,
+			PreorderID: &preorder[0].ID,
+			Preorder: preorder[0],
+			MenuSizeID: &menuSize[0].ID,
+			MenuSize: menuSize[0],
+			SweetnessID: &sweetness[0].ID,
+			Sweetness: sweetness[0],
+			DrinkOptionID: &drinkOption[0].ID,
+			DrinkOption: drinkOption[0],
+			MenuID: &menu[3].ID,
+			Menu: menu[3],
+		},
+	}
+	db.Create(&preorderMenu)
 
 	
 }

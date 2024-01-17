@@ -33,11 +33,11 @@ function ManagePreorder() {
       dataIndex: "Respond",
       key: "respond",
     },
-    // {
-    //   title: "สถานะการรับสินค้า",
-    //   dataIndex: "ReceiveStatus",
-    //   key: "receuvestatus",
-    // },
+    {
+      title: "สถานะการรับสินค้า",
+      dataIndex: "ReceiveStatus",
+      key: "receuvestatus",
+    },
     {
       title: "หมายเหตุ",
       dataIndex: "Note",
@@ -86,3 +86,36 @@ function ManagePreorder() {
   );
 }
 export default ManagePreorder;
+// import React, { useRef, ChangeEvent } from 'react';
+
+// const ManagePreorder = () => {
+//   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+//   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+//     const selectedFile = e.target.files?.[0];
+
+//     if (selectedFile) {
+//       console.log('Selected File:', selectedFile);
+//     }
+//   };
+
+//   const openFilePicker = () => {
+//     if (fileInputRef.current) {
+//       fileInputRef.current.click();
+//     }
+//   };
+
+//   return (
+//     <div onClick={openFilePicker} style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+//       Click me to open file picker
+//       <input
+//         ref={fileInputRef}
+//         type="file"
+//         style={{ display: 'none' }}
+//         onChange={handleFileChange}
+//       />
+//     </div>
+//   );
+// };
+
+// export default ManagePreorder;
