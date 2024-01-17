@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/controller"
 	"github.com/siriphobmean/sa-66-mean/entity"
-	middlewares "github.com/siriphobmean/sa-66-mean/middleware"
+	"github.com/siriphobmean/sa-66-mean/middleware"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 	// IngredientUnit Routes
 	r.GET("/ingredientUnits", controller.ListIngredientUnits) // more 13/12/66 -> edit 15/12/66
 	// MenuName Routes
-	r.GET("/menuNames", controller.ListMenuNames)   // more 20/12/66
+	r.GET("/menuNames", controller.ListMenuNames)  // more 20/12/66
 	r.GET("/menuNames/:id", controller.GetMenuName) // more 4/1/2024
 
 	// Employee Routes
