@@ -5,5 +5,5 @@ export interface MembersInterface {
   Password?: string;
   Phone?: string;
   MemberImage?: string;
-  Point: number;
+  Point?: number;
 }

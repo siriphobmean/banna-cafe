@@ -17,7 +17,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
     register,
-    handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<MembersInterface>({
     defaultValues: {
@@ -27,7 +27,13 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
     },
   });
 
-  const onSubmitRegister = async (values: MembersInterface) => {
+  const onSubmitRegister = async () => {
+    const values: MembersInterface = {
+      Username: watch("Username"),
+      Email: watch("Email"),
+      Password: watch("Password"),
+    };
+
     let res = await CreateMemberRegister(values);
     if (res.status) {
       messageApi.open({
@@ -48,11 +54,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
     <div className="form-box register">
       {contextHolder}
       <h2>Registeration</h2>
-      <form
-        name="basic"
-        onSubmit={handleSubmit((data) => onSubmitRegister(data))}
-        autoComplete="off"
-      >
+      <form name="basic" autoComplete="off">
         <div className="input-box">
           <i className="icon">
             <MdOutlinePerson />
@@ -97,9 +99,7 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
                 checkLength: (value) => value && value.length >= 6,
                 matchPattern: (value) =>
                   value
-                    ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)/.test(
-                        value
-                      )
+                    ? /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)/.test(value)
                     : false,
               },
             })}
@@ -123,9 +123,9 @@ const Register: React.FC<RegisterProps> = ({ slideRegisters }) => {
             <input type="checkbox" /> I agree to the terms & conditions
           </label>
         </div>
-        <button type="submit" className="btn" >
+        <div onClick={onSubmitRegister} className="btn">
           Register
-        </button>
+        </div>
         <div className="login-register">
           <p>
             Already have an account?{" "}
