@@ -15,6 +15,7 @@ function Menus() {
       title: "ลำดับ",
       dataIndex: "MenuID", // default ID
       key: "id",
+      render: (text, record, index) => index + 1,
     },
     {
       title: "รูปเมนู", // รูปไฟล์

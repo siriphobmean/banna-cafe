@@ -25,10 +25,10 @@ func CreateMenu(c *gin.Context) {
 		return
 	}
 
-	// if _, err := govalidator.ValidateStruct(menu); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// } // more 2/1/2024 10:41PM
+	if _, err := govalidator.ValidateStruct(menu); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	} // more 2/1/2024 10:41PM
 
 	// สร้าง Menu
 	u := entity.Menu{
