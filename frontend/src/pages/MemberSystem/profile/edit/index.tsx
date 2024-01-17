@@ -53,7 +53,7 @@ export default function EditProfileMember() {
       setMember(res);
       setValue("Username", res.Username);
       setValue("Email", res.Email);
-      setValue("Password", res.Password);
+      setValue("Password", "");
       setValue("Phone", res.Phone);
       setValue("MemberImage", res.MemberImage);
       setValue("Point", res.Point);
@@ -107,7 +107,7 @@ export default function EditProfileMember() {
                 type="text"
                 className="ic"
                 {...register("Username", {
-                  required: { value: true, message: "this is require" },
+                  // required: { value: true, message: "this is require" },
                 })}
               />
             </div>
@@ -117,7 +117,7 @@ export default function EditProfileMember() {
                 type="text"
                 className="ic"
                 {...register("Email", {
-                  required: { value: true, message: "this is require" },
+                  // required: { value: true, message: "this is require" },
                 })}
               />
             </div>
@@ -127,7 +127,7 @@ export default function EditProfileMember() {
                 type="text"
                 className="ic"
                 {...register("Phone", {
-                  required: { value: true, message: "this is require" },
+                  // required: { value: true, message: "this is require" },
                 })}
               />
             </div>
@@ -137,7 +137,7 @@ export default function EditProfileMember() {
                 type="password"
                 className="ic ps"
                 {...register("Password", {
-                  required: { value: true, message: "this is require" },
+                  // required: { value: true, message: "this is require" },
                 })}
               />
             </div>

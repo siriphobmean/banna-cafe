@@ -8,8 +8,7 @@ import { BiHide } from "react-icons/bi";
 import { NavLink } from "react-router-dom";
 export default function ProfileMember() {
   const [member, setMember] = useState<MembersInterface | null>(null);
-  const [passwordHide, setPasswordHide] = useState(false);
-  console.log(member)
+  // const [passwordHide, setPasswordHide] = useState(false);
   const getMemberByID = async (id: Number) => {
     let res = await GetMemberById(id);
     if (res) {
@@ -56,29 +55,30 @@ export default function ProfileMember() {
               <h4>Password</h4>
               <h5>
                 <span>
-                  {passwordHide
+                  {/* {passwordHide
                     ? member?.Password
                       ? member.Password
                       : "########"
-                    : "########"}
+                    : "########"} */}
+                  ########
                 </span>
-                <p
+                {/* <p
                   onClick={() => {
                     setPasswordHide(!passwordHide);
                   }}
                 >
                   <BiHide />
-                </p>
+                </p> */}
               </h5>
             </div>
           </div>
           <div className="btn-Profile">
-              <NavLink
-                to={`/profileMember/edit/${member?.ID}`}
-                className="btn-edotProfile"
-              >
-                แก้ไขข้อมูล
-              </NavLink>
+            <NavLink
+              to={`/profileMember/edit/${member?.ID}`}
+              className="btn-edotProfile"
+            >
+              แก้ไขข้อมูล
+            </NavLink>
           </div>
         </div>
         <div className="history-prorder"></div>

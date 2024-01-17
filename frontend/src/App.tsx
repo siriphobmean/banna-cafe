@@ -28,7 +28,7 @@ import IngredientEdit from "./pages/EmployeeSystem/ingredient/edit";
 import History from "./pages/EmployeeSystem/history";
 
 // For Owner
-import OwnerLayout from "./layouts/ownerLayout"; 
+import OwnerLayout from "./layouts/ownerLayout";
 import Employees from "./pages/OwnerSystem/employee";
 import EmployeeCreate from "./pages/OwnerSystem/employee/create";
 import EmployeeEdit from "./pages/OwnerSystem/employee/edit";
@@ -38,7 +38,7 @@ import MemberLayout from "./layouts/memberLayout";
 //PreOrder
 
 //Member
-import MenuPreorder from "./pages/MemberSystem/preOrder";
+import MenuPreorder from "./pages/MemberSystem/preorder";
 
 //Profile
 import ProfileMember from "./pages/MemberSystem/profile";
@@ -46,49 +46,87 @@ import EditProfileMember from "./pages/MemberSystem/profile/edit";
 import ManagePreorder from "./pages/EmployeeSystem/managepreorder";
 import ManagePreorderEdit from "./pages/EmployeeSystem/managepreorder/edit";
 import Payment from "./pages/MemberSystem/payment/payment";
+import React from "react";
 // in now test...
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route index element={<Home />} />
-      <Route path="" element={<MemberLayout />}>
-        <Route path="/menuPreorder" element={<MenuPreorder />} />
-        <Route path="/profileMember" element={<ProfileMember />} />
-        <Route
-          path="/profileMember/edit/:id"
-          element={<EditProfileMember />}
-        />
-      </Route>
-      <Route path="" element={<EmployeeLayout />}>
-        <Route path="/mainEmployee" element={<Mains />} />
-        <Route path="/menu" element={<Menus />} />
-        <Route path="/menu/create" element={<MenuCreate />} />
-        <Route path="/menu/edit/:id" element={<MenuEdit />} />
-        <Route path="/menu/ingredientMenu/:id" element={<IngredientMenus />} />
-        <Route path="/menu/ingredientMenu/create/:id" element={<IngredientMenuCreate />} />
-        <Route path="/member" element={<Members />} />
-        <Route path="/member/edit/:id" element={<MemberEdit />} />
-        <Route path="/ingredient" element={<Ingredient />} />
-        <Route path="/ingredient/create" element={<IngredientCreate />} />
-        <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/managepreorder" element={<ManagePreorder />} />
-        <Route path="/managepreorder/edit/:id" element={<ManagePreorderEdit />} />
-      </Route>
-        <Route path="/payment/:pid" element={<Payment />} />
-
-      <Route path="" element={<OwnerLayout />}>
-        <Route path="/mainOwner" element={<Mains />} />
-        <Route path="/employee" element={<Employees />} />
-        <Route path="/employee/create" element={<EmployeeCreate />} />
-        <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
-      </Route>
-    </>
-  )
-);
-
 function App() {
+  const [token, setToken] = React.useState<String>("");
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setToken(token);
+    }
+  }, []);
+  if (!token) {
+    const router = createBrowserRouter(
+      createRoutesFromElements(<Route index element={<Home />} />)
+    );
+    return <RouterProvider router={router} />;
+  }
+
+  function routeList() {
+    if (localStorage.getItem("position") == "Member") {
+      return (
+        <>
+          <Route index element={<Home />} />
+          <Route path="" element={<MemberLayout />}>
+            <Route path="/menuPreorder" element={<MenuPreorder />} />
+            <Route path="/profileMember" element={<ProfileMember />} />
+            <Route
+              path="/profileMember/edit/:id"
+              element={<EditProfileMember />}
+            />
+          </Route>
+        </>
+      );
+    } else if (localStorage.getItem("position") == "Employee") {
+      return (
+        <>
+          <Route index element={<Home />} />
+          <Route path="" element={<EmployeeLayout />}>
+            <Route path="/mainEmployee" element={<Mains />} />
+            <Route path="/menu" element={<Menus />} />
+            <Route path="/menu/create" element={<MenuCreate />} />
+            <Route path="/menu/edit/:id" element={<MenuEdit />} />
+            <Route
+              path="/menu/ingredientMenu/:id"
+              element={<IngredientMenus />}
+            />
+            <Route
+              path="/menu/ingredientMenu/create/:id"
+              element={<IngredientMenuCreate />}
+            />
+            <Route path="/member" element={<Members />} />
+            <Route path="/member/edit/:id" element={<MemberEdit />} />
+            <Route path="/ingredient" element={<Ingredient />} />
+            <Route path="/ingredient/create" element={<IngredientCreate />} />
+            <Route path="/ingredient/edit/:id" element={<IngredientEdit />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/managepreorder" element={<ManagePreorder />} />
+            <Route
+              path="/managepreorder/edit/:id"
+              element={<ManagePreorderEdit />}
+            />
+            <Route path="/payment/:pid" element={<Payment />} />
+          </Route>
+        </>
+      );
+    } else {
+      <>
+        <Route index element={<Home />} />
+        <Route path="" element={<OwnerLayout />}>
+          <Route path="/mainOwner" element={<Mains />} />
+          <Route path="/employee" element={<Employees />} />
+          <Route path="/employee/create" element={<EmployeeCreate />} />
+          <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+        </Route>
+        ;
+      </>;
+    }
+  }
+  console.log(localStorage.getItem("position"));
+  const router = createBrowserRouter(createRoutesFromElements(routeList()));
   return <RouterProvider router={router} />;
 }
 

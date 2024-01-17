@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import "../addMenuPreOrder/addMenuPreOrder.css";
+import "../addMenuPreorder/addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import {
   CreatePreorderMenu,

@@ -93,6 +93,23 @@ func UpdateMember(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
 		return
 	}
+	if _, err := govalidator.ValidateStruct(member); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	// เช็คว่ามีการเปลี่ยนแปลง password หรือไม่
+	if member.Password != existingMember.Password {
+		// มีการเปลี่ยนแปลง password ใหม่
+		hashPassword, err := bcrypt.GenerateFromPassword([]byte(member.Password), 14)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error hashing password"})
+			return
+		}
+		member.Password = string(hashPassword)
+	} else {
+		// ไม่มีการเปลี่ยนแปลง password ใหม่
+		member.Password = existingMember.Password
+	}
 	existingMember.Email = member.Email
 	existingMember.MemberImage = member.MemberImage
 	existingMember.Password = member.Password
@@ -100,10 +117,7 @@ func UpdateMember(c *gin.Context) {
 	existingMember.Point = member.Point
 	existingMember.Username = member.Username
 
-	if _, err := govalidator.ValidateStruct(existingMember); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	
 
 	if err := entity.DB().Save(&existingMember).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

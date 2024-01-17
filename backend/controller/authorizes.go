@@ -26,15 +26,13 @@ type LoginResponse struct {
 func Login(c *gin.Context) {
 	var payload LoginPayload
 	var member entity.Member
+	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// if err := entity.DB().Raw("SELECT * FROM members WHERE email = ?", payload.Email).Scan(&member).Error; err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error() + "email is incorrect"})
-	// 	return
-	// }
+
 	if err := entity.DB().Raw("SELECT * FROM members WHERE email = ?", payload.Email).Scan(&member).Error; err == nil {
 		// ตรวจสอบรหัสผ่าน
 		err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(payload.Password))
@@ -62,11 +60,11 @@ func Login(c *gin.Context) {
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
-	} else if err := entity.DB().Raw("SELECT * FROM employees WHERE email = ?", payload.Email).Scan(&member).Error; err == nil {
+	} else if err := entity.DB().Preload("Role").Raw("SELECT * FROM employees WHERE email = ?", payload.Email).Scan(&employee).Error; err == nil {
 		// ตรวจสอบรหัสผ่าน
-		err := bcrypt.CompareHashAndPassword([]byte(member.Password), []byte(payload.Password))
+		err := bcrypt.CompareHashAndPassword([]byte(employee.Password), []byte(payload.Password))
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": map[string]string{"message": "Invalid password", "memberPassword": member.Password, "payloadPassword": payload.Password}})
+			c.JSON(http.StatusBadRequest, gin.H{"error": map[string]string{"message": "Invalid password", "employeePassword": employee.Password, "payloadPassword": payload.Password}})
 			return
 		}
 
@@ -81,11 +79,15 @@ func Login(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "error signing token"})
 			return
 		}
+		var role = "Employee"
+		if(employee.RoleID == 1){
+			role = "Owner"
+		}
 
 		tokenResponse := LoginResponse{
 			Token:    signedToken,
 			ID:       member.ID,
-			Position: "Employee",
+			Position: role,
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})

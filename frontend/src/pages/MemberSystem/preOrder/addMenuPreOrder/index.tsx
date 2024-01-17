@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaStar } from "react-icons/fa";
 import { IoRestaurantOutline } from "react-icons/io5";
 import { message } from "antd";
-import "./addMenuPreOrder.css";
+import "./addMenuPreorder.css";
 import { PreorderMenusInterface } from "../../../../interfaces/IPreorderMenu";
 import {
   CreatePreorderMenu,

@@ -20,9 +20,4 @@ export const NavbarHomeData = [
     path: "/menuPreorder",
     cName: "nav-text",
   },
-  // {
-  //   title: "Login",
-  //   path: "/login",
-  //   cName: "nav-text",
-  // },
 ];

@@ -43,28 +43,41 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
   //     });
   //   }
   // };
+
   const onSubmitLogin = async () => {
-    const values: MembersInterface = {
+    const values = {
       Email: watch("Email"),
       Password: watch("Password"),
     };
-
-    let res = await LoginMember(values);
-    if (res.status) {
-      messageApi.open({
-        type: "success",
-        content: "เข้าสุ่ระบบสำเร็จ",
-      });
-      setTimeout(function () {
-        navigate("../menuPreorder");
-      }, 1000);
-    } else {
-      messageApi.open({
-        type: "error",
-        content: "เข้าสุ่ระบบไม่สำเร็จ",
-      });
-    }
+      const res = await LoginMember(values);
+      if (res.status) {
+        messageApi.open({
+          type: "success",
+          content: "เข้าสุ่ระบบสำเร็จ",
+        });
+        if (res.message) {
+          localStorage.setItem("token", res.message.token);
+          localStorage.setItem("id", res.message.id);
+          localStorage.setItem("position", res.message.position);
+        }
+        setTimeout(() => {
+          if (res.message.position == "Member") {
+            navigate("../menuPreorder");
+          } else if (res.message.position == "Employee") {
+            navigate("../mainEmployee");
+          } else {
+            navigate("../mainOwner");
+          }
+          
+        }, 1000);
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "เข้าสุ่ระบบไม่สำเร็จ",
+        });
+      }
   };
+
   return (
     <form
       name="basic"
