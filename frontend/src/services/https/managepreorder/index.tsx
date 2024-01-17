@@ -2,7 +2,10 @@ import { PreOrderInterface, StatusReceivesPreOrderInterface } from "../../../int
 
 const apiUrl = "http://localhost:8080";
 
-async function GetPreOrder() {
+
+/////////////GET////////////////////
+
+export async function GetPreOrder() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -10,7 +13,7 @@ async function GetPreOrder() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/managepreorder`, requestOptions)
+    let res = await fetch(`${apiUrl}/managepreorders`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -23,33 +26,12 @@ async function GetPreOrder() {
     return res;
 }
 
-async function GetManagePreOrders() {
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    };
-
-    let res = await fetch(`${apiUrl}/listmanagepreorder`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-async function GetManagePreOrdersByID(id: Number | undefined) {
+export async function GetPreOrderByID(id: Number | undefined) {
   const requestOptions = {
     method: "GET"
   };
 
-  let res = await fetch(`${apiUrl}/getmanagepreorder/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/managepreorders/preorders/get/${id}`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -62,52 +44,96 @@ async function GetManagePreOrdersByID(id: Number | undefined) {
   return res;
 }
 
-async function GetPreOrderByID(id: Number | undefined) {
-    const requestOptions = {
-      method: "GET"
-    };
-  
-    let res = await fetch(`${apiUrl}/getpreorder/${id}`, requestOptions)
+export async function GetManagePreOrders() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/managepreorders/list`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        if (res.data) {
-          return res.data;
-        } else {
-          return false;
-        }
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
       });
-  
-    return res;
+
+  return res;
 }
 
-async function UpdatePreOrder(data: PreOrderInterface) {
-    const requestOptions = {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-  
-    let res = await fetch(`${apiUrl}/managepreorder`, requestOptions)
+export async function GetManagePreOrdersByID(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET"
+  };
+
+  let res = await fetch(`${apiUrl}/managepreorders/get/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+export async function GetStatusReceivePreorderByPreorderID(id: Number | undefined) {
+  const requestOptions = {
+    method: "GET"
+  };
+
+  let res = await fetch(`${apiUrl}/managepreorders/status/get/${id}`, requestOptions)
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+export async function ListStatusReceive() {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/managepreorders/status/list`, requestOptions)
       .then((response) => response.json())
       .then((res) => {
-        if (res.data) {
-          return { status: true, message: res.data };
-        } else {
-          return { status: false, message: res.error };
-        }
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
       });
-  
-    return res;
+
+  return res;
 }
 
-async function UpdatePreorderStatusReceive(data: StatusReceivesPreOrderInterface) {
+//////////////GET////////////
+
+/////////////PATCH///////////
+
+export async function UpdatePreOrder(data: PreOrderInterface) {
   const requestOptions = {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/updatepreorderstatusreceive`, requestOptions)
+  let res = await fetch(`${apiUrl}/managepreorders/preorders`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
@@ -120,29 +146,24 @@ async function UpdatePreorderStatusReceive(data: StatusReceivesPreOrderInterface
   return res;
 }
 
-async function GetStatusReceivePreorderByPreorderID(id: Number | undefined) {
+export async function UpdateStatusReceivePreorder(data: StatusReceivesPreOrderInterface) {
   const requestOptions = {
-    method: "GET"
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
   };
 
-  let res = await fetch(`${apiUrl}/getstatusreceivepreorder/${id}`, requestOptions)
+  let res = await fetch(`${apiUrl}/managepreorders/update_status`, requestOptions)
     .then((response) => response.json())
     .then((res) => {
       if (res.data) {
-        return res.data;
+        return { status: true, message: res.data };
       } else {
-        return false;
+        return { status: false, message: res.error };
       }
     });
 
   return res;
 }
-export{
-    GetPreOrder,
-    GetPreOrderByID,
-    UpdatePreOrder,
-    GetManagePreOrders,
-    GetManagePreOrdersByID,
-    GetStatusReceivePreorderByPreorderID,
-    UpdatePreorderStatusReceive,
-}
+
+/////////////PATCH////////////
