@@ -34,7 +34,7 @@ func CreateMenu(c *gin.Context) {
 	u := entity.Menu{
 		MenuType:  menuType, // โยงความสัมพันธ์กับ Entity MenuType
 		MenuTypeID: menu.MenuTypeID, // more 8:58 AM 28/11/2023
-		//MenuID: menu.MenuID, // more 12:43 AM 29/11/2023 เก็บตารางท้ายสุด
+		MenuID: menu.MenuID, // more 12:43 AM 29/11/2023 เก็บตารางท้ายสุด
 		// -> ถ้าไม่มีส่วนนี้ จะเก็บเป็น 0 (คนละส่วนกับ ID แรก ฟีลเอามาเก็บอิงไว้เฉย ๆ)
 		MenuName:  menu.MenuName, // ตั้งค่าฟิลด์ MenuName
 		MenuNameEng:  menu.MenuNameEng, // ตั้งค่าฟิลด์ MenuName

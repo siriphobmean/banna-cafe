@@ -9,7 +9,7 @@ import (
 type Menu struct {
 	gorm.Model
 
-	//MenuID int `gorm:"uniqueIndex" valid:"required~MenuID is required"` // ok!
+	MenuID int `gorm:"uniqueIndex" valid:"required~MenuID is required"` // ok!
 	MenuName string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(30)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 30 ตัว"` // ok!
 	MenuNameEng string `gorm:"uniqueIndex" valid:"required~กรุณากรอกชื่อเมนู !, maxstringlength(30)~ชื่อเมนูต้องมีตัวอักษรไม่เกิน 30 ตัว"` // ok!
 	// MenuCost float64 `valid:"required~กรุณากรอกเป็นเลขทศนิยม !, float~กรุณากรอกเป็นเลขทศนิยม 2 ตำแหน่ง"` // ok!...
