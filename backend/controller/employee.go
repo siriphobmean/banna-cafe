@@ -128,6 +128,20 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
+	// เช็คว่ามีการเปลี่ยนแปลง password หรือไม่
+	if employee.Password != result.Password {
+		// มีการเปลี่ยนแปลง password ใหม่
+		hashPassword, err := bcrypt.GenerateFromPassword([]byte(employee.Password), 14)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "error hashing password"})
+			return
+		}
+		employee.Password = string(hashPassword)
+	} else {
+		// ไม่มีการเปลี่ยนแปลง password ใหม่
+		employee.Password = result.Password
+	}
+
 	if err := entity.DB().Save(&employee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
