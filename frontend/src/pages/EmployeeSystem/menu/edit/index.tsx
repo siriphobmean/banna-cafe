@@ -59,24 +59,29 @@ function MenuEdit() {
     } // more
 
     let resMenu = await UpdateMenu(values); // rename res -> resMenu
-    let resIngredientMenu = await UpdateIngredientMenu(values); // new
 
-    if (resMenu.status && resIngredientMenu.status) { // rename res -> resMenu
-    // if (res.status) {
-      messageApi.open({
-        type: "success",
-        content: "แก้ไขเมนูสำเร็จ",
-      });
-      setTimeout(function () {
-        navigate("/menu");
-      }, 2000);
+    if (resMenu.status) {
+      let resIngredientMenu = await UpdateIngredientMenu(values);
+      if (resIngredientMenu.status) {
+        messageApi.open({
+          type: "success",
+          content: "แก้ไขเมนูสำเร็จ",
+        });
+        setTimeout(function () {
+          navigate("/menu");
+        }, 2000);
+      } else {
+        messageApi.open({
+          type: "error",
+          content: resIngredientMenu.message,
+        });
+      }
     } else {
       messageApi.open({
         type: "error",
         content: resMenu.message,
       });
     }
-    console.log(values);
   };
 
   const getMenuType = async () => {

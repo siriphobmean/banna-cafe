@@ -40,6 +40,9 @@ function Employees() {
         title: "รหัสผ่าน",
         dataIndex: "Password",
         key: "password",
+        render: () => (
+          <span>********</span>
+        ),
       },
     {
       title: "เพศ",

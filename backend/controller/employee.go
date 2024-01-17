@@ -3,9 +3,10 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/siriphobmean/sa-66-mean/entity"
-	"github.com/asaskevich/govalidator"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // POST /employees
@@ -37,6 +38,17 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	// ค้นหา Email ใน Member ด้วย Email
+	var member []entity.Member
+	if err := entity.DB().Where("email = ?", employee.Email).Find(&member).Error; err == nil && len(member) >= 1 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "อีเมลนี้ถูกใช้งานแล้ว"})
+		return
+	}
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(employee.Password), 14)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "error hash password"})
+	}
+
 	// สร้าง Employee
 	u := entity.Employee{
 		Role:    role,         // โยงความสัมพันธ์กับ Entity Role
@@ -44,7 +56,7 @@ func CreateEmployee(c *gin.Context) {
 		FirstName: employee.FirstName, // ตั้งค่าฟิลด์ FirstName
 		LastName:  employee.LastName,  // ตั้งค่าฟิลด์ LastName
 		Email:     employee.Email,     // ตั้งค่าฟิลด์ Email
-		Password:  employee.Password,     // ตั้งค่าฟิลด์ Password
+		Password: string(hashPassword),     // ตั้งค่าฟิลด์ Password
 		Age:		employee.Age,
 		Salary:		employee.Salary,
 	}
@@ -106,6 +118,13 @@ func UpdateEmployee(c *gin.Context) {
 
 	if _, err := govalidator.ValidateStruct(employee); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// ค้นหา Email ใน Member ด้วย Email
+	var member []entity.Member
+	if err := entity.DB().Where("email = ?", employee.Email).Find(&member).Error; err == nil && len(member) >= 1 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "อีเมลนี้ถูกใช้งานแล้ว"})
 		return
 	}
 
