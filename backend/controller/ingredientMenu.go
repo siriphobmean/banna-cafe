@@ -49,7 +49,7 @@ func CreateIngredientMenu(c *gin.Context) {
 func GetIngredientMenu(c *gin.Context) {
 	var ingredientMenu entity.IngredientMenu
 	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM ingredient_menus WHERE id = ?", id).Find(&ingredientMenu).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM ingredient_menus WHERE menu_id = ?", id).Find(&ingredientMenu).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -106,16 +106,18 @@ func UpdateIngredientMenu(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// ค้นหา ingredientMenu ด้วย id
-	if tx := entity.DB().Where("id = ?", ingredientMenu.ID).First(&result); tx.RowsAffected == 0 {
+	
+	if tx := entity.DB().Where("menu_id = ?", ingredientMenu.MenuID).First(&result); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ingredientMenu not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&ingredientMenu).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	// Update data for ingredientMenu
+	if err := entity.DB().Model(&result).Omit("id").Updates(&ingredientMenu).Error; err != nil {
+    	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+    	return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"data": ingredientMenu})
 
 }
