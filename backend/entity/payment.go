@@ -12,7 +12,9 @@ type Payment struct {
 	Code string
 	TotalAmount int
 
-	//Accounting []Accounting `gorm:"foreignKey:PaymentID"`
+	Accounting []Accounting `gorm:"foreignKey:PaymentID"`
+	PaymentID []PaymentStatus `gorm:"foreignKey:PaymentID"`
+
 
 	//FK
 	PromotionID *uint
@@ -24,13 +26,21 @@ type Payment struct {
 	EmployeeID *uint
 	Employee Employee `gorm:"references:id"`
 
-	StatusPaymentID *uint
-	StatusPayment StatusPayment `gorm:"references:id"`
-
 
 }
+
+type PaymentStatus struct{
+	gorm.Model
+
+	PaymentID *uint
+	Payment Payment `gorm:"references:id"`
+
+	StatusPaymentID *uint
+	StatusPayment StatusPayment `gorm:"references:id"`
+}
+
 type StatusPayment struct{
 	gorm.Model
 	Name string
-	Payment []Payment `gorm:"foreignKey:StatusPaymentID"`
+	PaymentStatus []PaymentStatus `gorm:"foreignKey:StatusPaymentID"`
 }

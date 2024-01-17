@@ -1,14 +1,25 @@
-import React, { useState, useEffect,useRef,ChangeEvent } from "react";
+import React, { useState, useEffect,useRef,ChangeEvent, InputHTMLAttributes } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { Divider,List,Table,Card } from "antd";
+import { Divider,List,Table,Card, message } from "antd";
 import { FaFileUpload  } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
+import {PaymentInterface,StatusPaymentInterface,PaymentStatus,PromotionInterface} from "../../../interfaces/IPayment";
+import  * as service from "../../../services/https/payment";
+import { PreorderMenusInterface } from "../../../interfaces/IPreorderMenu";
 
 function Payment(){
     const [showpayment,Setshowpayment] = useState<Boolean>(true);
-    const [member,SetMember] = useState<test[]>([]);
-
     const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [preorderMenu, SetPreorderMenu] = useState<PreorderMenusInterface[]>([]);
+    const [payment, SetPayment] = useState<PaymentInterface>();
+    let { pid } = useParams();
+    const [total,SetTotal]=useState<number>(3);
+    const [fixed,SetFixed]=useState<number>(4);
+    const [code,SetCode]=useState<string>(' ');
+    const [promotion, SetPromotion]=useState<PromotionInterface>()
+    let c : PaymentInterface = payment||{};
+
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
@@ -24,47 +35,72 @@ function Payment(){
       }
     };
 
-    interface test{
-        ID:number;
-        Name:string;
-        Age:number;
-        Email:string;
-    }
     function displayPayment(){
         Setshowpayment(!showpayment)
-        SetMember([
-            {
-                ID : 1,
-                Name : "alex",
-                Age : 10,
-                Email : "bbbbb"
-            },
-            {
-                ID : 2,
-                Name : "anna",
-                Age : 89,
-                Email : "k;n'k;"
-            },
-            {
-                ID : 3,
-                Name : "josh",
-                Age : 61,
-                Email : "ihihgwihg"
-            },
-            {
-                ID : 4,
-                Name : "josh",
-                Age : 61,
-                Email : "ihihgwihg"
-            },
-            {
-                ID : 5,
-                Name : "josh",
-                Age : 61,
-                Email : "ihihgwihg"
-            },
-        ])
     }
+
+    const getCode = async ()=>{
+        if(code != undefined){
+            let res2 = await service.GetPromotionByCode(code)
+            if(res2){
+                const msg = ("กำลังใช้งานโค้ด").concat(res2?.Name)
+                message.open({
+                    type:"success",
+                    content:msg,
+                });
+                
+                if(code != promotion?.Code || total == fixed){
+                    SetPromotion(res2);
+                    console.log("fix:",fixed)
+                    c.Code = code;
+                    c.TotalAmount = fixed - res2.Discount;
+                    SetPayment(c);
+                    SetTotal(c.TotalAmount);
+                }   
+            }
+            else{
+                message.open({
+                    type:"error",
+                    content:"ไม่พบโค้ดส่วนลดปัจจุบัน", 
+                });
+                if(code!=promotion?.Code){
+                    SetTotal(fixed);
+                }
+            }
+            console.log(payment?.TotalAmount)
+        }else{
+            message.open({
+                type:"warning",
+                content:"กรุณากรอกโค้ดส่วนลดหรือดำเนินการต่อโดยไม่กรอกโค้ดส่วนลด"
+            })
+            
+        }
+        
+    }
+    const getData = async () =>{
+        let res1 = await service.GetPreorderMenuByPreorderID(Number(pid))
+        if(res1){
+            const t:number = res1.reduce((sum:number,menu : PreorderMenusInterface) => sum += menu.TotalCost||0,0) 
+            SetTotal(t);
+            SetFixed(t);
+            SetPreorderMenu(res1);
+            if(total){
+                c = payment||{};
+                c.TotalAmount=total
+                SetPayment(c);
+                SetPayment(c);
+            }
+        }
+    }
+    const onInput = (e: any) => {
+        SetCode(e.target.value||" ");
+        console.log(e.target.values)
+    };
+
+    useEffect(()=>{
+        getData();
+        console.log("code:",code) 
+    }, [])
     return(
         <div style={{justifyContent:"center",width:"100%",height:"100%"}}>
             <div style={{width:"100%",height:"100%",position:'initial',filter:showpayment?"blur(4px)":"none"}}> 
@@ -78,20 +114,27 @@ function Payment(){
                         <IoClose size={50} style={{position:"absolute",right:"1%",top:"1%",cursor:"pointer"}} onClick={displayPayment}/>
                         <Divider style={{margin:"0,0,0,0"}}/>
                         <ul style={{height:"50%",width:"90%",position:"absolute",overflow:"auto",listStyle:"none",marginTop:"1%"}}>
-                            {member.map((m) =>
-                            <li key={m.ID}>
-                                <p>ID: {m.ID} : Name: {m.Name} Age: {m.Age} Email: {m.Email}</p>
-                                <p>k</p>
+                            {preorderMenu.map((m) =>
+                            <li key={m.ID} style={{borderBottom:"1px solid black"}}>
+                                <p style={{textAlign:"left",alignContent:"center"}}> 
+                                    <img style={{width:"50px",marginRight:"15px"}}src={m.Menu?.MenuImage} alt={m.Menu?.MenuNameEng}/>
+                                    {m.Menu?.MenuName}
+                                    <p style={{textAlign:"right",marginRight:"15px"}}>จำนวน: {m.Quantity} ราคา: {m.TotalCost}</p>
+                                </p> 
                             </li>
                             )}
                         </ul>
                         <div style={{position:"absolute",top:"72%",width:"100%"}}>
                             <Divider style={{marginTop:"5px",marginBottom:"0px"}}/>
-                            <p style={{width:"95%",textAlign:"right"}}>Total : 500</p>
+                            <p style={{width:"95%",textAlign:"right"}}>Total : {total}</p> 
                             <Divider style={{marginTop:"0px",marginBottom:"0px"}}/>
                         </div>
-                        <div style={{position:"absolute",top:"83%",width:"100",display:"flex",marginLeft:"5%"}}>
-                            <p>กรอกส่วนลดได้ที่นี่<input style={{marginLeft:"25px",backgroundColor:"whitesmoke",fontSize:"22px",textAlign:"center",fontWeight:"bold"}}/></p>
+                        <div style={{position:"absolute",top:"83%",width:"100",marginLeft:"5%"}}>
+                            <p>กรอกส่วนลดได้ที่นี่</p>
+                            <input onInput={onInput} style={{marginLeft:"0px",backgroundColor:"whitesmoke",fontSize:"17px",textAlign:"center"}}/>
+                        </div>
+                        <div onClick={getCode} style={{ backgroundColor:"#181D31", marginLeft:"0px",top:"92%",right:"28%",position:"absolute",border:"1px solid black",cursor:"pointer",color:"white"}}>
+                            <FiSearch size={40} />
                         </div>
                             
                     </div>

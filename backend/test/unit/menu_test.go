@@ -15,7 +15,7 @@ func TestMenuName(t *testing.T) {
 
 	t.Run(`menu_name is required`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "", // incorrect :( -> null
 			MenuNameEng: "Black Coffee",
 			MenuCost:    55.55,
@@ -34,7 +34,7 @@ func TestMenuName(t *testing.T) {
 
 	t.Run(`menu_name pattern is not true`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "กาแฟดำที่อร่อยที่สุดในสามโลก กินแล้วสุขภาพดี", // incorrect :( -> longest > 50
 			MenuNameEng: "Black Coffee",
 			MenuCost:    55.55,
@@ -59,7 +59,7 @@ func TestMenuCost(t *testing.T) {
 
 	t.Run(`menu_cost is required`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "โกโก้",
 			MenuNameEng: "CoCoa",
 			MenuCost:    0, // incorrect :( -> null
@@ -78,7 +78,7 @@ func TestMenuCost(t *testing.T) {
 
 	t.Run(`menu_cost pattern is not true`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "โกโก้",
 			MenuNameEng: "CoCoa",
 			MenuCost:    55.123, // incorrect :( -> decimal > .xx (2)
@@ -103,7 +103,7 @@ func TestMenuStatus(t *testing.T) {
 
 	t.Run(`menu_status is required`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "ชาไทย",
 			MenuNameEng: "Thai Tea",
 			MenuCost:    55.55,
@@ -122,7 +122,7 @@ func TestMenuStatus(t *testing.T) {
 
 	t.Run(`menu_status pattern is not true`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "ชาไทย",
 			MenuNameEng: "Thai Tea",
 			MenuCost:    55.55,
@@ -148,7 +148,7 @@ func TestMenuValidAll(t *testing.T) {
 
 	t.Run(`Menu pattern is valid all`, func(t *testing.T) {
 		menu := entity.Menu{
-			MenuID:      1,
+			//MenuID:      1,
 			MenuName:    "ชาเขียว",
 			MenuNameEng: "Green Tea",
 			MenuCost:    55.05,

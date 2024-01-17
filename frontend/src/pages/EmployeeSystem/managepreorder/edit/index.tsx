@@ -35,6 +35,7 @@ function ManagePreorderEdit() {
   let { id } = useParams();
 
   const getMP = async () => {
+    
     let res = await GetManagePreOrdersByID(Number(id));
     if (res) {
       SetData(res);
@@ -44,8 +45,6 @@ function ManagePreorderEdit() {
     let res1 = await GetPreOrderByID(Number(id));
     if (res1) {
       SetPreorder(res1);
-      console.clear()
-      console.log(preorder)
     }
     let res2 = await GetStatusReceivePreorderByPreorderID(Number(id))
     if (res2){
@@ -60,7 +59,6 @@ function ManagePreorderEdit() {
   useEffect(() => {
     getMP();
     getPreorder();
-       
   }, []);
 
   function cancel_button() {
@@ -70,7 +68,7 @@ function ManagePreorderEdit() {
   }
 
   const onFinish = async (values: PreOrderInterface) => {
-    // alert(preorder?.Note)
+    //alert(sr[0].Name)
     values.ID = preorder?.ID
     values.Member = preorder?.Member
     values.PickupTime = preorder?.PickupTime

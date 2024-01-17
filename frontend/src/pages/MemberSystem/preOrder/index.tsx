@@ -115,12 +115,12 @@ export default function MenuPreorder() {
         <main>
           <div className="menu-recomment">
             <div className="menu-slide">
-              <MenuSlide
+              {/* <MenuSlide
                 onAddmenupop={() => setAddmenupop(true)}
                 onAddMenu={(menu) => setMenu(menu)}
                 menus={menus}
                 setMenushow={(menu) => setMenuSlide(menu)}
-              />
+              /> */}
             </div>
             <div className="munu-slide-information">
               <div className="information-text">Information</div>
@@ -152,14 +152,14 @@ export default function MenuPreorder() {
           </div>
           <div className="menu-block">
             <div className="menu-text">Menu</div>
-            <MenuAll
+            {/* <MenuAll
               onAddmenupop={() => setAddmenupop(true)}
               menusSearch={menusSearch}
               searchText={searchText}
               selectedMenuType={selectedMenuType}
               onAddMenu={(menu) => setMenu(menu[0])}
               onchangeMenus={(munus) => setMenus(munus)}
-            />
+            /> */}
             <br />
           </div>
         </main>

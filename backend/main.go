@@ -121,13 +121,19 @@ func main() {
 	r.PATCH("/preorderMenus", controller.UpdatePreorderMenu)
 
 	// Ball Routes
-	r.GET("/getpreorder/:id", controller.GetPreOrderByID)
-	r.GET("/listmanagepreorder", controller.ListMP)
-	r.GET("/getmanagepreorder/:id", controller.ListMPByID)
-	r.GET("/getstatusreceivepreorder/:id", controller.GetStatusReveivesPreorderByPreorderID)
-	r.GET("/liststatusreceive", controller.ListStatusReceive)
-	r.PATCH("/managepreorder", controller.UpdatePreOrder)
-	r.PATCH("/updatepreorderstatusreceive", controller.UpdateStatusReceivePreorder)
+	r.GET("/managepreorders/preorders/get/:id", controller.GetPreOrderByID)
+	r.GET("/managepreorders/list", controller.ListMP)
+	r.GET("/managepreorders/get/:id", controller.ListMPByID)
+	r.GET("/managepreorders/status/get/:id", controller.GetStatusReveivesPreorderByPreorderID)
+	r.GET("/managepreorders/status/list", controller.ListStatusReceive)
+	r.PATCH("/managepreorders/preorders", controller.UpdatePreOrder)
+	r.PATCH("/managepreorders/update_status", controller.UpdateStatusReceivePreorder)
+
+	r.GET("/payment/getpromo/:code",controller.GetPromotionByCode)
+	r.GET("/payment/getpreordermenu/:id",controller.GetPreorderMenuByPreorderID)
+	r.POST("/payments",controller.CreatePayment)
+	r.POST("/payment/create_accounting",controller.CreateAccoutingByPayment)
+	//Ball Routes
 
 	r.GET("/promotions", controller.ListPromotion)
 	r.GET("/promotion/:id", controller.GetPromotion)
