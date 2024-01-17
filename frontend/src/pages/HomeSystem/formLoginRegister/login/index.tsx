@@ -25,6 +25,7 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
   });
 
   const onSubmitLogin = async (values: MembersInterface) => {
+     console.log("Submitting form with values:", values);
     let res = await LoginMember(values);
     if (res.status) {
       messageApi.open({
@@ -33,7 +34,7 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
       });
       setTimeout(function () {
         navigate("../menuPreorder");
-      }, 800);
+      }, 1000);
     } else {
       messageApi.open({
         type: "error",
@@ -108,6 +109,12 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
         <button type="submit" className="btn">
           Login
         </button>
+        {/* <div
+          className="btn"
+          onClick={handleSubmit((data) => onSubmitLogin(data))}
+        >
+          Login
+        </div> */}
         <div className="login-register">
           <p>
             Don't have account?{" "}

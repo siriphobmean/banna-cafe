@@ -82,6 +82,12 @@ func UpdateMember(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	// ค้นหา email ใน Employee ด้วย email
+	var employee []entity.Employee
+	if err := entity.DB().Where("email = ?", member.Email).Find(&employee).Error; err == nil && len(employee) >= 1 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "email ถูกใช้งานแล้ว"})
+		return
+	}
 	// ค้นหา member ด้วย id
 	if tx := entity.DB().Where("id = ?", member.ID).First(&existingMember); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "member not found"})
@@ -119,6 +125,12 @@ func CreateMemberRegister(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	// ค้นหา email ใน Employee ด้วย email
+	var employee []entity.Employee
+	if err := entity.DB().Where("email = ?", member.Email).Find(&employee).Error; err == nil && len(employee) >= 1 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "email ถูกใช้งานแล้ว"})
+		return
+	}
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(member.Password), 14)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "error hash password"})
@@ -130,7 +142,7 @@ func CreateMemberRegister(c *gin.Context) {
 		Email:    member.Email,
 		Password: string(hashPassword),
 	}
-	
+
 	// บันทึก
 	if err := entity.DB().Create(&members).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

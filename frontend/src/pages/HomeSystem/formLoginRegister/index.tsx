@@ -14,13 +14,13 @@ const LoginRegister: React.FC<LoginLoginRegisterProps> = ({ onClose }) => {
         <span className="icon-close" onClick={onClose}>
           <IoRestaurantOutline />
         </span>
-        <div className="form-register">
+        {/* <div className="form-register">
           <Register slideRegisters={() => setRegisterslide(false)} />
-        </div>
+        </div> */}
         <div className="form-login">
           <Login slideRegisters={() => setRegisterslide(true)} />
         </div>
-        <div className={`${registerslide ? "logo-login2" : "logo-login1"}`}>
+        {/* <div className={`${registerslide ? "logo-login2" : "logo-login1"}`}>
           <div className="circle l1">
             <span className="circle l2">banna</span>
           </div>
@@ -28,7 +28,7 @@ const LoginRegister: React.FC<LoginLoginRegisterProps> = ({ onClose }) => {
             <span>Let Me be Your Life.</span>
             <div className="img-leave"></div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
