@@ -103,53 +103,54 @@ function Payment(){
     }, [])
     return(
         <div style={{justifyContent:"center",width:"100%",height:"100%"}}>
-            <div style={{width:"100%",height:"100%",position:'initial',filter:showpayment?"blur(4px)":"none"}}> 
-            <button style={{backgroundColor:"red"}} onClick={displayPayment}>clickme</button>
-            <img style={{width:"100%"}} src="https://imgur.com/Awd3zQC.jpg" alt="ts" />
+            <div style={{width:"100%",height:"100%",display:"flex",flexDirection:"column",filter:showpayment?"blur(4px)":"none"}}> 
+                <button style={{backgroundColor:"red"}} onClick={displayPayment}>clickme</button>
+                <img style={{width:"100%"}} src="https://imgur.com/Awd3zQC.jpg" alt="ts" />
             </div>    
-            <div style={{backgroundColor:"green",width:"41%", height:"61%", position:"absolute",left:"30%",top:"20%",display:showpayment?"flex":"none",borderRadius:"15px 15px 15px 15px"}}>
-                <div style={{backgroundColor:"black",width:"98%", height:"98%", position:"absolute",left:"1%",top:"1%",borderRadius:"15px 15px 15px 15px"}}>
-                    <div style={{backgroundColor:"#F0E9D2",width:"50%",height:"87.5%",position:"absolute",top:"0%",right:"0px",textAlign:"center",borderRadius:"0px 15px 0px 0px"}}>
-                        <p style={{fontSize:"25px"}}>รายการสินค้า</p>
-                        <IoClose size={50} style={{position:"absolute",right:"1%",top:"1%",cursor:"pointer"}} onClick={displayPayment}/>
-                        <Divider style={{margin:"0,0,0,0"}}/>
-                        <ul style={{height:"50%",width:"90%",position:"absolute",overflow:"auto",listStyle:"none",marginTop:"1%"}}>
-                            {preorderMenu.map((m) =>
-                            <li key={m.ID} style={{borderBottom:"1px solid black"}}>
-                                <p style={{textAlign:"left",alignContent:"center"}}> 
-                                    <img style={{width:"50px",marginRight:"15px"}}src={m.Menu?.MenuImage} alt={m.Menu?.MenuNameEng}/>
-                                    {m.Menu?.MenuName}
-                                    <p style={{textAlign:"right",marginRight:"15px"}}>จำนวน: {m.Quantity} ราคา: {m.TotalCost}</p>
-                                </p> 
-                            </li>
-                            )}
-                        </ul>
-                        <div style={{position:"absolute",top:"72%",width:"100%"}}>
-                            <Divider style={{marginTop:"5px",marginBottom:"0px"}}/>
-                            <p style={{width:"95%",textAlign:"right"}}>Total : {total}</p> 
-                            <Divider style={{marginTop:"0px",marginBottom:"0px"}}/>
+            <div style={{backgroundColor:"green",width:"41%", height:"61%", position:"absolute",left:"30%",top:"20%",display:showpayment?"flex":"none",borderRadius:"15px 15px 15px 15px",flexDirection:"column"}}>
+                <div style={{backgroundColor:"black",width:"98%", height:"98%",display:"flex",flexDirection:"column",left:"1%",top:"1%",borderRadius:"15px 15px 15px 15px"}}>
+                    <div style={{display:"flex",width:"100%", height:"100%"}}>
+                        <div style={{backgroundColor:"#F0E9D2",width:"50%",height:"100%",display:"flex",flexDirection:"column",textAlign:"center",justifyItems:"center",alignItems:"center",borderRadius:"15px 0px 0px 0px"}}>
+                            <p style={{fontSize:"25px",borderBottom:"1px solid black"}}>ชำระเงิน</p>
+                            <img style={{width:"65%",border:"1.5px solid black",left:"20%"}} src="https://i.imgur.com/YZ0f7Vs.jpg" 
+                            alt="qr code" />
+                            <p >Banna Cafe <br/> 670-238025-7 SCB</p>
+                            <div onClick={openFilePicker} style={{display:"flex",flexDirection:"column",marginTop:"5%",backgroundColor:"#c9c9c7",alignItems:"center",borderBlockStyle:"solid",border:"2px solid black",textAlign:'center', cursor:"pointer"}}>
+                                <input ref={fileInputRef} type="file" accept=".png" style={{display:"none"}} onChange={handleFileChange}/> 
+                                กรุณาอัพโหลดหลักฐานการโอน
+                                <FaFileUpload size={25}/>
+                            </div>
                         </div>
-                        <div style={{position:"absolute",top:"83%",width:"100",marginLeft:"5%"}}>
-                            <p>กรอกส่วนลดได้ที่นี่</p>
-                            <input onInput={onInput} style={{marginLeft:"0px",backgroundColor:"whitesmoke",fontSize:"17px",textAlign:"center"}}/>
-                        </div>
-                        <div onClick={getCode} style={{ backgroundColor:"#181D31", marginLeft:"0px",top:"92%",right:"28%",position:"absolute",border:"1px solid black",cursor:"pointer",color:"white"}}>
-                            <FiSearch size={40} />
-                        </div>
+                        <div style={{backgroundColor:"#F0E9D2",width:"50%",height:"100%",display:"flex",flexDirection:"column",textAlign:"center",borderRadius:"0px 15px 0px 0px",borderLeft:"1px solid black"}}>
+                            <p style={{fontSize:"25px",borderBottom:"1px solid black"}}>รายการสินค้า</p>
+                            <IoClose size={50} style={{position:"absolute",right:"1%",top:"1%",cursor:"pointer"}} onClick={displayPayment}/>
+                            <ul style={{height:"80%",width:"85%",overflowY:"scroll",overflowX:"unset",listStyle:"none",marginTop:"1%"}}>
+                                {preorderMenu.map((m) =>
+                                <li key={m.ID} style={{borderTop:m.ID==1?"none":"1px solid black"}}>
+                                    <p style={{textAlign:"left",alignContent:"center"}}> 
+                                        <img style={{width:"50px",marginRight:"15px"}}src={m.Menu?.MenuImage} alt={m.Menu?.MenuNameEng}/>
+                                        {m.Menu?.MenuName}
+                                        <p style={{textAlign:"right",marginRight:"15px"}}>จำนวน: {m.Quantity} ราคา: {m.TotalCost}</p>
+                                    </p> 
+                                </li>
+                                )}
+                            </ul>
+                            <p style={{marginRight:"5%",textAlign:"right",borderBottom:"1px solid grey",borderTop:"1px solid grey"}}>Total : {total}</p> 
+                            <p >กรอกส่วนลดได้ที่นี่</p>
+                            <div style={{width:"100%",display:"flex",marginBottom:"10%"}}>
+                                <input onInput={onInput} style={{backgroundColor:"#F0E9D2",textAlign:"center",fontSize:"15px",width:"60%",marginLeft:"5%"}}/>
+                                <div onClick={getCode} style={{ backgroundColor:"silver",border:"1px solid black",cursor:"pointer",color:"black",marginLeft:"5%"}}>
+                                    <FiSearch size={30} />
+                                </div>
+                            </div>
+                            <div style={{position:"absolute",top:"83%",width:"100",marginLeft:"5%"}}>
+                                
+                            </div>
                             
-                    </div>
-                    <div style={{backgroundColor:"#F0E9D2",width:"50%",height:"87.5%",position:"absolute",textAlign:"center",borderRadius:"15px 0px 0px 0px"}}>
-                        <p style={{fontSize:"25px"}}>ชำระเงิน</p>
-                        <img style={{width:"65%",border:"1.5px solid black"}} src="https://i.imgur.com/YZ0f7Vs.jpg" 
-                        alt="qr code" />
-                        <p >Banna Cafe <br/> 670-238025-7 SCB</p>
-                        <div onClick={openFilePicker} style={{display:"flex",marginLeft:"25%",marginTop:"5%",backgroundColor:"#c9c9c7",width:"53%",height:"8%",alignItems:"center",borderBlockStyle:"solid",border:"3px solid black",textAlign:'center', cursor:"pointer"}}>
-                            <input ref={fileInputRef} type="file" accept=".png" style={{display:"none"}} onChange={handleFileChange}/>
-                            กรุณาอัพโหลดหลักฐานการโอน
-                            <FaFileUpload size={30} style={{marginLeft:"2%"}}/>
+                                
                         </div>
                     </div>
-                    <div style={{backgroundColor:"#181D31",bottom:"0px",width:"100%",height:"12.5%",position:"absolute",color:"whitesmoke",fontSize:"25px",textAlign:"center",borderRadius:"0px 0px 15px 15px",cursor:"pointer"}}>
+                    <div style={{backgroundColor:"#181D31",bottom:"0px",width:"100%",height:"12.5%",color:"whitesmoke",fontSize:"25px",textAlign:"center",borderRadius:"0px 0px 15px 15px",cursor:"pointer"}}>
                         <p>เสร็จสิ้น</p>                
                     </div>
                 </div>
