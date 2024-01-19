@@ -48,7 +48,7 @@ function ManagePreorder() {
       dataIndex: "Manage",
       key: "manage",
       render: (text, mp, index) => (
-        <label onClick={() =>  navigate(`/managepreorder/edit/${mp.PreorderID}`)} style={{color:"green"}} >เพิ่มเติม</label>
+        <label onClick={() =>  mp.Respond!="อนุมัติสั่งจอง"?(navigate(`/managepreorder/edit/${mp.PreorderID}`)):message.open({type:"info",content:"คำสั่งซื้อถูกยอมรับแล้ว"})} style={{color:"green"}} >เพิ่มเติม</label>
       ),
     },
   ];

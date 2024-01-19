@@ -35,6 +35,7 @@ export interface StatusPaymentInterface{
 }
 
 export interface PromotionInterface{
+    ID?: number
     Code?:string
     Discount?: number
     Employee?: EmployeesInterface

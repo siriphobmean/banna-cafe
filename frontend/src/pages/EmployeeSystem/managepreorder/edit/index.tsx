@@ -10,7 +10,7 @@ import {
   Radio,
 } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect, ChangeEventHandler } from "react";
+import { useState, useEffect, ChangeEventHandler, useRef } from "react";
 import {
   ManagePreOrderInterface,
   PreOrderInterface,
@@ -24,7 +24,13 @@ import {
   UpdateStatusReceivePreorder,
   GetStatusReceivePreorderByPreorderID,
   ListStatusReceive,
+  GetPaymentByPreorderID
 } from "../../../../services/https/managepreorder";
+import { Accounting } from "../../../../interfaces/IAccounting";
+import { PaymentInterface } from "../../../../interfaces/IPayment";
+import { EmployeesInterface } from "../../../../interfaces/IEmployee";
+import { CreateAccountingFromPayment, GetEmployeeByID } from "../../../../services/https/payment";
+
 
 function ManagePreorderEdit() {
   const navigate = useNavigate();
@@ -33,14 +39,30 @@ function ManagePreorderEdit() {
   const [srp, SetSRP] = useState<StatusReceivesPreOrderInterface>();
   const [sr, SetSr] = useState<StatusReceiveInterface[]>([]);
   let { id } = useParams();
-
-  const getMP = async () => {
-    
+  const [payment,SetPayment] = useState<PaymentInterface>();
+  const [employee,SetEmployee] = useState<EmployeesInterface>();
+  const [account,SetAccount] = useState<Accounting>()
+  
+  const getData = async () => {
     let res = await GetManagePreOrdersByID(Number(id));
     if (res) {
       SetData(res);
     }
   };
+
+  const getPayment = async () => {
+    let res = await GetPaymentByPreorderID(Number(id))
+    if (res){
+      SetPayment(res);
+    }
+  };
+
+  const getEmployee = async () =>{
+    let res = await GetEmployeeByID(1)
+    if (res){
+      SetEmployee(res)
+    }
+  }
   const getPreorder = async () => {
     let res1 = await GetPreOrderByID(Number(id));
     if (res1) {
@@ -54,12 +76,10 @@ function ManagePreorderEdit() {
     if(res3){
       SetSr(res3)
     }
+    
   };
 
-  useEffect(() => {
-    getMP();
-    getPreorder();
-  }, []);
+  
 
   function cancel_button() {
     setTimeout(function () {
@@ -68,7 +88,7 @@ function ManagePreorderEdit() {
   }
 
   const onFinish = async (values: PreOrderInterface) => {
-    //alert(sr[0].Name)
+    console.log(payment)
     values.ID = preorder?.ID
     values.Member = preorder?.Member
     values.PickupTime = preorder?.PickupTime
@@ -81,16 +101,13 @@ function ManagePreorderEdit() {
         type: "success",
         content: "แก้ไขข้อมูลสำเร็จ",
       });
-      setTimeout(function () {
-        navigate("/ManagePreorder");
-      }, 250);
     } else {
       message.open({
         type: "error",
         content: "แก้ไขข้อมูลไม่สำเร็จ",
       });
     }
-    if (preorder?.Respond=="อนุมัติสั่งจอง"){
+    if (preorder?.Respond==="อนุมัติสั่งจอง"){
       let data: StatusReceivesPreOrderInterface = srp||{}
       data.StatusReceivePreOrder = sr[1]
       data.StatusReceivePreOrderID = sr[1].ID
@@ -102,7 +119,7 @@ function ManagePreorderEdit() {
         });
       }
     }
-    else if(preorder?.Respond=="ไม่อนุมัติสั่งจอง"){
+    else if(preorder?.Respond==="ไม่อนุมัติสั่งจอง"){
       let data: StatusReceivesPreOrderInterface = srp||{}
       data.StatusReceivePreOrder = sr[0]
       data.StatusReceivePreOrderID = sr[0].ID
@@ -114,7 +131,32 @@ function ManagePreorderEdit() {
         });
       }
     }
+    createAccounting();
   };
+  const createAccounting = async () => {
+    let acc : Accounting = account||{}
+    if (preorder?.Respond==="อนุมัติสั่งจอง"){ 
+      acc.PaymentID = payment?.ID
+      acc.Payment = payment
+      acc.Date = payment?.Time
+      acc.Amount = payment?.TotalAmount
+      acc.Name = "Payment".concat(String(payment?.ID))
+      acc.EmployeeID = employee?.ID
+      acc.Employee = employee
+      SetAccount(acc)
+      let res2 = await CreateAccountingFromPayment(account||acc)
+      if(!res2.status){
+        message.open({
+          type:"error",
+          content:"เกิดข้อผิดพลาดไม่สามารถบันทึกได้"
+        })
+      }
+    }
+    setTimeout(function () {
+      navigate("/ManagePreorder");
+    }, 250);
+      
+  } 
   const onInput = (e:any) => {
     let c: PreOrderInterface = preorder ||{};
     c.Note = e.target.value;
@@ -126,6 +168,12 @@ function ManagePreorderEdit() {
     SetPreorder(c);
   };
 
+  useEffect(() => {
+    getData();
+    getPreorder();
+    getPayment();
+    getEmployee();
+  },[]);
   return (
     <div>
       <Card>

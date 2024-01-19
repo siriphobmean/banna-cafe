@@ -122,6 +122,27 @@ export async function ListStatusReceive() {
   return res;
 }
 
+export async function GetPaymentByPreorderID(id : number) {
+  const requestOptions = {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  };
+
+  let res = await fetch(`${apiUrl}/managepreorders/paymentbypreorder/get/${id}`, requestOptions)
+      .then((response) => response.json())
+      .then((res) => {
+          if (res.data) {
+              return res.data;
+          } else {
+              return false;
+          }
+      });
+
+  return res;
+}
+
 //////////////GET////////////
 
 /////////////PATCH///////////

@@ -344,17 +344,16 @@ func SetupDatabase() {
 			Time: time.Now(),
 			Code: "Happy Newyear",
 			TotalAmount: 444,
-			Preorder: preorder[0],
-			PromotionID: &promotion[0].ID,
-			Promotion: promotion[0],
-		},
-		{
-			Image: "https://i.imgur.com/G9JVbhU.jpg",
-			Time: time.Now(),
-			Code: "ome wa mou shinderu",
-			TotalAmount: 444,
 			Preorder: preorder[1],
+			PromotionID: &promotion[1].ID,
 		},
+		// {
+		// 	Image: "https://i.imgur.com/G9JVbhU.jpg",
+		// 	Time: time.Now(),
+		// 	Code: "ome wa mou shinderu",
+		// 	TotalAmount: 444,
+		// 	Preorder: preorder[1],
+		// },
 	}
 	db.Create(&payment)
 
