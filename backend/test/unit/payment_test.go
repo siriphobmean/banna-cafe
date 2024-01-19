@@ -12,7 +12,7 @@ import (
 var i = uint(1);
 func TestPaymentImage(t *testing.T){
 	g := NewGomegaWithT(t)
-	t.Run("slipt is require", func (t *testing.T)  {
+	t.Run("image is needed", func (t *testing.T)  {
 		payment := entity.Payment{
 			Image: "",
 			Time: time.Now(),
@@ -25,15 +25,15 @@ func TestPaymentImage(t *testing.T){
 		ok,err := govalidator.ValidateStruct(payment)
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("slipt is require"))
+		g.Expect(err.Error()).To(Equal("image is needed"))
 	})
 }
 
 func TestPaymentTime(t *testing.T){
 	g := NewGomegaWithT(t)
-	t.Run("time is require", func(t *testing.T){
+	t.Run("time is required", func(t *testing.T){
 		payment := entity.Payment{
-			Image: "abc",
+			Image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
 			Code: "winter",
 			Time: time.Time{},
 			TotalAmount: 100,
@@ -44,17 +44,18 @@ func TestPaymentTime(t *testing.T){
 		ok,err := govalidator.ValidateStruct(payment)
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("time is require"))
+		g.Expect(err.Error()).To(Equal("time is required"))
 	})
 }
 
-func TestPatmentTotalAmount(t *testing.T){
+func TestPaymentTotalAmount(t *testing.T){
 	g := NewGomegaWithT(t)
-	t.Run("TotalAmount is require",func(t *testing.T){
+	t.Run("total amount should be at least 0",func(t *testing.T){
 		payment := entity.Payment{
-			Image: "abc",
+			Image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
 			Code: "winter",
 			Time: time.Now(),
+			TotalAmount: -1,
 			PromotionID: &i,
 			PreorderID: &i,
 			EmployeeID: &i,
@@ -62,21 +63,24 @@ func TestPatmentTotalAmount(t *testing.T){
 		ok,err := govalidator.ValidateStruct(payment)
 		g.Expect(ok).NotTo(BeTrue())
 		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("TotalAmount is require"))
+		g.Expect(err.Error()).To(Equal("total amount should be at least 0"))
 	})
-	t.Run("TotalAmount need to more than 0",func(t *testing.T){
+}
+
+func TestPaymentAllValid(t *testing.T){
+	g := NewGomegaWithT(t)
+	t.Run("total amount should be at least 0",func(t *testing.T){
 		payment := entity.Payment{
-			Image: "abc",
+			Image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
 			Code: "winter",
 			Time: time.Now(),
-			TotalAmount: 0,
+			TotalAmount: 500,
 			PromotionID: &i,
 			PreorderID: &i,
 			EmployeeID: &i,
 		}
 		ok,err := govalidator.ValidateStruct(payment)
-		g.Expect(ok).NotTo(BeTrue())
-		g.Expect(err).NotTo(BeNil())
-		g.Expect(err.Error()).To(Equal("TotalAmount is require"))
+		g.Expect(ok).To(BeTrue())
+		g.Expect(err).To(BeNil())
 	})
 }
