@@ -49,17 +49,19 @@ func CreateAccoutingByPayment(c *gin.Context){
 	}
 	if err := entity.DB().Raw("SELECT remain_amount FROM accountings ORDER BY id desc LIMIT 1").Scan(&r).Error; err != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
+		r = 0;
 		return
 	}
-	if err := entity.DB().Raw("SELECT * FROM account_types WHERE id = 1").Scan(&at).Error; err != nil{
+	if err := entity.DB().Raw("SELECT * FROM account_types WHERE name = ?","รายรับ").Scan(&at).Error; err != nil{
 		c.JSON(http.StatusBadRequest, gin.H{"error":err.Error()})
 		return
 	}
 
 	u := entity.Accounting{
+		Name: a.Name,
 		Date: time.Now(),
 		Amount: a.Amount,
-		RemainAmount: r + a.RemainAmount,
+		RemainAmount: r + a.Amount,
 		PaymentID: a.PaymentID,
 		Payment: a.Payment,
 		AccountTypeID: &at.ID,
@@ -79,7 +81,7 @@ func CreateAccoutingByPayment(c *gin.Context){
 func GetPromotionByCode(c *gin.Context){
 	code := c.Param("code")
 	var p entity.Promotion
-	if err := entity.DB().Preload("Employee").Raw("SELECT * FROM promotions WHERE code = ?", code).Scan(&p).RowsAffected; err==0{
+	if err := entity.DB().Preload("Employee").Raw("SELECT * FROM promotions WHERE code = ?", code).First(&p).RowsAffected; err==0{
 		c.JSON(http.StatusBadGateway, gin.H{"error":"code not found"})
 		return
 	}
@@ -94,4 +96,24 @@ func GetPreorderMenuByPreorderID(c *gin.Context){
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data":p})
+}
+
+func GetEmployeeByID(c *gin.Context){
+	id := c.Param("id")
+	var e entity.Employee
+	if err := entity.DB().Preload("Role").Preload("Gender").Raw("SELECT * FROM employees WHERE id = ?",id).First(&e).Error; err!=nil{
+		c.JSON(http.StatusBadGateway,gin.H{"error":err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data":e})
+}
+
+func GetPaymentByPreorderID(c *gin.Context){
+	id := c.Param("id")
+	var p entity.Payment
+	if err := entity.DB().Raw("SELECT * FROM payments WHERE preorder_id = ?",id).Find(&p).Error; err!=nil{
+		c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK,gin.H{"data":p})
 }

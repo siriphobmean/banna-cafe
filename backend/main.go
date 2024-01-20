@@ -126,11 +126,14 @@ func main() {
 	r.GET("/managepreorders/get/:id", controller.ListMPByID)
 	r.GET("/managepreorders/status/get/:id", controller.GetStatusReveivesPreorderByPreorderID)
 	r.GET("/managepreorders/status/list", controller.ListStatusReceive)
+	r.GET("/managepreorders/paymentbypreorder/get/:id",controller.GetPaymentByPreorderID)
 	r.PATCH("/managepreorders/preorders", controller.UpdatePreOrder)
 	r.PATCH("/managepreorders/update_status", controller.UpdateStatusReceivePreorder)
 
+
 	r.GET("/payment/getpromo/:code",controller.GetPromotionByCode)
 	r.GET("/payment/getpreordermenu/:id",controller.GetPreorderMenuByPreorderID)
+	r.GET("/payment/getemployee/:id",controller.GetEmployeeByID)
 	r.POST("/payments",controller.CreatePayment)
 	r.POST("/payment/create_accounting",controller.CreateAccoutingByPayment)
 	//Ball Routes

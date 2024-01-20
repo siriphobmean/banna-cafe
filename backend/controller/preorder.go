@@ -285,7 +285,7 @@ func ListMP(c *gin.Context) {
 		Respond       string `json:"Respond"`
 		Note          string `json:"Note"`
 	}
-	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,preorders.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
+	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,payments.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
 		"FROM preorders ",
 		"JOIN members ON preorders.member_id = members.id ",
 		"JOIN preorder_status_approves ON preorder_status_approves.preorder_id = preorders.id ",
@@ -317,7 +317,7 @@ func ListMPByID(c *gin.Context) {
 		Respond       string `json:"Respond"`
 		Note 		  string `json:"Note"`
 	}
-	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,preorders.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
+	query := fmt.Sprint("SELECT preorders.id as PreorderID,preorders.pick_up_date_time as PickupTime,status_approve_preorders.name as ApproveStatus,status_receive_preorders.name as ReceiveStatus,payments.total_amount as Price,members.id as MemberID,payments.image as Slipt,username as MemberName,respond as Respond,note ",
 	"FROM preorders ",
 	"JOIN members ON preorders.member_id = members.id ",
 	"JOIN preorder_status_approves ON preorder_status_approves.preorder_id = preorders.id ",
@@ -336,7 +336,7 @@ func ListMPByID(c *gin.Context) {
 func GetPreOrderByID(c *gin.Context) {
 	i := c.Param("id")
 	var p entity.Preorder
-	if err := entity.DB().Preload("Member").Preload("PreorderStatusApproves").Preload("PreorderStatusReceives").Raw("SELECT * FROM preorders WHERE id = ?", i).Find(&p).Error; err != nil {
+	if err := entity.DB().Preload("Member").Preload("PreorderStatusApproves").Preload("PreorderStatusReceives").Raw("SELECT * FROM preorders WHERE id = ?", i).First(&p).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

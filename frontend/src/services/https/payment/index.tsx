@@ -1,3 +1,4 @@
+import { Accounting } from "../../../interfaces/IAccounting";
 import  *  as i from "../../../interfaces/IPayment"; 
 const apiUrl = "http://localhost:8080";
 
@@ -36,6 +37,22 @@ export async function GetPreorderMenuByPreorderID(id : number){
         });
     return res;
 }
+
+export async function GetEmployeeByID(id:number){
+    const requestOptions = {
+        method: "GET"
+    };
+    let res = await fetch(`${apiUrl}/payment/getemployee/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if(res.data){
+                return res.data
+            }else{
+                return false;
+            }
+        });
+    return res;
+}
 /////////////////GET///////////////////
 
 ////////////////POST//////////////////
@@ -60,14 +77,14 @@ export async function CreatePayment(data : i.PaymentInterface){
 
 
 
-export async function CreateAccountingFromPayment(data:string) {
+export async function CreateAccountingFromPayment(data : Accounting) {
     const requestOptions= {
         method: "POST",
-        header: {"Contemt-Type": "application/json"},
+        header: {"Content-Type": "application/json"},
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/payment/create_accounting/${data}`, requestOptions)
+    let res = await fetch(`${apiUrl}/payment/create_accounting`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if(res.data){

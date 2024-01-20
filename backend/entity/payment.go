@@ -7,24 +7,24 @@ import (
 
 type Payment struct {
 	gorm.Model
-	Image string `gorm:"type:longtext"`
-	Time time.Time
+	Image string `gorm:"type:longtext" valid:"required~image is needed"`
+	Time time.Time `valid:"required~time is required"`
 	Code string
-	TotalAmount int
+	TotalAmount int `valid:"numeric~total amount should be at least 0"`
 
 	Accounting []Accounting `gorm:"foreignKey:PaymentID"`
 	PaymentID []PaymentStatus `gorm:"foreignKey:PaymentID"`
 
 
 	//FK
-	PromotionID *uint
-	Promotion Promotion `gorm:"references:id"`
+	PromotionID *uint 
+	Promotion Promotion `gorm:"references:id" valid:"-"`
 
-	PreorderID *uint
-	Preorder Preorder `gorm:"references:id"`
+	PreorderID *uint `gorm:"uniqueIndex"`
+	Preorder Preorder `gorm:"references:id" valid:"-"`
 
 	EmployeeID *uint
-	Employee Employee `gorm:"references:id"`
+	Employee Employee `gorm:"references:id" valid:"-"`
 
 
 }
