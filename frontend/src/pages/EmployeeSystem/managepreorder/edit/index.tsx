@@ -95,47 +95,13 @@ function ManagePreorderEdit() {
     values.StatusApprovePreOrderInterface = preorder?.StatusApprovePreOrderInterface
     values.StatusReceivePreOrderInterface = preorder?.StatusReceivePreOrderInterface
     values.TotalAmount = preorder?.TotalAmount
-    let res = await UpdatePreOrder(values);
-    if (res.status) {
-      message.open({
-        type: "success",
-        content: "แก้ไขข้อมูลสำเร็จ",
-      });
-    } else {
-      message.open({
-        type: "error",
-        content: "แก้ไขข้อมูลไม่สำเร็จ",
-      });
-    }
+    let res1 = await UpdatePreOrder(values);
     if (preorder?.Respond==="อนุมัติสั่งจอง"){
       let data: StatusReceivesPreOrderInterface = srp||{}
       data.StatusReceivePreOrder = sr[1]
       data.StatusReceivePreOrderID = sr[1].ID
-      let res = await UpdateStatusReceivePreorder(data||{})
-      if(!res.status){
-        message.open({
-          type: "error",
-          content: res.message,
-        });
-      }
-    }
-    else if(preorder?.Respond==="ไม่อนุมัติสั่งจอง"){
-      let data: StatusReceivesPreOrderInterface = srp||{}
-      data.StatusReceivePreOrder = sr[0]
-      data.StatusReceivePreOrderID = sr[0].ID
-      let res = await UpdateStatusReceivePreorder(data||{})
-      if(!res.status){
-        message.open({
-          type: "error",
-          content: res.message,
-        });
-      }
-    }
-    createAccounting();
-  };
-  const createAccounting = async () => {
-    let acc : Accounting = account||{}
-    if (preorder?.Respond==="อนุมัติสั่งจอง"){ 
+      let res2 = await UpdateStatusReceivePreorder(data||{})
+      let acc : Accounting = account||{}
       acc.PaymentID = payment?.ID
       acc.Payment = payment
       acc.Date = payment?.Time
@@ -144,19 +110,56 @@ function ManagePreorderEdit() {
       acc.EmployeeID = employee?.ID
       acc.Employee = employee
       SetAccount(acc)
-      let res2 = await CreateAccountingFromPayment(account||acc)
-      if(!res2.status){
+      let res3 = await CreateAccountingFromPayment(account||acc)
+      if(res3.status && res1.status && res2.status){
+        message.open({
+          type:"success",
+          content:"บันทึกข้อมูลสำเร็จ"
+        });
+        setTimeout(function () {
+          navigate("/ManagePreorder");
+        }, 250);
+      }
+      else{
+        const err = "error: ".concat(res1.message||'',res2.message||'',res3.message)
         message.open({
           type:"error",
-          content:"เกิดข้อผิดพลาดไม่สามารถบันทึกได้"
+          content:err
         })
       }
-    }
-    setTimeout(function () {
-      navigate("/ManagePreorder");
-    }, 250);
       
-  } 
+    }
+    else if(preorder?.Respond==="ไม่อนุมัติสั่งจอง"){
+      let data: StatusReceivesPreOrderInterface = srp||{}
+      data.StatusReceivePreOrder = sr[0]
+      data.StatusReceivePreOrderID = sr[0].ID
+      if(preorder.Note){
+        let res3 = await UpdateStatusReceivePreorder(data||{})
+        if(res3.status && res1.message){
+          message.open({
+            type:"success",
+            content:"บันทึกข้อมูลสำเร็จ"
+          })
+          setTimeout(function () {
+            navigate("/ManagePreorder");
+          }, 250);
+        }else if(!res1.status || !res1.status){
+          const err = "error: ".concat(res1.message||"",res3.message||"")
+          message.open({
+            type:"error",
+            content:err
+          })
+        }
+        }else{
+          message.open({
+            type: "warning",
+            content: "โปรดระบุสาเหตุการไม่อนุมัติ",
+          });
+        }
+      
+    }
+  };
+
   const onInput = (e:any) => {
     let c: PreOrderInterface = preorder ||{};
     c.Note = e.target.value;
