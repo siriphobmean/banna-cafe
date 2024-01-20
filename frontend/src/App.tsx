@@ -58,13 +58,14 @@ function App() {
       setToken(token);
     }
   }, []);
+
   if (!token) {
     const router = createBrowserRouter(
       createRoutesFromElements(<Route index element={<Home />} />)
     );
     return <RouterProvider router={router} />;
   }
-
+  console.log(localStorage);
   function routeList() {
     if (localStorage.getItem("position") == "Member") {
       return (
@@ -80,10 +81,10 @@ function App() {
           </Route>
         </>
       );
-    } else if (localStorage.getItem("position") == "Employee") {
+      } else if (localStorage.getItem("position") == "Employee") {
+    // } else if (localStorage.getItem("position") == "Member") {
       return (
         <>
-          <Route index element={<Home />} />
           <Route path="" element={<EmployeeLayout />}>
             <Route path="/mainEmployee" element={<Mains />} />
             <Route path="/menu" element={<Menus />} />
@@ -114,7 +115,7 @@ function App() {
       );
     } else {
       <>
-        <Route index element={<Home />} />
+        {/* <Route index element={<Home />} /> */}
         <Route path="" element={<OwnerLayout />}>
           <Route path="/mainOwner" element={<Mains />} />
           <Route path="/employee" element={<Employees />} />
@@ -125,7 +126,6 @@ function App() {
       </>;
     }
   }
-  console.log(localStorage.getItem("position"));
   const router = createBrowserRouter(createRoutesFromElements(routeList()));
   return <RouterProvider router={router} />;
 }
