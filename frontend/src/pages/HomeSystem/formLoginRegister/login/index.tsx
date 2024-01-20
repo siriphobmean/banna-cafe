@@ -16,7 +16,6 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const {
     register,
-    handleSubmit,
     watch,
     formState: { errors },
   } = useForm<MembersInterface>({
@@ -25,24 +24,6 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
       Password: "tttttttt",
     },
   });
-
-  // const onSubmitLogin = async (values: MembersInterface) => {
-  //   let res = await LoginMember(values);
-  //   if (res.status) {
-  //     messageApi.open({
-  //       type: "success",
-  //       content: "เข้าสุ่ระบบสำเร็จ",
-  //     });
-  //     setTimeout(function () {
-  //       navigate("../menuPreorder");
-  //     }, 1000);
-  //   } else {
-  //     messageApi.open({
-  //       type: "error",
-  //       content: "เข้าสุ่ระบบไม่สำเร็จ",
-  //     });
-  //   }
-  // };
 
   const onSubmitLogin = async () => {
     const values = {

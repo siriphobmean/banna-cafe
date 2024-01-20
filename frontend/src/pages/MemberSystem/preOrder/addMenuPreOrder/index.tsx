@@ -60,9 +60,9 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       TotalCost: addMenu?.MenuCost,
       MenuID: addMenu?.ID,
       PreorderID: 1,
-      MenuSizeID: undefined,
-      SweetnessID: undefined,
-      DrinkOptionID: undefined,
+      MenuSizeID: 1,
+      SweetnessID: 1,
+      DrinkOptionID: 1,
       DrinkOptionStatus: 1,
       SweetnessStatus: 1,
       MenuSizeStatus: 1,
@@ -119,7 +119,7 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
       });
       setTimeout(function () {
         onCloseAddmenupop();
-      }, 100000);
+      }, 1000);
     } else {
       messageApi.open({
         type: "error",
@@ -264,10 +264,9 @@ const AddMenuPreorder: React.FC<AddMenuPreorderProps> = ({
           ขนาด
           <div className="menu-size">
             {menuSize.map((menuSize: MenuSizesInterface, index: number) => (
-              <label className="lc" key={index}>
+              <label key={index} className={watch("MenuSizeID") == index+1 ? "active":"-"}>
                 <input
                   type="checkbox"
-                  className="ic"
                   {...register("MenuSizeStatus", {
                     required: { value: true, message: "this is required" },
                   })}

@@ -14,6 +14,8 @@ import { MenuTypesInterface } from "../../../interfaces/IMenuType";
 import "./menuPreorder.css";
 import { RatingsInterface } from "../../../interfaces/IRating";
 import { GetRatings } from "../../../services/https/rating";
+import { MembersInterface } from "../../../interfaces/IMember";
+import { GetMemberById } from "../../../services/https/member";
 
 export default function MenuPreorder() {
   const [addMenupop, setAddmenupop] = useState(false);
@@ -70,7 +72,6 @@ export default function MenuPreorder() {
         setMenusSearch(res);
       }
     } else {
-      // setMenusSearch([]);
       setSearchText(searchText.length != 1 ? searchText : "");
     }
   };
@@ -83,13 +84,23 @@ export default function MenuPreorder() {
     e.preventDefault();
     getMenusByMenuName(searchText);
   };
+  const [member, setMember] = useState<MembersInterface | null>(null);
+  const getMemberByID = async (id: Number) => {
+    let res = await GetMemberById(id);
+    if (res) {
+      setMember(res);
+    }
+  };
+  useEffect(() => {
+    getMemberByID(Number(localStorage.getItem("id")));
+  }, []);
   useEffect(() => {
     getMenusRating();
   }, []);
   return (
     <div className="menuPreorder">
       <div className="sidebarMemu">
-        <SidebarMemu onSelectMenuType={handleSelectMenuType} member={null} />
+        <SidebarMemu onSelectMenuType={handleSelectMenuType} member={member} />
       </div>
       <div className="contentMenu">
         <header>

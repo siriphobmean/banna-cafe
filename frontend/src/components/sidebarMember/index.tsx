@@ -5,19 +5,39 @@ import { NavLink } from "react-router-dom";
 import { MenuTypesInterface } from "../../interfaces/IMenuType";
 import { GetMenuTypes } from "../../services/https/menu";
 import { MembersInterface } from "../../interfaces/IMember";
-
+import { Modal } from "antd";
+import { useNavigate } from "react-router-dom";
 interface SidebarMemuProps {
   onSelectMenuType: (menuType: MenuTypesInterface) => void;
   member: MembersInterface | null;
 }
 
-export default function SidebarMemu({ onSelectMenuType, member }: SidebarMemuProps) {
+export default function SidebarMemu({
+  onSelectMenuType,
+  member,
+}: SidebarMemuProps) {
   const [menuTypes, setmenuTypes] = useState<MenuTypesInterface[]>([]);
   const [selectedMenuType, setSelectedMenuType] =
     useState<MenuTypesInterface>();
   const handleMenuTypeClick = (menuType: MenuTypesInterface) => {
     setSelectedMenuType(menuType);
     onSelectMenuType(menuType);
+  };
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    Modal.confirm({
+      title: "Logout",
+      content: "คุณต้องการออกจากระบบหรือไม่ ?",
+      okText: "ยืนยัน",
+      cancelText: "ยกเลิก",
+      okButtonProps: { style: { background: "#333952", color: "white" } },
+      cancelButtonProps: { style: { background: "white", color: "#333952" } },
+      onOk: () => {
+        localStorage.clear();
+        navigate("/");
+        window.location.reload();
+      },
+    });
   };
 
   const getMenuTypes = async () => {
@@ -67,7 +87,7 @@ export default function SidebarMemu({ onSelectMenuType, member }: SidebarMemuPro
             <p>Profile</p>
           </div>
         </NavLink>
-        <NavLink to="../" className="logout">
+        <NavLink to="#" className="logout" onClick={handleLogout}>
           <CiLogout />
           Logout
         </NavLink>

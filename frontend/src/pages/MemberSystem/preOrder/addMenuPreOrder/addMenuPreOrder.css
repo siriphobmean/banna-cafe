@@ -105,17 +105,21 @@
     flex-direction: row;
 }
 
-/* .menu-size label {
+.menu-size label {
     padding: 2px 15px;
     font-size: 12px;
     text-align: center;
     background-color: #ffffff;
     border-radius: 25px;
-} */
-/* 
+}
+.menu-size label.active {
+    background-color: #E48F44;
+    color: #ffffff;
+}
+
 .menu-size input {
     display: none;
-} */
+}
 
 .menu-sweetness,
 .menu-option {

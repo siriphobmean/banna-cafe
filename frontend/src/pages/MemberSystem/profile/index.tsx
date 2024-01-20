@@ -16,7 +16,7 @@ export default function ProfileMember() {
     }
   };
   useEffect(() => {
-    getMemberByID(1);
+    getMemberByID(Number(localStorage.getItem("id")));
   }, []);
   return (
     <div className="ProfileMember">

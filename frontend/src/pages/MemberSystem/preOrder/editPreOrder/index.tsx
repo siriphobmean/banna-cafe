@@ -268,7 +268,6 @@ const EditPreorder: React.FC<EditPreorderProps> = ({
               <input
                 type="text"
                 {...register("Note", {
-                  required: { value: true, message: "this is required" },
                 })}
               />
             </label>

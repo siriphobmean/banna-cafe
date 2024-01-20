@@ -216,7 +216,10 @@ const EditMenuPreorder: React.FC<EditMenuPreorderProps> = ({
           ขนาด
           <div className="menu-size">
             {menuSize.map((menuSize: MenuSizesInterface, index: number) => (
-              <label key={index}>
+              <label
+                key={index}
+                className={watch("MenuSizeID") == index + 1 ? "active" : "-"}
+              >
                 <input
                   type="checkbox"
                   {...register("MenuSizeStatus", {
