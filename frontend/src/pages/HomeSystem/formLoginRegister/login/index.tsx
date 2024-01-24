@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { MembersInterface } from "../../../../interfaces/IMember";
 import "../login.css";
 import { LoginMember } from "../../../../services/https/member";
-import { MenusInterface } from "../../../../interfaces/IMenu";
 interface LoginProps {
   slideRegisters: () => void;
 }
@@ -20,8 +19,8 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
     formState: { errors },
   } = useForm<MembersInterface>({
     defaultValues: {
-      Email: "tttt",
-      Password: "tttttttt",
+      Email: "",
+      Password: "",
     },
   });
 
@@ -41,13 +40,14 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
           localStorage.setItem("id", res.message.id);
           localStorage.setItem("position", res.message.position);
         }
+        console.log(localStorage)
         setTimeout(() => {
           if (res.message.position == "Member") {
-            navigate("../menuPreorder");
+            navigate("/menuPreorder");
           } else if (res.message.position == "Employee") {
-            navigate("../mainEmployee");
+            navigate("/mainEmployee");
           } else {
-            navigate("../mainOwner");
+            navigate("/mainOwner");
           }
           
         }, 1000);
@@ -62,7 +62,6 @@ const Login: React.FC<LoginProps> = ({ slideRegisters }) => {
   return (
     <form
       name="basic"
-      // onSubmit={handleSubmit((data) => onSubmitLogin(data))}
       autoComplete="off"
       className="form-box login"
     >
